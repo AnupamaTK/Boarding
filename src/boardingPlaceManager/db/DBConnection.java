@@ -28,7 +28,7 @@ public class DBConnection {
     private DBConnection() {
 
         try {
-
+ //See
             Properties dbProperties = new Properties();
             File dbFile = new File("Settings/mySettings.properties");
             FileReader dbFileReader = new FileReader(dbFile);
