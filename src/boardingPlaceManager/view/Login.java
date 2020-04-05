@@ -85,6 +85,16 @@ public class Login extends javax.swing.JFrame {
         jLabel3.setText("ManaGer");
 
         pwfPassword.setText("jPasswordField1");
+        pwfPassword.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                pwfPasswordFocusGained(evt);
+            }
+        });
+        pwfPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pwfPasswordActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -184,6 +194,14 @@ public class Login extends javax.swing.JFrame {
     private void txtUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserNameActionPerformed
         pwfPassword.requestFocus();
     }//GEN-LAST:event_txtUserNameActionPerformed
+
+    private void pwfPasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pwfPasswordFocusGained
+        pwfPassword.setText("");
+    }//GEN-LAST:event_pwfPasswordFocusGained
+
+    private void pwfPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pwfPasswordActionPerformed
+        btnLogin.doClick();
+    }//GEN-LAST:event_pwfPasswordActionPerformed
 
     /**
      * @param args the command line arguments
