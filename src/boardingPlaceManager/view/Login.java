@@ -175,11 +175,8 @@ public class Login extends javax.swing.JFrame {
         try {
             String username = txtUserName.getText();
             String password = new String(pwfPassword.getPassword());
-            System.out.println("Here1");
             boolean checkPassword = LoginController.checkPassword(username, password);
-            System.out.println("Here2");
             if (checkPassword) {
-                System.out.println("Here3");
                 DashBoard db = new DashBoard(); //should change
                 db.setVisible(true);
                 this.setVisible(false);
