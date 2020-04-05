@@ -5,9 +5,12 @@
  */
 package boardingPlaceManager.view;
 
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import java.awt.Color;
 import boardingPlaceManager.controller.LoginController;
 
 /**
@@ -171,16 +174,21 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        
+
         try {
             String username = txtUserName.getText();
             String password = new String(pwfPassword.getPassword());
             boolean checkPassword = LoginController.checkPassword(username, password);
             if (checkPassword) {
-                DashBoard db = new DashBoard(); //should change
+                DashBoard db = new DashBoard();
                 db.setVisible(true);
                 this.setVisible(false);
             } else {
+                //to change JOption pane colour
+                UIManager UI = new UIManager();
+                UI.put("OptionPane.background", Color.white);
+                UI.put("Panel.background", Color.white);
+
                 JOptionPane.showMessageDialog(this, "Password or UserName Incorrect");
             }
         } catch (Exception ex) {
