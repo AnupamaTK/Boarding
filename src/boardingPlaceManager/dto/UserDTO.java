@@ -11,21 +11,18 @@ package boardingPlaceManager.dto;
  */
 public class UserDTO extends SuperDTO{
     private String nic;
-    private String name;
+    private String user_name;
+    private String password;
     private String tel;
 
     public UserDTO() {
     }
 
-    public UserDTO(String nic, String name, String tel) {
+    public UserDTO(String nic, String user_name, String password, String tel) {
         this.nic = nic;
-        this.name = name;
+        this.user_name = user_name;
+        this.password = password;
         this.tel = tel;
-    }
-
-    @Override
-    public String toString() {
-        return "UserDTO{" + "nic=" + nic + ", name=" + name + ", tel=" + tel + '}';
     }
 
     public String getNic() {
@@ -36,12 +33,20 @@ public class UserDTO extends SuperDTO{
         this.nic = nic;
     }
 
-    public String getName() {
-        return name;
+    public String getUser_name() {
+        return user_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getTel() {
@@ -52,7 +57,10 @@ public class UserDTO extends SuperDTO{
         this.tel = tel;
     }
 
-    
+    @Override
+    public String toString() {
+        return "UserDTO{" + "nic=" + nic + ", user_name=" + user_name + ", password=" + password + ", tel=" + tel + '}';
+    }
 
-    
+     
 }

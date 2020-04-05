@@ -33,6 +33,7 @@ public class DAOFactory {
     }
 
     public SuperDAO getDAO(DAOTypes daoType) {
+        //System.out.println(daoType+"DT");
         switch (daoType) {
             
             case USER:

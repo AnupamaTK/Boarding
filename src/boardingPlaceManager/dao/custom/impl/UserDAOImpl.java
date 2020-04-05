@@ -26,11 +26,12 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public boolean add(UserDTO user) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "INSERT INTO User VALUES (?,?,?);";
+        String sql = "INSERT INTO User VALUES (?,?,?,?);";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setObject(1, user.getNic());
-        pstm.setObject(2, user.getName());
-        pstm.setObject(3, user.getTel());
+        pstm.setObject(2, user.getUser_name());
+        pstm.setObject(3, user.getPassword());
+        pstm.setObject(4, user.getTel());
 
         int affectedRows = pstm.executeUpdate();
         return (affectedRows > 0);
@@ -39,12 +40,13 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public boolean update(UserDTO user) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "UPDATE User SET name=?,tel=? where nic=?";
+        String sql = "UPDATE User SET user_name=?,password=?,tel=? where nic=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
 
-        pstm.setObject(1, user.getName());
-        pstm.setObject(2, user.getTel());
-        pstm.setObject(3, user.getNic());
+        pstm.setObject(1, user.getUser_name());
+        pstm.setObject(2, user.getPassword());
+        pstm.setObject(3, user.getTel());
+        pstm.setObject(4, user.getNic());
         int affectedRows = pstm.executeUpdate();
         return (affectedRows > 0);
     }
@@ -52,7 +54,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public boolean delete(UserDTO user) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "DELETE FROM User WHERE i_code = ?";
+        String sql = "DELETE FROM User WHERE nic = ?";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setObject(1, user.getNic());
         int affectedRows = pstm.executeUpdate();
@@ -62,7 +64,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public UserDTO search(UserDTO user) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM User WHERE i_code='" + user.getNic()+ "'";
+        String sql = "SELECT * FROM User WHERE nic='" + user.getNic()+ "'";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 
@@ -70,7 +72,8 @@ public class UserDAOImpl implements UserDAO {
             return new UserDTO(
                     rst.getString(1),
                     rst.getString(2),
-                    rst.getString(3)
+                    rst.getString(3),
+                    rst.getString(4)
             );
         }
 
@@ -98,7 +101,8 @@ public class UserDAOImpl implements UserDAO {
             alUsers.add(new UserDTO(
                     rst.getString(1),
                     rst.getString(2),
-                    rst.getString(3)
+                    rst.getString(3),
+                    rst.getString(4)
             ));
 
         }
@@ -108,7 +112,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean CheckPassword(String name, String password) throws Exception {
-        String sql = "Select * from user where prefferd_name='" + name + "' && password='" + password + "'";
+        String sql = "Select * from user where user_name='" + name + "' && password='" + password + "'";
         Connection conn = DBConnection.getInstance().getConnection();
         Statement stm = conn.createStatement();
         ResultSet rst = stm.executeQuery(sql);

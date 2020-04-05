@@ -161,15 +161,18 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        
         try {
             String username = txtUserName.getText();
             String password = new String(pwfPassword.getPassword());
-
+            System.out.println("Here1");
             boolean checkPassword = LoginController.checkPassword(username, password);
+            System.out.println("Here2");
             if (checkPassword) {
-                //HomePage hp = new HomePage(username);
-               // hp.setVisible(true);
-               // this.setVisible(false);
+                System.out.println("Here3");
+                DashBoard db = new DashBoard(); //should change
+                db.setVisible(true);
+                this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(this, "Password or UserName Incorrect");
             }
