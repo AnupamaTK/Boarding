@@ -26,7 +26,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public boolean add(UserDTO user) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "INSERT INTO User VALUES (?,?,?,?);";
+        String sql = "INSERT INTO user VALUES (?,?,?,?);";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setObject(1, user.getNic());
         pstm.setObject(2, user.getUser_name());
@@ -40,7 +40,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public boolean update(UserDTO user) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "UPDATE User SET user_name=?,password=?,tel=? where nic=?";
+        String sql = "UPDATE user SET user_name=?,password=?,tel=? where nic=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
 
         pstm.setObject(1, user.getUser_name());
@@ -54,7 +54,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public boolean delete(UserDTO user) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "DELETE FROM User WHERE nic = ?";
+        String sql = "DELETE FROM user WHERE nic = ?";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setObject(1, user.getNic());
         int affectedRows = pstm.executeUpdate();
@@ -64,7 +64,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public UserDTO search(UserDTO user) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM User WHERE nic='" + user.getNic()+ "'";
+        String sql = "SELECT * FROM user WHERE nic='" + user.getNic()+ "'";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 
@@ -87,7 +87,7 @@ public class UserDAOImpl implements UserDAO {
 //     * @throws Exception
     public ArrayList<UserDTO> getAll() throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM User";
+        String sql = "SELECT * FROM user";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 

@@ -16,7 +16,7 @@ public class DAOFactory {
 
     public enum DAOTypes {
 
-        USER
+        USER,RENT_HOUSE
     }
 
     private static DAOFactory daoFactory;
@@ -38,6 +38,9 @@ public class DAOFactory {
             
             case USER:
                 return new UserDAOImpl();
+            case RENT_HOUSE:
+                return new UserDAOImpl(); //
+                
             default:
                 return null;
         }
