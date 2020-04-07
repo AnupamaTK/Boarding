@@ -6,6 +6,9 @@
 package boardingPlaceManager.view;
 
 import java.awt.Color;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -127,13 +130,17 @@ public class DashBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_lblRentHouseMouseExited
 
     private void lblRentHouseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRentHouseMousePressed
-        PanelRentHouse panellRentHouse = new PanelRentHouse();
-        pnlLoad.removeAll();
-        panellRentHouse.setSize(pnlLoad.getSize());
-        panellRentHouse.setVisible(true);
-        pnlLoad.add(panellRentHouse);
-        pnlLoad.revalidate();
-        pnlLoad.repaint();
+        try {
+            PanelRentHousee panellRentHouse = new PanelRentHousee();
+            pnlLoad.removeAll();
+            panellRentHouse.setSize(pnlLoad.getSize());
+            panellRentHouse.setVisible(true);
+            pnlLoad.add(panellRentHouse);
+            pnlLoad.revalidate();
+            pnlLoad.repaint();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashBoard.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_lblRentHouseMousePressed
 
     /**
