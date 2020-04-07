@@ -5,6 +5,8 @@
  */
 package boardingPlaceManager.view;
 
+import java.awt.Color;
+
 /**
  *
  * @author User
@@ -14,6 +16,9 @@ public class DashBoard extends javax.swing.JFrame {
     /**
      * Creates new form DashBoard
      */
+    
+    public static Color darkGreen = new Color(0, 102, 51);
+    
     public DashBoard() {
         initComponents();
     }
@@ -27,21 +32,109 @@ public class DashBoard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        lblRentHouse = new javax.swing.JLabel();
+        pnlLoad = new javax.swing.JPanel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        lblRentHouse.setBackground(new java.awt.Color(0, 102, 51));
+        lblRentHouse.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
+        lblRentHouse.setForeground(new java.awt.Color(255, 255, 255));
+        lblRentHouse.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblRentHouse.setText("Rent House");
+        lblRentHouse.setOpaque(true);
+        lblRentHouse.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblRentHouseMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblRentHouseMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblRentHouseMousePressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblRentHouse, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(156, 156, 156)
+                .addComponent(lblRentHouse, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout pnlLoadLayout = new javax.swing.GroupLayout(pnlLoad);
+        pnlLoad.setLayout(pnlLoadLayout);
+        pnlLoadLayout.setHorizontalGroup(
+            pnlLoadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1090, Short.MAX_VALUE)
+        );
+        pnlLoadLayout.setVerticalGroup(
+            pnlLoadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 628, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlLoad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 42, Short.MAX_VALUE)
+                .addComponent(pnlLoad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 593, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 440, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void lblRentHouseMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRentHouseMouseEntered
+        lblRentHouse.setBackground(Color.gray);
+        
+    }//GEN-LAST:event_lblRentHouseMouseEntered
+
+    private void lblRentHouseMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRentHouseMouseExited
+        lblRentHouse.setBackground(darkGreen);
+    }//GEN-LAST:event_lblRentHouseMouseExited
+
+    private void lblRentHouseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRentHouseMousePressed
+        PanelRentHouse panellRentHouse = new PanelRentHouse();
+        pnlLoad.removeAll();
+        panellRentHouse.setSize(pnlLoad.getSize());
+        panellRentHouse.setVisible(true);
+        pnlLoad.add(panellRentHouse);
+        pnlLoad.revalidate();
+        pnlLoad.repaint();
+    }//GEN-LAST:event_lblRentHouseMousePressed
 
     /**
      * @param args the command line arguments
@@ -79,5 +172,9 @@ public class DashBoard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblRentHouse;
+    private javax.swing.JPanel pnlLoad;
     // End of variables declaration//GEN-END:variables
 }
