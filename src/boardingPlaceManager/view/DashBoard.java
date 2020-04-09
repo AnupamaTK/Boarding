@@ -20,7 +20,7 @@ public class DashBoard extends javax.swing.JFrame {
      * Creates new form DashBoard
      */
     
-    public static Color darkGreen = new Color(0, 102, 51);
+    public Color darkGreen = new Color(0, 102, 51);
     
     public DashBoard() {
         initComponents();

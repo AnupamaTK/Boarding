@@ -19,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 import boardingPlaceManager.common.IDGenarator;
 import boardingPlaceManager.controller.RentHouseController;
 import boardingPlaceManager.dto.RentHouseDTO;
+import javax.swing.UIManager;
 //import static boardingPlaceManager.view.PanelRentHouse.dark;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
@@ -31,6 +32,8 @@ public class PanelRentHousee extends JPanel {
     /**
      * Creates new form panelRentHouse
      */
+    public Color darkGreen = new Color(102, 102, 102);
+
     public PanelRentHousee() throws SQLException {
         // super(parent, modal);
         initComponents();
@@ -83,7 +86,7 @@ public class PanelRentHousee extends JPanel {
 
     public String getID() {
         String newID;
-        
+
         try {
             newID = IDGenarator.getNewID("property", "property_id", "p");
             return newID;
@@ -93,6 +96,15 @@ public class PanelRentHousee extends JPanel {
             Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    //to check text field inputs are empty
+    public boolean checkText() {
+        System.out.println("Chk");
+        if (txtAddress.getText().isEmpty() && txtNoOdBathooms.getText().isEmpty() && txtNoOfRooms.getText().isEmpty() && txtNoOfStory.getText().isEmpty()) {
+            return false;
+        }
+        return true;
     }
 
 //    private void setCustName() throws Exception {
@@ -527,7 +539,7 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnRemoveMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRemoveMouseExited
-//        btnRemove.setBackground(myClr1);
+        btnRemove.setBackground(darkGreen);
     }//GEN-LAST:event_btnRemoveMouseExited
 
     private void btnRemoveMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRemoveMouseEntered
@@ -561,7 +573,7 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnUpdateMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseExited
-        // btnUpdate.setBackground(myClr1);
+        btnUpdate.setBackground(darkGreen);
     }//GEN-LAST:event_btnUpdateMouseExited
 
     private void btnUpdateMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseEntered
@@ -569,6 +581,15 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_btnUpdateMouseEntered
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+
+        if (!checkText()) {
+            UIManager UI = new UIManager();
+            UI.put("OptionPane.background", Color.white);
+            UI.put("Panel.background", Color.white);
+
+            JOptionPane.showMessageDialog(this, "All fields should be filled to save");
+            return;
+        }
         RentHouseDTO rentHouse = new RentHouseDTO(
                 getID(),
                 Integer.parseInt(txtNoOfRooms.getText()),
@@ -592,7 +613,7 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnAddMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseExited
-        //   btnAdd.setBackground(myClr1);
+        btnAdd.setBackground(darkGreen);
     }//GEN-LAST:event_btnAddMouseExited
 
     private void btnAddMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseEntered
