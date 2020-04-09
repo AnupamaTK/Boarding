@@ -8,36 +8,42 @@ package boardingPlaceManager.controller;
 import java.util.ArrayList;
 import boardingPlaceManager.dao.DAOFactory;
 import boardingPlaceManager.dao.custom.RentHouseDAO;
+import boardingPlaceManager.dao.custom.PropertyDAO;
 import boardingPlaceManager.dto.RentHouseDTO;
+import boardingPlaceManager.dto.PropertyDTO;
 
 /**
  *
  * @author User
  */
 public class RentHouseController {
-     public static RentHouseDAO customerDAO = (RentHouseDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.RENT_HOUSE);
-    
-    public static boolean addRentHouse(RentHouseDTO customer) throws  Exception  {
-        boolean result = customerDAO.add(customer);
+
+    public static RentHouseDAO rentHouseDAO = (RentHouseDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.RENT_HOUSE);
+    public static PropertyDAO propertyDAO = (PropertyDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.PROPERTY);
+
+    public static boolean addRentHouse(RentHouseDTO rentHouse) throws Exception {
+        PropertyDTO propertyDto=new PropertyDTO(rentHouse.getProperty_id(),true);
+        boolean res=propertyDAO.add(propertyDto);
+        boolean result = rentHouseDAO.add(rentHouse);
         return result;
     }
-    
-    public static boolean deleteRentHouse(RentHouseDTO customer)throws Exception{
-        boolean result = customerDAO.delete(customer);
+
+    public static boolean deleteRentHouse(RentHouseDTO rentHouse) throws Exception {
+        boolean result = rentHouseDAO.delete(rentHouse);
         return result;
     }
-    
-    public static boolean updateRentHouse(RentHouseDTO customer)throws Exception{
-        boolean result = customerDAO.update(customer);
+
+    public static boolean updateRentHouse(RentHouseDTO rentHouse) throws Exception {
+        boolean result = rentHouseDAO.update(rentHouse);
         return result;
     }
-    
-    public static RentHouseDTO searchRentHouse(RentHouseDTO customer) throws Exception{
-        RentHouseDTO searchedRentHouse = customerDAO.search(customer);
+
+    public static RentHouseDTO searchRentHouse(RentHouseDTO rentHouse) throws Exception {
+        RentHouseDTO searchedRentHouse = rentHouseDAO.search(rentHouse);
         return searchedRentHouse;
     }
-    
-    public static ArrayList<RentHouseDTO> getAllRentHouses()throws Exception{
-        return customerDAO.getAll();
+
+    public static ArrayList<RentHouseDTO> getAllRentHouses() throws Exception {
+        return rentHouseDAO.getAll();
     }
 }

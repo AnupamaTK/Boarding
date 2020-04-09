@@ -35,11 +35,11 @@ public class PanelRentHousee extends JPanel {
         // super(parent, modal);
         initComponents();
         //auto generate id
-        
+
         try {
-           // setCustName();
-            getID();
-            
+            // setCustName();
+            // getID();
+
             //setLocationRelativeTo(null);
         } catch (Exception ex) {
             Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
@@ -74,22 +74,25 @@ public class PanelRentHousee extends JPanel {
         }
     }*/
     private void clearAllTexts() {
-       
+
         txtNoOfRooms.setText("");
         txtNoOfRooms.setText("");
         txtNoOdBathooms.setText("");
         txtAddress.setText("");
     }
-    public void getID() {
+
+    public String getID() {
         String newID;
+        
         try {
             newID = IDGenarator.getNewID("property", "property_id", "p");
-           // txtCustID.setText(newID);
+            return newID;
         } catch (SQLException ex) {
-            Logger.getLogger(PanelRentHouse.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(PanelRentHouse.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
     }
 
 //    private void setCustName() throws Exception {
@@ -108,7 +111,7 @@ public class PanelRentHousee extends JPanel {
 //        AutoCompleteDecorator.decorate(cmbCustName);
 //
 //    }
-     /* public void getID() {
+    /* public void getID() {
         String newID;
         try {
             newID = IDGenarator.getNewID("RentHouse", "cid", "C");
@@ -119,7 +122,6 @@ public class PanelRentHousee extends JPanel {
             Logger.getLogger(PanelGRN.class.getName()).log(Level.SEVERE, null, ex);
         }
     }*/
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -233,14 +235,13 @@ public class PanelRentHousee extends JPanel {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(btnRemove, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel11))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel11)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -260,8 +261,8 @@ public class PanelRentHousee extends JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -444,23 +445,22 @@ public class PanelRentHousee extends JPanel {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbCustName, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbCustName, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 20, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -561,7 +561,7 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnUpdateMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseExited
-       // btnUpdate.setBackground(myClr1);
+        // btnUpdate.setBackground(myClr1);
     }//GEN-LAST:event_btnUpdateMouseExited
 
     private void btnUpdateMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseEntered
@@ -569,30 +569,30 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_btnUpdateMouseEntered
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-//        RentHouseDTO rentHouse = new RentHouseDTO(
-//                txtCustID.getText(),
-//                txtNoOfRooms.getText(),
-//                txtNoOdBathooms.getText(),
-//                Integer.parseInt(txtTel_No.getText()),
-//                txtAddress.getText()
-//        );
-//
-//        try {
-//            boolean result = RentHouseController.addRentHouse(rentHouse);
-//            if (result) {
-//                JOptionPane.showMessageDialog(this, "RentHouse has been successfully added");
-//                btnRefreshActionPerformed(evt);
-//                clearAllTexts();
-//            } else {
-//                JOptionPane.showMessageDialog(this, "RentHouse hasn't been added");
-//            }
-//        } catch (Exception ex) {
-//            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        RentHouseDTO rentHouse = new RentHouseDTO(
+                getID(),
+                Integer.parseInt(txtNoOfRooms.getText()),
+                Integer.parseInt(txtNoOdBathooms.getText()),
+                Integer.parseInt(txtNoOfStory.getText()),
+                txtAddress.getText()
+        );
+
+        try {
+            boolean result = RentHouseController.addRentHouse(rentHouse);
+            if (result) {
+                JOptionPane.showMessageDialog(this, "RentHouse has been successfully added");
+                btnRefreshActionPerformed(evt);
+                clearAllTexts();
+            } else {
+                JOptionPane.showMessageDialog(this, "RentHouse hasn't been added");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnAddMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseExited
-     //   btnAdd.setBackground(myClr1);
+        //   btnAdd.setBackground(myClr1);
     }//GEN-LAST:event_btnAddMouseExited
 
     private void btnAddMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseEntered
@@ -625,18 +625,18 @@ public class PanelRentHousee extends JPanel {
 //
 //                dtm.addRow(rowData);
 //            
-           
+
 //        } catch (Exception ex) {
 //            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
 //        }
     }//GEN-LAST:event_cmbCustNameItemStateChanged
 
     private void jPanel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseEntered
-      //  getCID.requestFocus();
+        //  getCID.requestFocus();
     }//GEN-LAST:event_jPanel1MouseEntered
 
     private void txtNoOdBathoomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNoOdBathoomsActionPerformed
-       // txtTel_No.requestFocus();
+        // txtTel_No.requestFocus();
     }//GEN-LAST:event_txtNoOdBathoomsActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -658,19 +658,21 @@ public class PanelRentHousee extends JPanel {
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         try {
             ArrayList<RentHouseDTO> allRentHouses = RentHouseController.getAllRentHouses();
+            if (allRentHouses != null) {
+                DefaultTableModel dtm = (DefaultTableModel) tblRentHouse.getModel();
 
-            DefaultTableModel dtm = (DefaultTableModel) tblRentHouse.getModel();
+                dtm.setRowCount(0);
 
-            dtm.setRowCount(0);
+                for (RentHouseDTO rentHouse : allRentHouses) {
 
-            for (RentHouseDTO rentHouse : allRentHouses) {
+                    Object[] rowData = {rentHouse.getNo_of_rooms(),
+                        rentHouse.getNo_of_bathrooms(),
+                        rentHouse.getNo_of_story(),
+                        rentHouse.getAddress()};
 
-                Object[] rowData = {rentHouse.getNo_of_rooms(),
-                    rentHouse.getNo_of_bathrooms(),
-                    rentHouse.getNo_of_story(),
-                    rentHouse.getAddress()};
+                    dtm.addRow(rowData);
 
-                dtm.addRow(rowData);
+                }
 
             }
         } catch (Exception ex) {

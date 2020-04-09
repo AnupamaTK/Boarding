@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import boardingPlaceManager.dao.custom.RentHouseDAO;
 import boardingPlaceManager.db.DBConnection;
 import boardingPlaceManager.dto.RentHouseDTO;
+import boardingPlaceManager.dao.custom.impl.PropertyDAOImpl;
 
 //*
 // *
@@ -25,6 +26,8 @@ public class RentHouseDAOImpl implements RentHouseDAO {
 
     @Override
     public boolean add(RentHouseDTO rent_house) throws Exception {
+        
+        
         Connection connection = DBConnection.getInstance().getConnection();
         String sql = "INSERT INTO rent_house VALUES (?,?,?,?,?);";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -94,7 +97,6 @@ public class RentHouseDAOImpl implements RentHouseDAO {
         ResultSet rst = stm.executeQuery(sql);
 
         ArrayList<RentHouseDTO> alRentHouses = null;
-
         while (rst.next()) {
             if (alRentHouses == null) {
                 alRentHouses = new ArrayList<>();
