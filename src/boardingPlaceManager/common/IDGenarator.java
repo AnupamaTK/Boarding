@@ -28,7 +28,7 @@ public class IDGenarator {
             String newID = numberFormat.format(id);
             return prifix + newID;
         } else {
-            return prifix+"001";
+            return prifix+"0001";
         }
 
     }
