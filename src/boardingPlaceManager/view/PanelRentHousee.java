@@ -529,27 +529,26 @@ public class PanelRentHousee extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
-//        RentHouseDTO rentHouse = new RentHouseDTO(
-//                txtCustID.getText(),
-//                txtNoOfRooms.getText(),
-//                txtNoOdBathooms.getText(),
-//                Integer.parseInt(txtTel_No.getText()),
-//                txtAddress.getText());
-//
-//        try {
-//            boolean result = RentHouseController.deleteRentHouse(rentHouse);
-//
-//            if (result) {
-//                JOptionPane.showMessageDialog(this, "RentHouse has been successfully removed");
-//                btnRefreshActionPerformed(evt);
-//                clearAllTexts();
-//            } else {
-//                JOptionPane.showMessageDialog(this, "RentHouse hasn't been removed");
-//            }
-//
-//        } catch (Exception ex) {
-//            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {                                          
+            RentHouseDTO rentHouse = RentHouseController.searchByAddress(selectedAddress);
+            
+            try {
+                boolean result = RentHouseController.deleteRentHouse(rentHouse);
+                
+                if (result) {
+                    JOptionPane.showMessageDialog(this, "RentHouse has been successfully removed");
+                    btnRefreshActionPerformed(evt);
+                    clearAllTexts();
+                } else {
+                    JOptionPane.showMessageDialog(this, "RentHouse hasn't been removed");
+                }
+                
+            } catch (Exception ex) {
+                Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnRemoveMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRemoveMouseExited
