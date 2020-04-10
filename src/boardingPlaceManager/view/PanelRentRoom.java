@@ -666,7 +666,7 @@ public class PanelRentRoom extends JPanel {
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void jPanel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseEntered
-        //  getCID.requestFocus();
+        
     }//GEN-LAST:event_jPanel1MouseEntered
 
     private void txtAddressKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAddressKeyPressed
