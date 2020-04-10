@@ -61,7 +61,7 @@ public class PanelRentRoom extends JPanel {
                 }
 
                 txtPeoplePerRoom.setText(tblRentRoom.getValueAt(tblRentRoom.getSelectedRow(), 0).toString());
-                txtAddress.setText(tblRentRoom.getValueAt(tblRentRoom.getSelectedRow(), 3).toString());
+                txtAddress.setText(tblRentRoom.getValueAt(tblRentRoom.getSelectedRow(), 1).toString());
 
                 selectedAddress = txtAddress.getText();
             }

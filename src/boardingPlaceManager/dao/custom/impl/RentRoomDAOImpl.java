@@ -100,7 +100,7 @@ public class RentRoomDAOImpl implements RentRoomDAO {
             alRentRooms.add(new RentRoomDTO(
                     rst.getString(1),
                     rst.getInt(2),
-                    rst.getString(5)
+                    rst.getString(3)
             ));
 
         }

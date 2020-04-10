@@ -19,9 +19,8 @@ public class DashBoard extends javax.swing.JFrame {
     /**
      * Creates new form DashBoard
      */
-    
     public Color darkGreen = new Color(0, 102, 51);
-    
+
     public DashBoard() {
         initComponents();
     }
@@ -38,7 +37,7 @@ public class DashBoard extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         lblRentHouse = new javax.swing.JLabel();
-        lblRentHouse1 = new javax.swing.JLabel();
+        lblRentRoom = new javax.swing.JLabel();
         pnlLoad = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -64,21 +63,21 @@ public class DashBoard extends javax.swing.JFrame {
             }
         });
 
-        lblRentHouse1.setBackground(new java.awt.Color(0, 102, 51));
-        lblRentHouse1.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
-        lblRentHouse1.setForeground(new java.awt.Color(255, 255, 255));
-        lblRentHouse1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblRentHouse1.setText("Rent House");
-        lblRentHouse1.setOpaque(true);
-        lblRentHouse1.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblRentRoom.setBackground(new java.awt.Color(0, 102, 51));
+        lblRentRoom.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
+        lblRentRoom.setForeground(new java.awt.Color(255, 255, 255));
+        lblRentRoom.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblRentRoom.setText("Rent Room");
+        lblRentRoom.setOpaque(true);
+        lblRentRoom.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                lblRentHouse1MouseEntered(evt);
+                lblRentRoomMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                lblRentHouse1MouseExited(evt);
+                lblRentRoomMouseExited(evt);
             }
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                lblRentHouse1MousePressed(evt);
+                lblRentRoomMousePressed(evt);
             }
         });
 
@@ -87,7 +86,7 @@ public class DashBoard extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblRentHouse, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
-            .addComponent(lblRentHouse1, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+            .addComponent(lblRentRoom, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -95,7 +94,7 @@ public class DashBoard extends javax.swing.JFrame {
                 .addGap(156, 156, 156)
                 .addComponent(lblRentHouse, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblRentHouse1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblRentRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -144,7 +143,7 @@ public class DashBoard extends javax.swing.JFrame {
 
     private void lblRentHouseMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRentHouseMouseEntered
         lblRentHouse.setBackground(Color.gray);
-        
+
     }//GEN-LAST:event_lblRentHouseMouseEntered
 
     private void lblRentHouseMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRentHouseMouseExited
@@ -165,17 +164,27 @@ public class DashBoard extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_lblRentHouseMousePressed
 
-    private void lblRentHouse1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRentHouse1MouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lblRentHouse1MouseEntered
+    private void lblRentRoomMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRentRoomMouseEntered
+        lblRentRoom.setBackground(Color.gray);
+    }//GEN-LAST:event_lblRentRoomMouseEntered
 
-    private void lblRentHouse1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRentHouse1MouseExited
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lblRentHouse1MouseExited
+    private void lblRentRoomMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRentRoomMouseExited
+        lblRentRoom.setBackground(darkGreen);
+    }//GEN-LAST:event_lblRentRoomMouseExited
 
-    private void lblRentHouse1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRentHouse1MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lblRentHouse1MousePressed
+    private void lblRentRoomMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRentRoomMousePressed
+        try {
+            PanelRentRoom panellRentRoom = new PanelRentRoom();
+            pnlLoad.removeAll();
+            panellRentRoom.setSize(pnlLoad.getSize());
+            panellRentRoom.setVisible(true);
+            pnlLoad.add(panellRentRoom);
+            pnlLoad.revalidate();
+            pnlLoad.repaint();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashBoard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_lblRentRoomMousePressed
 
     /**
      * @param args the command line arguments
@@ -216,7 +225,7 @@ public class DashBoard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblRentHouse;
-    private javax.swing.JLabel lblRentHouse1;
+    private javax.swing.JLabel lblRentRoom;
     private javax.swing.JPanel pnlLoad;
     // End of variables declaration//GEN-END:variables
 }
