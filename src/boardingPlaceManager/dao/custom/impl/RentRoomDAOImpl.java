@@ -32,7 +32,7 @@ public class RentRoomDAOImpl implements RentRoomDAO {
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setObject(1, rent_room.getProperty_id());
         pstm.setObject(2, rent_room.getPeople_per_room());
-        pstm.setObject(5, rent_room.getAddress());
+        pstm.setObject(3, rent_room.getAddress());
 
         int affectedRows = pstm.executeUpdate();
         return (affectedRows > 0);
