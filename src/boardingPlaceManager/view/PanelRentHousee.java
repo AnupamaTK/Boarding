@@ -34,6 +34,7 @@ public class PanelRentHousee extends JPanel {
      */
     private Color darkGreen = new Color(102, 102, 102);
     private String selectedAddress;
+    private boolean fieldsUpdated = false;
 
     public PanelRentHousee() throws SQLException {
         // super(parent, modal);
@@ -58,13 +59,13 @@ public class PanelRentHousee extends JPanel {
                 if (tblRentHouse.getSelectedRow() == -1) {
                     return;
                 }
-             
+
                 txtNoOfRooms.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 0).toString());
                 txtNoOfBathRooms.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 1).toString());
                 txtNoOfStory.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 2).toString());
                 txtAddress.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 3).toString());
 
-                selectedAddress=txtAddress.getText();
+                selectedAddress = txtAddress.getText();
             }
         });
     }
@@ -330,6 +331,14 @@ public class PanelRentHousee extends JPanel {
                 txtNoOfRoomsPropertyChange(evt);
             }
         });
+        txtNoOfRooms.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNoOfRoomsKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNoOfRoomsKeyTyped(evt);
+            }
+        });
 
         btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Cancel 2_20px.png"))); // NOI18N
         btnCancel.setToolTipText("Click to clear fields");
@@ -347,12 +356,22 @@ public class PanelRentHousee extends JPanel {
                 txtNoOfBathRoomsActionPerformed(evt);
             }
         });
+        txtNoOfBathRooms.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNoOfBathRoomsKeyPressed(evt);
+            }
+        });
 
         txtAddress.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         txtAddress.setPrompt("Address");
         txtAddress.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtAddressActionPerformed(evt);
+            }
+        });
+        txtAddress.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtAddressKeyPressed(evt);
             }
         });
 
@@ -367,6 +386,11 @@ public class PanelRentHousee extends JPanel {
         txtNoOfStory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNoOfStoryActionPerformed(evt);
+            }
+        });
+        txtNoOfStory.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNoOfStoryKeyPressed(evt);
             }
         });
 
@@ -529,12 +553,21 @@ public class PanelRentHousee extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
-        try {                                          
+
+        int n = JOptionPane.showConfirmDialog(
+                this, "Confirm deletion?",
+                "An Inane Question",
+                JOptionPane.YES_NO_OPTION);
+        if (n == JOptionPane.NO_OPTION) {
+            return;
+        }
+
+        try {
             RentHouseDTO rentHouse = RentHouseController.searchByAddress(selectedAddress);
-            
+
             try {
                 boolean result = RentHouseController.deleteRentHouse(rentHouse);
-                
+
                 if (result) {
                     JOptionPane.showMessageDialog(this, "RentHouse has been successfully removed");
                     btnRefreshActionPerformed(evt);
@@ -542,7 +575,7 @@ public class PanelRentHousee extends JPanel {
                 } else {
                     JOptionPane.showMessageDialog(this, "RentHouse hasn't been removed");
                 }
-                
+
             } catch (Exception ex) {
                 Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -560,29 +593,33 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_btnRemoveMouseEntered
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        if (fieldsUpdated==false) {
+            JOptionPane.showMessageDialog(this, "No change found");
+            return;
+        }
 
         try {
-            RentHouseDTO rentHouse=RentHouseController.searchByAddress(selectedAddress);
+            RentHouseDTO rentHouse = RentHouseController.searchByAddress(selectedAddress);
             rentHouse.setNo_of_rooms(Integer.parseInt(txtNoOfRooms.getText()));
             rentHouse.setNo_of_bathrooms(Integer.parseInt(txtNoOfBathRooms.getText()));
             rentHouse.setNo_of_story(Integer.parseInt(txtNoOfStory.getText()));
             rentHouse.setAddress(txtAddress.getText());
 
-        try {
+            try {
 
-            boolean result = RentHouseController.updateRentHouse(rentHouse);
+                boolean result = RentHouseController.updateRentHouse(rentHouse);
 
-            if (result) {
-                JOptionPane.showMessageDialog(this, "RentHouse details has been successfully updated");
-                btnRefreshActionPerformed(evt);
-                clearAllTexts();
-            } else {
-                JOptionPane.showMessageDialog(this, "RentHouse details hasn't been updated");
+                if (result) {
+                    JOptionPane.showMessageDialog(this, "RentHouse details has been successfully updated");
+                    btnRefreshActionPerformed(evt);
+                    clearAllTexts();
+                } else {
+                    JOptionPane.showMessageDialog(this, "RentHouse details hasn't been updated");
+                }
+
+            } catch (Exception ex) {
+                Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-        } catch (Exception ex) {
-            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
-        }
         } catch (Exception ex) {
             Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -673,7 +710,7 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_jPanel1MouseEntered
 
     private void txtNoOfBathRoomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNoOfBathRoomsActionPerformed
-        // txtTel_No.requestFocus();
+        txtNoOfStory.requestFocus();
     }//GEN-LAST:event_txtNoOfBathRoomsActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -689,7 +726,7 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_txtAddressActionPerformed
 
     private void txtNoOfStoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNoOfStoryActionPerformed
-        // TODO add your handling code here:
+        txtAddress.requestFocus();
     }//GEN-LAST:event_txtNoOfStoryActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
@@ -724,6 +761,26 @@ public class PanelRentHousee extends JPanel {
     private void txtNoOfRoomsInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtNoOfRoomsInputMethodTextChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNoOfRoomsInputMethodTextChanged
+
+    private void txtNoOfRoomsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNoOfRoomsKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNoOfRoomsKeyTyped
+
+    private void txtNoOfRoomsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNoOfRoomsKeyPressed
+        fieldsUpdated = true;
+    }//GEN-LAST:event_txtNoOfRoomsKeyPressed
+
+    private void txtNoOfBathRoomsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNoOfBathRoomsKeyPressed
+        fieldsUpdated = true;
+    }//GEN-LAST:event_txtNoOfBathRoomsKeyPressed
+
+    private void txtNoOfStoryKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNoOfStoryKeyPressed
+        fieldsUpdated = true;
+    }//GEN-LAST:event_txtNoOfStoryKeyPressed
+
+    private void txtAddressKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAddressKeyPressed
+        fieldsUpdated = true;
+    }//GEN-LAST:event_txtAddressKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
