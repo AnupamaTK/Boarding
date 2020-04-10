@@ -50,6 +50,8 @@ public class RentHouseDAOImpl implements RentHouseDAO {
         pstm.setObject(2, rent_house.getNo_of_bathrooms());
         pstm.setObject(3, rent_house.getNo_of_story());
         pstm.setObject(4, rent_house.getAddress());
+        pstm.setObject(5, rent_house.getProperty_id());
+
         int affectedRows = pstm.executeUpdate();
         return (affectedRows > 0);
     }
@@ -117,7 +119,7 @@ public class RentHouseDAOImpl implements RentHouseDAO {
     @Override
     public RentHouseDTO searchByAddress(String address) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM rent_house WHERE address='" + address+ "'";
+        String sql = "SELECT * FROM rent_house WHERE address='" + address + "'";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 

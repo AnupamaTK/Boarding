@@ -81,7 +81,7 @@ public class PanelRentHousee extends JPanel {
     private void clearAllTexts() {
 
         txtNoOfRooms.setText("");
-        txtNoOfRooms.setText("");
+        txtNoOfStory.setText("");
         txtNoOfBathRooms.setText("");
         txtAddress.setText("");
     }
@@ -313,9 +313,21 @@ public class PanelRentHousee extends JPanel {
         txtNoOfRooms.setToolTipText("No of rooms");
         txtNoOfRooms.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         txtNoOfRooms.setPrompt("No of rooms");
+        txtNoOfRooms.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                txtNoOfRoomsInputMethodTextChanged(evt);
+            }
+        });
         txtNoOfRooms.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNoOfRoomsActionPerformed(evt);
+            }
+        });
+        txtNoOfRooms.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtNoOfRoomsPropertyChange(evt);
             }
         });
 
@@ -705,6 +717,14 @@ public class PanelRentHousee extends JPanel {
             Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void txtNoOfRoomsPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtNoOfRoomsPropertyChange
+        System.out.print("Hy");
+    }//GEN-LAST:event_txtNoOfRoomsPropertyChange
+
+    private void txtNoOfRoomsInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtNoOfRoomsInputMethodTextChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNoOfRoomsInputMethodTextChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

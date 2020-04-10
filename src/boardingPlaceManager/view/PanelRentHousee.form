@@ -325,7 +325,9 @@
             <Property name="prompt" type="java.lang.String" value="No of rooms"/>
           </Properties>
           <Events>
+            <EventHandler event="inputMethodTextChanged" listener="java.awt.event.InputMethodListener" parameters="java.awt.event.InputMethodEvent" handler="txtNoOfRoomsInputMethodTextChanged"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNoOfRoomsActionPerformed"/>
+            <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="txtNoOfRoomsPropertyChange"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnCancel">
