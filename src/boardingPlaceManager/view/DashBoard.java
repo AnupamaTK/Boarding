@@ -38,6 +38,7 @@ public class DashBoard extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         lblRentHouse = new javax.swing.JLabel();
+        lblRentHouse1 = new javax.swing.JLabel();
         pnlLoad = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -63,17 +64,38 @@ public class DashBoard extends javax.swing.JFrame {
             }
         });
 
+        lblRentHouse1.setBackground(new java.awt.Color(0, 102, 51));
+        lblRentHouse1.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
+        lblRentHouse1.setForeground(new java.awt.Color(255, 255, 255));
+        lblRentHouse1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblRentHouse1.setText("Rent House");
+        lblRentHouse1.setOpaque(true);
+        lblRentHouse1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblRentHouse1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblRentHouse1MouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblRentHouse1MousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblRentHouse, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+            .addComponent(lblRentHouse, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+            .addComponent(lblRentHouse1, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(156, 156, 156)
                 .addComponent(lblRentHouse, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblRentHouse1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -143,6 +165,18 @@ public class DashBoard extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_lblRentHouseMousePressed
 
+    private void lblRentHouse1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRentHouse1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblRentHouse1MouseEntered
+
+    private void lblRentHouse1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRentHouse1MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblRentHouse1MouseExited
+
+    private void lblRentHouse1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRentHouse1MousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblRentHouse1MousePressed
+
     /**
      * @param args the command line arguments
      */
@@ -182,6 +216,7 @@ public class DashBoard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblRentHouse;
+    private javax.swing.JLabel lblRentHouse1;
     private javax.swing.JPanel pnlLoad;
     // End of variables declaration//GEN-END:variables
 }
