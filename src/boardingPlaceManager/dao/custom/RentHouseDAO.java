@@ -15,4 +15,5 @@ import boardingPlaceManager.dto.RentHouseDTO;
  */
 public interface RentHouseDAO extends SuperDAO<RentHouseDTO>{
     //public boolean CheckPassword(String name, String password) throws Exception;
+    public RentHouseDTO searchByAddress(String Address) throws Exception;
 }

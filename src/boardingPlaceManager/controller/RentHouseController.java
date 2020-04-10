@@ -46,4 +46,9 @@ public class RentHouseController {
     public static ArrayList<RentHouseDTO> getAllRentHouses() throws Exception {
         return rentHouseDAO.getAll();
     }
+    
+    public static RentHouseDTO searchByAddress(String address) throws Exception {
+        RentHouseDTO searchedRentHouse = rentHouseDAO.searchByAddress(address);
+        return searchedRentHouse;
+    }
 }

@@ -26,8 +26,7 @@ public class RentHouseDAOImpl implements RentHouseDAO {
 
     @Override
     public boolean add(RentHouseDTO rent_house) throws Exception {
-        
-        
+
         Connection connection = DBConnection.getInstance().getConnection();
         String sql = "INSERT INTO rent_house VALUES (?,?,?,?,?);";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -68,7 +67,7 @@ public class RentHouseDAOImpl implements RentHouseDAO {
     @Override
     public RentHouseDTO search(RentHouseDTO rent_house) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM rent_house WHERE property_id='" + rent_house.getProperty_id()+ "'";
+        String sql = "SELECT * FROM rent_house WHERE property_id='" + rent_house.getProperty_id() + "'";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 
@@ -103,7 +102,7 @@ public class RentHouseDAOImpl implements RentHouseDAO {
             }
 
             alRentHouses.add(new RentHouseDTO(
-                     rst.getString(1),
+                    rst.getString(1),
                     rst.getInt(2),
                     rst.getInt(3),
                     rst.getInt(4),
@@ -115,5 +114,24 @@ public class RentHouseDAOImpl implements RentHouseDAO {
         return alRentHouses;
     }
 
-   
+    @Override
+    public RentHouseDTO searchByAddress(String address) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        String sql = "SELECT * FROM rent_house WHERE address='" + address+ "'";
+        Statement stm = connection.createStatement();
+        ResultSet rst = stm.executeQuery(sql);
+
+        if (rst.next()) {
+            return new RentHouseDTO(
+                    rst.getString(1),
+                    rst.getInt(2),
+                    rst.getInt(3),
+                    rst.getInt(4),
+                    rst.getString(5)
+            );
+        }
+
+        return null;
+    }
+
 }

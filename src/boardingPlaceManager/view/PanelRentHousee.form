@@ -235,7 +235,7 @@
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                       <Component id="txtNoOfStory" alignment="0" max="32767" attributes="0"/>
-                      <Component id="txtNoOdBathooms" alignment="0" pref="171" max="32767" attributes="0"/>
+                      <Component id="txtNoOfBathRooms" alignment="0" pref="171" max="32767" attributes="0"/>
                       <Component id="txtNoOfRooms" alignment="0" max="32767" attributes="0"/>
                       <Component id="txtAddress" max="32767" attributes="0"/>
                   </Group>
@@ -254,7 +254,7 @@
                   <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel5" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
-                      <Component id="txtNoOdBathooms" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtNoOfBathRooms" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -339,7 +339,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelActionPerformed"/>
           </Events>
         </Component>
-        <Component class="org.jdesktop.swingx.JXTextField" name="txtNoOdBathooms">
+        <Component class="org.jdesktop.swingx.JXTextField" name="txtNoOfBathRooms">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="No of Bathrooms"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -348,7 +348,7 @@
             <Property name="prompt" type="java.lang.String" value="No of bahrooms"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNoOdBathoomsActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNoOfBathRoomsActionPerformed"/>
           </Events>
         </Component>
         <Component class="org.jdesktop.swingx.JXTextField" name="txtAddress">
