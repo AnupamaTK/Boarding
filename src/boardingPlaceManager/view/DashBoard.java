@@ -38,6 +38,7 @@ public class DashBoard extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         lblRentHouse = new javax.swing.JLabel();
         lblRentRoom = new javax.swing.JLabel();
+        lblSharingRoom = new javax.swing.JLabel();
         pnlLoad = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -70,14 +71,32 @@ public class DashBoard extends javax.swing.JFrame {
         lblRentRoom.setText("Rent Room");
         lblRentRoom.setOpaque(true);
         lblRentRoom.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                lblRentRoomMouseEntered(evt);
-            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 lblRentRoomMouseExited(evt);
             }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 lblRentRoomMousePressed(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblRentRoomMouseEntered(evt);
+            }
+        });
+
+        lblSharingRoom.setBackground(new java.awt.Color(0, 102, 51));
+        lblSharingRoom.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
+        lblSharingRoom.setForeground(new java.awt.Color(255, 255, 255));
+        lblSharingRoom.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblSharingRoom.setText("Sharing Room");
+        lblSharingRoom.setOpaque(true);
+        lblSharingRoom.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblSharingRoomMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblSharingRoomMousePressed(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblSharingRoomMouseEntered(evt);
             }
         });
 
@@ -85,8 +104,9 @@ public class DashBoard extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblRentHouse, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
-            .addComponent(lblRentRoom, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+            .addComponent(lblRentHouse, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
+            .addComponent(lblRentRoom, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
+            .addComponent(lblSharingRoom, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -95,6 +115,8 @@ public class DashBoard extends javax.swing.JFrame {
                 .addComponent(lblRentHouse, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblRentRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblSharingRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -186,6 +208,28 @@ public class DashBoard extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_lblRentRoomMousePressed
 
+    private void lblSharingRoomMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSharingRoomMouseEntered
+        lblSharingRoom.setBackground(Color.gray);
+    }//GEN-LAST:event_lblSharingRoomMouseEntered
+
+    private void lblSharingRoomMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSharingRoomMouseExited
+        lblSharingRoom.setBackground(darkGreen);
+    }//GEN-LAST:event_lblSharingRoomMouseExited
+
+    private void lblSharingRoomMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSharingRoomMousePressed
+         try {
+            PanelSharingRoom panelSharingRoom = new PanelSharingRoom();
+            pnlLoad.removeAll();
+            panelSharingRoom.setSize(pnlLoad.getSize());
+            panelSharingRoom.setVisible(true);
+            pnlLoad.add(panelSharingRoom);
+            pnlLoad.revalidate();
+            pnlLoad.repaint();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashBoard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_lblSharingRoomMousePressed
+
     /**
      * @param args the command line arguments
      */
@@ -226,6 +270,7 @@ public class DashBoard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblRentHouse;
     private javax.swing.JLabel lblRentRoom;
+    private javax.swing.JLabel lblSharingRoom;
     private javax.swing.JPanel pnlLoad;
     // End of variables declaration//GEN-END:variables
 }
