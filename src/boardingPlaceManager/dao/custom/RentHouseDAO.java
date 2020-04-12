@@ -18,4 +18,5 @@ public interface RentHouseDAO extends SuperDAO<RentHouseDTO>{
     //public boolean CheckPassword(String name, String password) throws Exception;
     public RentHouseDTO searchByAddress(String Address) throws Exception;
     public ArrayList<RentHouseDTO> searchAvailable() throws Exception;
+    public ArrayList<RentHouseDTO> searchRented() throws Exception;
 }

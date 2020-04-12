@@ -35,6 +35,7 @@ public class PanelRentHousee extends JPanel {
     private Color darkGreen = new Color(102, 102, 102);
     private String selectedAddress;
     private boolean fieldsUpdated = false;
+    private int type = 0;
 
     public PanelRentHousee() throws SQLException {
         // super(parent, modal);
@@ -169,8 +170,7 @@ public class PanelRentHousee extends JPanel {
         jScrollPane3 = new javax.swing.JScrollPane();
         tblRentHouse = new org.jdesktop.swingx.JXTable();
         btnRefresh = new javax.swing.JButton();
-        jLabel9 = new javax.swing.JLabel();
-        cmbCustName = new javax.swing.JComboBox<>();
+        cmbType = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(153, 153, 153));
 
@@ -474,7 +474,7 @@ public class PanelRentHousee extends JPanel {
         jLabel8.setBackground(new java.awt.Color(255, 255, 255));
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 23)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel8.setText("View All Rent Houses");
+        jLabel8.setText("View Rent Houses");
 
         tblRentHouse.setForeground(new java.awt.Color(51, 51, 51));
         tblRentHouse.setModel(new javax.swing.table.DefaultTableModel(
@@ -500,22 +500,17 @@ public class PanelRentHousee extends JPanel {
             }
         });
 
-        jLabel9.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel9.setText("Cust Name");
-
-        cmbCustName.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        cmbCustName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbCustName.setToolTipText("Click to select Item");
-        cmbCustName.addItemListener(new java.awt.event.ItemListener() {
+        cmbType.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        cmbType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Available", "Rented" }));
+        cmbType.setToolTipText("Click to select Item");
+        cmbType.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cmbCustNameItemStateChanged(evt);
+                cmbTypeItemStateChanged(evt);
             }
         });
-        cmbCustName.addActionListener(new java.awt.event.ActionListener() {
+        cmbType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbCustNameActionPerformed(evt);
+                cmbTypeActionPerformed(evt);
             }
         });
 
@@ -533,10 +528,8 @@ public class PanelRentHousee extends JPanel {
                     .addComponent(jScrollPane3)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbCustName, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(119, 119, 119)
+                        .addComponent(cmbType, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 20, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -546,10 +539,9 @@ public class PanelRentHousee extends JPanel {
                 .addGap(54, 54, 54)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbCustName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34))
@@ -574,9 +566,9 @@ public class PanelRentHousee extends JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -621,7 +613,7 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_btnRemoveMouseEntered
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        if (fieldsUpdated==false) {
+        if (fieldsUpdated == false) {
             JOptionPane.showMessageDialog(this, "No change found");
             return;
         }
@@ -701,37 +693,28 @@ public class PanelRentHousee extends JPanel {
         btnAdd.setBackground(Color.lightGray);
     }//GEN-LAST:event_btnAddMouseEntered
 
-    private void cmbCustNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCustNameActionPerformed
+    private void cmbTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTypeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cmbCustNameActionPerformed
+    }//GEN-LAST:event_cmbTypeActionPerformed
 
-    private void cmbCustNameItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbCustNameItemStateChanged
-//      try {
-//            if (cmbCustName.getSelectedIndex() == -1) {
-//                return;
-//            }
-//            
-//            RentHouseDTO rentHouse = RentHouseController.searchRentHouse(new RentHouseDTO(null,cmbCustName.getSelectedItem().toString(), null, 0, null));
-//            
-//            if (rentHouse == null) {
-//                return;
-//            }
-//            
-//             DefaultTableModel dtm = (DefaultTableModel) tblRentHouse.getModel();
-//             dtm.setRowCount(0);
-//             Object[] rowData = {rentHouse.getCID(),
-//                    rentHouse.getName(),
-//                    rentHouse.getNIC_no(),
-//                    rentHouse.getTel_no(),
-//                    rentHouse.getAddress()};
-//
-//                dtm.addRow(rowData);
-//            
+    private void cmbTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTypeItemStateChanged
+        try {
+            if (cmbType.getSelectedIndex() == -1) {
+                type = 0;
+            } else if (cmbType.getSelectedIndex() == 0) {
+                type = 0;
+            } else if (cmbType.getSelectedIndex() == 1) {
+                System.out.println("Selected");
+                type = 1;
+            } else if (cmbType.getSelectedIndex() == 2) {
+                type = 2;
+            }
+            btnRefreshActionPerformed(null);
 
-//        } catch (Exception ex) {
-//            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }//GEN-LAST:event_cmbCustNameItemStateChanged
+        } catch (Exception ex) {
+            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_cmbTypeItemStateChanged
 
     private void jPanel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseEntered
         //  getCID.requestFocus();
@@ -759,7 +742,12 @@ public class PanelRentHousee extends JPanel {
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         try {
-            ArrayList<RentHouseDTO> allRentHouses = RentHouseController.searchAvailable();
+            ArrayList<RentHouseDTO> allRentHouses=RentHouseController.getAllRentHouses();
+            if (type == 1) {
+                allRentHouses = RentHouseController.searchAvailable();
+            }else if(type == 2) {
+                allRentHouses = RentHouseController.searchRented();
+            }
             if (allRentHouses != null) {
                 DefaultTableModel dtm = (DefaultTableModel) tblRentHouse.getModel();
 
@@ -825,7 +813,7 @@ public class PanelRentHousee extends JPanel {
     private javax.swing.JButton btnRefresh;
     private org.jdesktop.swingx.JXButton btnRemove;
     private org.jdesktop.swingx.JXButton btnUpdate;
-    private javax.swing.JComboBox<String> cmbCustName;
+    private javax.swing.JComboBox<String> cmbType;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -833,7 +821,6 @@ public class PanelRentHousee extends JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
