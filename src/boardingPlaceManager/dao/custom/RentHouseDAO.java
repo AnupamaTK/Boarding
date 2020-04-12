@@ -8,6 +8,7 @@ package boardingPlaceManager.dao.custom;
 import boardingPlaceManager.dao.SuperDAO;
 import boardingPlaceManager.dto.UserDTO;
 import boardingPlaceManager.dto.RentHouseDTO;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,4 +17,5 @@ import boardingPlaceManager.dto.RentHouseDTO;
 public interface RentHouseDAO extends SuperDAO<RentHouseDTO>{
     //public boolean CheckPassword(String name, String password) throws Exception;
     public RentHouseDTO searchByAddress(String Address) throws Exception;
+    public ArrayList<RentHouseDTO> searchAvailable() throws Exception;
 }

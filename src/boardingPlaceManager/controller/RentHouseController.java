@@ -51,4 +51,9 @@ public class RentHouseController {
         RentHouseDTO searchedRentHouse = rentHouseDAO.searchByAddress(address);
         return searchedRentHouse;
     }
+    
+     public static ArrayList<RentHouseDTO> searchAvailable() throws Exception {
+        ArrayList<RentHouseDTO> availableRentHouses = rentHouseDAO.searchAvailable();
+        return availableRentHouses;
+    }
 }
