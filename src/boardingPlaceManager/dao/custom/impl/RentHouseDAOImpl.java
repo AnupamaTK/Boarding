@@ -139,7 +139,7 @@ public class RentHouseDAOImpl implements RentHouseDAO {
     @Override
     public ArrayList<RentHouseDTO> searchAvailable() throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM rent_house inner join property on rent_house.property_id=property.property_id where availability=0";
+        String sql = "SELECT * FROM rent_house inner join property on rent_house.property_id=property.property_id where availability=1";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 
@@ -164,7 +164,7 @@ public class RentHouseDAOImpl implements RentHouseDAO {
      @Override
     public ArrayList<RentHouseDTO> searchRented() throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM rent_house inner join property on rent_house.property_id=property.property_id where availability=1";
+        String sql = "SELECT * FROM rent_house inner join property on rent_house.property_id=property.property_id where availability=0";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 

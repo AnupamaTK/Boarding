@@ -43,7 +43,7 @@ public class PropertyDAOImpl implements PropertyDAO {
 
         pstm.setObject(1, property.getAvailability());
         pstm.setObject(2, property.getProperty_id());
-     
+
         int affectedRows = pstm.executeUpdate();
         return (affectedRows > 0);
     }
@@ -61,7 +61,7 @@ public class PropertyDAOImpl implements PropertyDAO {
     @Override
     public PropertyDTO search(PropertyDTO property) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM property WHERE property_id='" + property.getProperty_id()+ "'";
+        String sql = "SELECT * FROM property WHERE property_id='" + property.getProperty_id() + "'";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 
@@ -93,7 +93,7 @@ public class PropertyDAOImpl implements PropertyDAO {
             }
 
             alPropertys.add(new PropertyDTO(
-                     rst.getString(1),
+                    rst.getString(1),
                     rst.getBoolean(2)
             ));
 
@@ -102,5 +102,18 @@ public class PropertyDAOImpl implements PropertyDAO {
         return alPropertys;
     }
 
-   
+    @Override
+    public boolean CheckAvilability(String propertyId) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        String sql = "SELECT availability FROM property WHERE property_id='" + propertyId + "'";
+        Statement stm = connection.createStatement();
+        ResultSet rst = stm.executeQuery(sql);
+        Boolean val=null;
+        if (rst.next()) {
+            val=rst.getBoolean(1);
+        }
+        return val;
+        
+    }
+
 }

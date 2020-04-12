@@ -61,4 +61,9 @@ public class RentHouseController {
         ArrayList<RentHouseDTO> availableRentHouses = rentHouseDAO.searchRented();
         return availableRentHouses;
     }
+    
+    public static Boolean checkAvailability(String propertyId) throws Exception {
+        Boolean availability = propertyDAO.CheckAvilability(propertyId);
+        return availability;
+    }
 }

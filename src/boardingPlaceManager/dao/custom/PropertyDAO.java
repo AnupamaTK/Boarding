@@ -13,5 +13,5 @@ import boardingPlaceManager.dto.PropertyDTO;
  * @author Property
  */
 public interface PropertyDAO extends SuperDAO<PropertyDTO>{
-   // public boolean CheckPassword(String name, String password) throws Exception;
+   public boolean CheckAvilability(String property) throws Exception;
 }
