@@ -22,7 +22,7 @@ public class SharingRoomController {
     public static PropertyDAO propertyDAO = (PropertyDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.PROPERTY);
 
     public static boolean addRentRoom(RentRoomDTO rentRoom) throws Exception {
-        PropertyDTO propertyDto=new PropertyDTO(rentRoom.getProperty_id(),true);
+        PropertyDTO propertyDto=new PropertyDTO(rentRoom.getProperty_id(),true,0.0,0.0);
         boolean res=propertyDAO.add(propertyDto);
         boolean result = rentRoomDAO.add(rentRoom);
         return result;

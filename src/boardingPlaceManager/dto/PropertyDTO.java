@@ -13,13 +13,33 @@ public class PropertyDTO extends SuperDTO {
 
     private String property_id;
     private Boolean availability;
+    private Double advance_fee;
+    private Double monthly_rent;
 
     public PropertyDTO() {
     }
 
-    public PropertyDTO(String property_id, Boolean availability) {
+    public PropertyDTO(String property_id, Boolean availability, Double advance_fee, Double monthly_rent) {
         this.property_id = property_id;
         this.availability = availability;
+        this.advance_fee = advance_fee;
+        this.monthly_rent = monthly_rent;
+    }
+
+    public Double getAdvance_fee() {
+        return advance_fee;
+    }
+
+    public void setAdvance_fee(Double advance_fee) {
+        this.advance_fee = advance_fee;
+    }
+
+    public Double getMonthly_rent() {
+        return monthly_rent;
+    }
+
+    public void setMonthly_rent(Double monthly_rent) {
+        this.monthly_rent = monthly_rent;
     }
 
     public String getProperty_id() {
@@ -43,5 +63,4 @@ public class PropertyDTO extends SuperDTO {
         return "PropertyDTO{" + "property_id=" + property_id + ", availability=" + availability + '}';
     }
 
-    
 }

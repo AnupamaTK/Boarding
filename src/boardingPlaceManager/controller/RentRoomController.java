@@ -22,8 +22,8 @@ public class RentRoomController {
     public static PropertyDAO propertyDAO = (PropertyDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.PROPERTY);
 
     public static boolean addRentRoom(RentRoomDTO rentRoom) throws Exception {
-        PropertyDTO propertyDto=new PropertyDTO(rentRoom.getProperty_id(),true);
-        boolean res=propertyDAO.add(propertyDto);
+        PropertyDTO propertyDto = new PropertyDTO(rentRoom.getProperty_id(), true,0.0,0.0);
+        boolean res = propertyDAO.add(propertyDto);
         boolean result = rentRoomDAO.add(rentRoom);
         return result;
     }
@@ -46,7 +46,7 @@ public class RentRoomController {
     public static ArrayList<RentRoomDTO> getAllRentRooms() throws Exception {
         return rentRoomDAO.getAll();
     }
-    
+
     public static RentRoomDTO searchByAddress(String address) throws Exception {
         RentRoomDTO searchedRentRoom = rentRoomDAO.searchByAddress(address);
         return searchedRentRoom;

@@ -17,7 +17,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import boardingPlaceManager.common.IDGenarator;
+import boardingPlaceManager.controller.PropertyController;
 import boardingPlaceManager.controller.RentHouseController;
+import boardingPlaceManager.dto.PropertyDTO;
 import boardingPlaceManager.dto.RentHouseDTO;
 import javax.swing.UIManager;
 //import static boardingPlaceManager.view.PanelRentHouse.dark;
@@ -65,15 +67,17 @@ public class PanelRentHousee extends JPanel {
                 txtNoOfBathRooms.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 1).toString());
                 txtNoOfStory.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 2).toString());
                 txtAddress.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 3).toString());
+                txtadvanceFee.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 4).toString());
+                txtMonthlyRent.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 5).toString());
 
                 selectedAddress = txtAddress.getText();
                 try {
                     RentHouseDTO rentHouse = RentHouseController.searchByAddress(selectedAddress);
-                    Boolean availability = RentHouseController.checkAvailability(rentHouse.getProperty_id());
-                    if(availability==false){
+                    Boolean availability = PropertyController.checkAvailability(rentHouse.getProperty_id());
+                    if (availability == false) {
                         btnRent.setVisible(false);
                         btnViewRent.setVisible(true);
-                    }else{
+                    } else {
                         btnRent.setVisible(true);
                         btnViewRent.setVisible(false);
                     }
@@ -176,8 +180,12 @@ public class PanelRentHousee extends JPanel {
         txtAddress = new org.jdesktop.swingx.JXTextField();
         jLabel10 = new javax.swing.JLabel();
         txtNoOfStory = new org.jdesktop.swingx.JXTextField();
-        btnRent = new org.jdesktop.swingx.JXButton();
         btnViewRent = new org.jdesktop.swingx.JXButton();
+        btnRent = new org.jdesktop.swingx.JXButton();
+        jLabel9 = new javax.swing.JLabel();
+        txtadvanceFee = new org.jdesktop.swingx.JXTextField();
+        jLabel12 = new javax.swing.JLabel();
+        txtMonthlyRent = new org.jdesktop.swingx.JXTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -205,11 +213,11 @@ public class PanelRentHousee extends JPanel {
         btnAdd.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnAdd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnAddMouseEntered(evt);
-            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnAddMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnAddMouseEntered(evt);
             }
         });
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -266,19 +274,22 @@ public class PanelRentHousee extends JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap(28, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(btnRemove, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel11)))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnRemove, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(2, 2, 2))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel11)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(55, 55, 55)
+                .addGap(56, 56, 56)
                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(191, 191, 191)
+                .addGap(190, 190, 190)
                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -419,28 +430,6 @@ public class PanelRentHousee extends JPanel {
         });
         jPanel1.add(txtNoOfStory, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 239, 170, 30));
 
-        btnRent.setBackground(new java.awt.Color(153, 153, 153));
-        btnRent.setForeground(new java.awt.Color(255, 255, 255));
-        btnRent.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Details Pane_20px.png"))); // NOI18N
-        btnRent.setText(" View Rent Details ");
-        btnRent.setToolTipText("Click to add");
-        btnRent.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnRent.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnRent.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnRentMouseExited(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnRentMouseEntered(evt);
-            }
-        });
-        btnRent.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRentActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 360, 150, 32));
-
         btnViewRent.setBackground(new java.awt.Color(153, 153, 153));
         btnViewRent.setForeground(new java.awt.Color(255, 255, 255));
         btnViewRent.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Add User Group Man Man_20px.png"))); // NOI18N
@@ -461,7 +450,69 @@ public class PanelRentHousee extends JPanel {
                 btnViewRentActionPerformed(evt);
             }
         });
-        jPanel1.add(btnViewRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 360, 150, 32));
+        jPanel1.add(btnViewRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 460, 150, 32));
+
+        btnRent.setBackground(new java.awt.Color(153, 153, 153));
+        btnRent.setForeground(new java.awt.Color(255, 255, 255));
+        btnRent.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Details Pane_20px.png"))); // NOI18N
+        btnRent.setText(" View Rent Details ");
+        btnRent.setToolTipText("Click to add");
+        btnRent.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnRent.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnRent.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnRentMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnRentMouseEntered(evt);
+            }
+        });
+        btnRent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRentActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 460, 150, 32));
+
+        jLabel9.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(0, 153, 153));
+        jLabel9.setText("Advance Fee");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, 137, 37));
+
+        txtadvanceFee.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtadvanceFee.setPrompt("Advance Fee");
+        txtadvanceFee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtadvanceFeeActionPerformed(evt);
+            }
+        });
+        txtadvanceFee.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtadvanceFeeKeyPressed(evt);
+            }
+        });
+        jPanel1.add(txtadvanceFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 350, 170, 30));
+
+        jLabel12.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(0, 153, 153));
+        jLabel12.setText("Monthly Rent");
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, 137, 37));
+
+        txtMonthlyRent.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtMonthlyRent.setPrompt("Monthly Rent");
+        txtMonthlyRent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMonthlyRentActionPerformed(evt);
+            }
+        });
+        txtMonthlyRent.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtMonthlyRentKeyPressed(evt);
+            }
+        });
+        jPanel1.add(txtMonthlyRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 400, 170, 30));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -473,15 +524,23 @@ public class PanelRentHousee extends JPanel {
         tblRentHouse.setForeground(new java.awt.Color(51, 51, 51));
         tblRentHouse.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "No of rooms", "No of bathrooms", "No of story", "Address"
+                "No of rooms", "No of bathrooms", "No of story", "Address", "Advance fee", "Monthly Rent"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, true, true, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblRentHouse.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jScrollPane3.setViewportView(tblRentHouse);
 
@@ -618,9 +677,16 @@ public class PanelRentHousee extends JPanel {
             rentHouse.setNo_of_story(Integer.parseInt(txtNoOfStory.getText()));
             rentHouse.setAddress(txtAddress.getText());
 
+            PropertyDTO property = new PropertyDTO(
+                    rentHouse.getProperty_id(),
+                    PropertyController.checkAvailability(rentHouse.getProperty_id()),
+                    Double.parseDouble(txtadvanceFee.getText()),
+                    Double.parseDouble(txtMonthlyRent.getText())
+            );
+
             try {
 
-                boolean result = RentHouseController.updateRentHouse(rentHouse);
+                boolean result = RentHouseController.updateRentHouse(rentHouse, property);
 
                 if (result) {
                     JOptionPane.showMessageDialog(this, "RentHouse details has been successfully updated");
@@ -664,8 +730,15 @@ public class PanelRentHousee extends JPanel {
                 txtAddress.getText()
         );
 
+        PropertyDTO property = new PropertyDTO(
+                getID(),
+                true,
+                Double.parseDouble(txtadvanceFee.getText()),
+                Double.parseDouble(txtMonthlyRent.getText())
+        );
+
         try {
-            boolean result = RentHouseController.addRentHouse(rentHouse);
+            boolean result = RentHouseController.addRentHouse(rentHouse, property);
             if (result) {
                 JOptionPane.showMessageDialog(this, "RentHouse has been successfully added");
                 btnRefreshActionPerformed(evt);
@@ -747,11 +820,15 @@ public class PanelRentHousee extends JPanel {
                 dtm.setRowCount(0);
 
                 for (RentHouseDTO rentHouse : allRentHouses) {
-
+                    PropertyDTO property = new PropertyDTO(rentHouse.getProperty_id(), null, null, null);
+                    property = PropertyController.searchProperty(property);
                     Object[] rowData = {rentHouse.getNo_of_rooms(),
                         rentHouse.getNo_of_bathrooms(),
                         rentHouse.getNo_of_story(),
-                        rentHouse.getAddress()};
+                        rentHouse.getAddress(),
+                        property.getAdvance_fee(),
+                        property.getMonthly_rent()
+                    };
 
                     dtm.addRow(rowData);
 
@@ -815,6 +892,22 @@ public class PanelRentHousee extends JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnViewRentActionPerformed
 
+    private void txtadvanceFeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtadvanceFeeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtadvanceFeeActionPerformed
+
+    private void txtadvanceFeeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtadvanceFeeKeyPressed
+        fieldsUpdated = true;
+    }//GEN-LAST:event_txtadvanceFeeKeyPressed
+
+    private void txtMonthlyRentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMonthlyRentActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMonthlyRentActionPerformed
+
+    private void txtMonthlyRentKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMonthlyRentKeyPressed
+        fieldsUpdated = true;
+    }//GEN-LAST:event_txtMonthlyRentKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXButton btnAdd;
@@ -827,10 +920,12 @@ public class PanelRentHousee extends JPanel {
     private javax.swing.JComboBox<String> cmbType;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -838,8 +933,10 @@ public class PanelRentHousee extends JPanel {
     private javax.swing.JScrollPane jScrollPane3;
     private org.jdesktop.swingx.JXTable tblRentHouse;
     private org.jdesktop.swingx.JXTextField txtAddress;
+    private org.jdesktop.swingx.JXTextField txtMonthlyRent;
     private org.jdesktop.swingx.JXTextField txtNoOfBathRooms;
     private org.jdesktop.swingx.JXTextField txtNoOfRooms;
     private org.jdesktop.swingx.JXTextField txtNoOfStory;
+    private org.jdesktop.swingx.JXTextField txtadvanceFee;
     // End of variables declaration//GEN-END:variables
 }
