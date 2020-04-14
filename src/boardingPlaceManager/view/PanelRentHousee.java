@@ -74,12 +74,13 @@ public class PanelRentHousee extends JPanel {
                 try {
                     RentHouseDTO rentHouse = RentHouseController.searchByAddress(selectedAddress);
                     Boolean availability = PropertyController.checkAvailability(rentHouse.getProperty_id());
-                    if (availability == false) {
-                        btnRent.setVisible(false);
-                        btnViewRent.setVisible(true);
+                    if (availability == true) {
+                        btnAddRent.setVisible(true);
+                        btnViewRentDetails.setVisible(false);
+                        
                     } else {
-                        btnRent.setVisible(true);
-                        btnViewRent.setVisible(false);
+                        btnViewRentDetails.setVisible(true);
+                        btnAddRent.setVisible(false);
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
@@ -122,7 +123,7 @@ public class PanelRentHousee extends JPanel {
     //to check text field inputs are empty
     public boolean checkText() {
         System.out.println("Chk");
-        if (txtAddress.getText().isEmpty() && txtNoOfBathRooms.getText().isEmpty() && txtNoOfRooms.getText().isEmpty() && txtNoOfStory.getText().isEmpty()) {
+        if (txtAddress.getText().isEmpty() || txtNoOfBathRooms.getText().isEmpty() || txtNoOfRooms.getText().isEmpty() || txtNoOfStory.getText().isEmpty() || txtMonthlyRent.getText().isEmpty() || txtadvanceFee.getText().isEmpty()) {
             return false;
         }
         return true;
@@ -180,8 +181,8 @@ public class PanelRentHousee extends JPanel {
         txtAddress = new org.jdesktop.swingx.JXTextField();
         jLabel10 = new javax.swing.JLabel();
         txtNoOfStory = new org.jdesktop.swingx.JXTextField();
-        btnViewRent = new org.jdesktop.swingx.JXButton();
-        btnRent = new org.jdesktop.swingx.JXButton();
+        btnAddRent = new org.jdesktop.swingx.JXButton();
+        btnViewRentDetails = new org.jdesktop.swingx.JXButton();
         jLabel9 = new javax.swing.JLabel();
         txtadvanceFee = new org.jdesktop.swingx.JXTextField();
         jLabel12 = new javax.swing.JLabel();
@@ -234,11 +235,11 @@ public class PanelRentHousee extends JPanel {
         btnUpdate.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnUpdate.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnUpdateMouseEntered(evt);
-            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnUpdateMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnUpdateMouseEntered(evt);
             }
         });
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
@@ -430,49 +431,49 @@ public class PanelRentHousee extends JPanel {
         });
         jPanel1.add(txtNoOfStory, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 239, 170, 30));
 
-        btnViewRent.setBackground(new java.awt.Color(153, 153, 153));
-        btnViewRent.setForeground(new java.awt.Color(255, 255, 255));
-        btnViewRent.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Add User Group Man Man_20px.png"))); // NOI18N
-        btnViewRent.setText(" Rent ");
-        btnViewRent.setToolTipText("Click to add");
-        btnViewRent.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnViewRent.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnViewRent.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnAddRent.setBackground(new java.awt.Color(153, 153, 153));
+        btnAddRent.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddRent.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Add User Group Man Man_20px.png"))); // NOI18N
+        btnAddRent.setText(" Rent ");
+        btnAddRent.setToolTipText("Click to add");
+        btnAddRent.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnAddRent.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnAddRent.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnViewRentMouseExited(evt);
+                btnAddRentMouseExited(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnViewRentMouseEntered(evt);
+                btnAddRentMouseEntered(evt);
             }
         });
-        btnViewRent.addActionListener(new java.awt.event.ActionListener() {
+        btnAddRent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewRentActionPerformed(evt);
+                btnAddRentActionPerformed(evt);
             }
         });
-        jPanel1.add(btnViewRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 460, 150, 32));
+        jPanel1.add(btnAddRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 460, 150, 32));
 
-        btnRent.setBackground(new java.awt.Color(153, 153, 153));
-        btnRent.setForeground(new java.awt.Color(255, 255, 255));
-        btnRent.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Details Pane_20px.png"))); // NOI18N
-        btnRent.setText(" View Rent Details ");
-        btnRent.setToolTipText("Click to add");
-        btnRent.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnRent.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnRent.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnViewRentDetails.setBackground(new java.awt.Color(153, 153, 153));
+        btnViewRentDetails.setForeground(new java.awt.Color(255, 255, 255));
+        btnViewRentDetails.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Details Pane_20px.png"))); // NOI18N
+        btnViewRentDetails.setText(" View Rent Details ");
+        btnViewRentDetails.setToolTipText("Click to add");
+        btnViewRentDetails.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnViewRentDetails.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnViewRentDetails.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnRentMouseExited(evt);
+                btnViewRentDetailsMouseExited(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnRentMouseEntered(evt);
+                btnViewRentDetailsMouseEntered(evt);
             }
         });
-        btnRent.addActionListener(new java.awt.event.ActionListener() {
+        btnViewRentDetails.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRentActionPerformed(evt);
+                btnViewRentDetailsActionPerformed(evt);
             }
         });
-        jPanel1.add(btnRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 460, 150, 32));
+        jPanel1.add(btnViewRentDetails, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 460, 150, 32));
 
         jLabel9.setBackground(new java.awt.Color(255, 255, 255));
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -714,7 +715,7 @@ public class PanelRentHousee extends JPanel {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
-        if (!checkText()) {
+        if (checkText()== false) {
             UIManager UI = new UIManager();
             UI.put("OptionPane.background", Color.white);
             UI.put("Panel.background", Color.white);
@@ -841,7 +842,7 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void txtNoOfRoomsPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtNoOfRoomsPropertyChange
-        System.out.print("Hy");
+       
     }//GEN-LAST:event_txtNoOfRoomsPropertyChange
 
     private void txtNoOfRoomsInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtNoOfRoomsInputMethodTextChanged
@@ -868,29 +869,29 @@ public class PanelRentHousee extends JPanel {
         fieldsUpdated = true;
     }//GEN-LAST:event_txtAddressKeyPressed
 
-    private void btnRentMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRentMouseEntered
+    private void btnViewRentDetailsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnViewRentDetailsMouseEntered
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnRentMouseEntered
+    }//GEN-LAST:event_btnViewRentDetailsMouseEntered
 
-    private void btnRentMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRentMouseExited
+    private void btnViewRentDetailsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnViewRentDetailsMouseExited
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnRentMouseExited
+    }//GEN-LAST:event_btnViewRentDetailsMouseExited
 
-    private void btnRentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentActionPerformed
+    private void btnViewRentDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewRentDetailsActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnRentActionPerformed
+    }//GEN-LAST:event_btnViewRentDetailsActionPerformed
 
-    private void btnViewRentMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnViewRentMouseExited
+    private void btnAddRentMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddRentMouseExited
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnViewRentMouseExited
+    }//GEN-LAST:event_btnAddRentMouseExited
 
-    private void btnViewRentMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnViewRentMouseEntered
+    private void btnAddRentMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddRentMouseEntered
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnViewRentMouseEntered
+    }//GEN-LAST:event_btnAddRentMouseEntered
 
-    private void btnViewRentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewRentActionPerformed
+    private void btnAddRentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddRentActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnViewRentActionPerformed
+    }//GEN-LAST:event_btnAddRentActionPerformed
 
     private void txtadvanceFeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtadvanceFeeActionPerformed
         // TODO add your handling code here:
@@ -911,12 +912,12 @@ public class PanelRentHousee extends JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXButton btnAdd;
+    private org.jdesktop.swingx.JXButton btnAddRent;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnRefresh;
     private org.jdesktop.swingx.JXButton btnRemove;
-    private org.jdesktop.swingx.JXButton btnRent;
     private org.jdesktop.swingx.JXButton btnUpdate;
-    private org.jdesktop.swingx.JXButton btnViewRent;
+    private org.jdesktop.swingx.JXButton btnViewRentDetails;
     private javax.swing.JComboBox<String> cmbType;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
