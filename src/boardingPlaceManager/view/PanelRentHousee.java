@@ -70,7 +70,13 @@ public class PanelRentHousee extends JPanel {
                 try {
                     RentHouseDTO rentHouse = RentHouseController.searchByAddress(selectedAddress);
                     Boolean availability = RentHouseController.checkAvailability(rentHouse.getProperty_id());
-                    System.out.println(availability+",,,,,,,");
+                    if(availability==false){
+                        btnRent.setVisible(false);
+                        btnViewRent.setVisible(true);
+                    }else{
+                        btnRent.setVisible(true);
+                        btnViewRent.setVisible(false);
+                    }
                 } catch (Exception ex) {
                     Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -170,7 +176,8 @@ public class PanelRentHousee extends JPanel {
         txtAddress = new org.jdesktop.swingx.JXTextField();
         jLabel10 = new javax.swing.JLabel();
         txtNoOfStory = new org.jdesktop.swingx.JXTextField();
-        btnAdd1 = new org.jdesktop.swingx.JXButton();
+        btnRent = new org.jdesktop.swingx.JXButton();
+        btnViewRent = new org.jdesktop.swingx.JXButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -303,21 +310,25 @@ public class PanelRentHousee extends JPanel {
                 jPanel1MouseEntered(evt);
             }
         });
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel7.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 153, 153));
         jLabel7.setText("No of rooms");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 121, 130, 37));
 
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 153, 153));
         jLabel5.setText("No of bathrooms");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 181, -1, 37));
 
         jLabel6.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 153, 153));
         jLabel6.setText("Address");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 293, 137, 37));
 
         txtNoOfRooms.setToolTipText("No of rooms");
         txtNoOfRooms.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -347,6 +358,7 @@ public class PanelRentHousee extends JPanel {
                 txtNoOfRoomsKeyTyped(evt);
             }
         });
+        jPanel1.add(txtNoOfRooms, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 124, 170, 30));
 
         btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Cancel 2_20px.png"))); // NOI18N
         btnCancel.setToolTipText("Click to clear fields");
@@ -355,6 +367,7 @@ public class PanelRentHousee extends JPanel {
                 btnCancelActionPerformed(evt);
             }
         });
+        jPanel1.add(btnCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(406, 619, 48, 30));
 
         txtNoOfBathRooms.setToolTipText("No of Bathrooms");
         txtNoOfBathRooms.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -369,6 +382,7 @@ public class PanelRentHousee extends JPanel {
                 txtNoOfBathRoomsKeyPressed(evt);
             }
         });
+        jPanel1.add(txtNoOfBathRooms, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 184, 170, 30));
 
         txtAddress.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         txtAddress.setPrompt("Address");
@@ -382,11 +396,13 @@ public class PanelRentHousee extends JPanel {
                 txtAddressKeyPressed(evt);
             }
         });
+        jPanel1.add(txtAddress, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 296, 170, 30));
 
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 153, 153));
         jLabel10.setText("No of story");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 236, -1, 37));
 
         txtNoOfStory.setToolTipText("No of Story");
         txtNoOfStory.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -401,83 +417,51 @@ public class PanelRentHousee extends JPanel {
                 txtNoOfStoryKeyPressed(evt);
             }
         });
+        jPanel1.add(txtNoOfStory, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 239, 170, 30));
 
-        btnAdd1.setBackground(new java.awt.Color(204, 204, 204));
-        btnAdd1.setForeground(new java.awt.Color(255, 255, 255));
-        btnAdd1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Plus_20px_1.png"))); // NOI18N
-        btnAdd1.setText("Rent ");
-        btnAdd1.setToolTipText("Click to add");
-        btnAdd1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnAdd1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnAdd1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnAdd1MouseEntered(evt);
-            }
+        btnRent.setBackground(new java.awt.Color(153, 153, 153));
+        btnRent.setForeground(new java.awt.Color(255, 255, 255));
+        btnRent.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Details Pane_20px.png"))); // NOI18N
+        btnRent.setText(" View Rent Details ");
+        btnRent.setToolTipText("Click to add");
+        btnRent.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnRent.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnRent.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnAdd1MouseExited(evt);
+                btnRentMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnRentMouseEntered(evt);
             }
         });
-        btnAdd1.addActionListener(new java.awt.event.ActionListener() {
+        btnRent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAdd1ActionPerformed(evt);
+                btnRentActionPerformed(evt);
             }
         });
+        jPanel1.add(btnRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 360, 150, 32));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtNoOfStory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtNoOfBathRooms, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                            .addComponent(txtNoOfRooms, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtAddress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(146, 146, 146))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(25, 25, 25))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnAdd1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(155, 155, 155))))))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(121, 121, 121)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNoOfRooms, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNoOfBathRooms, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNoOfStory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addComponent(btnAdd1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
-                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51))
-        );
+        btnViewRent.setBackground(new java.awt.Color(153, 153, 153));
+        btnViewRent.setForeground(new java.awt.Color(255, 255, 255));
+        btnViewRent.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Add User Group Man Man_20px.png"))); // NOI18N
+        btnViewRent.setText(" Rent ");
+        btnViewRent.setToolTipText("Click to add");
+        btnViewRent.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnViewRent.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnViewRent.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnViewRentMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnViewRentMouseEntered(evt);
+            }
+        });
+        btnViewRent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewRentActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnViewRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 360, 150, 32));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -538,9 +522,8 @@ public class PanelRentHousee extends JPanel {
                     .addComponent(jScrollPane3)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(119, 119, 119)
-                        .addComponent(cmbType, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 20, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
+                        .addComponent(cmbType, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -564,8 +547,8 @@ public class PanelRentHousee extends JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -575,9 +558,9 @@ public class PanelRentHousee extends JPanel {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(71, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -808,26 +791,39 @@ public class PanelRentHousee extends JPanel {
         fieldsUpdated = true;
     }//GEN-LAST:event_txtAddressKeyPressed
 
-    private void btnAdd1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAdd1MouseEntered
+    private void btnRentMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRentMouseEntered
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAdd1MouseEntered
+    }//GEN-LAST:event_btnRentMouseEntered
 
-    private void btnAdd1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAdd1MouseExited
+    private void btnRentMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRentMouseExited
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAdd1MouseExited
+    }//GEN-LAST:event_btnRentMouseExited
 
-    private void btnAdd1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd1ActionPerformed
+    private void btnRentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAdd1ActionPerformed
+    }//GEN-LAST:event_btnRentActionPerformed
+
+    private void btnViewRentMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnViewRentMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnViewRentMouseExited
+
+    private void btnViewRentMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnViewRentMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnViewRentMouseEntered
+
+    private void btnViewRentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewRentActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnViewRentActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXButton btnAdd;
-    private org.jdesktop.swingx.JXButton btnAdd1;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnRefresh;
     private org.jdesktop.swingx.JXButton btnRemove;
+    private org.jdesktop.swingx.JXButton btnRent;
     private org.jdesktop.swingx.JXButton btnUpdate;
+    private org.jdesktop.swingx.JXButton btnViewRent;
     private javax.swing.JComboBox<String> cmbType;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

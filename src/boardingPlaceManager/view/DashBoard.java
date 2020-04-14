@@ -124,7 +124,7 @@ public class DashBoard extends javax.swing.JFrame {
         pnlLoad.setLayout(pnlLoadLayout);
         pnlLoadLayout.setHorizontalGroup(
             pnlLoadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1090, Short.MAX_VALUE)
+            .addGap(0, 1068, Short.MAX_VALUE)
         );
         pnlLoadLayout.setVerticalGroup(
             pnlLoadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
