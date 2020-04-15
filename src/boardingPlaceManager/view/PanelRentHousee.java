@@ -104,6 +104,8 @@ public class PanelRentHousee extends JPanel {
         txtNoOfStory.setText("");
         txtNoOfBathRooms.setText("");
         txtAddress.setText("");
+        txtadvanceFee.setText("");
+        txtMonthlyRent.setText("");
     }
 
     public String getID() {
