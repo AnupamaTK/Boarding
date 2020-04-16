@@ -26,7 +26,7 @@ public class RentDAOImpl implements RentDAO {
     @Override
     public boolean add(RentDTO rent) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "INSERT INTO rent VALUES (?,?,?,?.?,?,?);";
+        String sql = "INSERT INTO rent VALUES (?,?,?,?,?,?,?);";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setObject(1, rent.getRent_id());
         pstm.setObject(2, rent.getProperty_id());

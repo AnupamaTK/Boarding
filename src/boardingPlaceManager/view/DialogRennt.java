@@ -7,9 +7,11 @@ package boardingPlaceManager.view;
 
 import boardingPlaceManager.common.IDGenarator;
 import boardingPlaceManager.controller.BoadereController;
+import boardingPlaceManager.controller.RentController;
 import boardingPlaceManager.dto.BoadereDTO;
 import boardingPlaceManager.dto.PropertyDTO;
 import boardingPlaceManager.dto.RentDTO;
+import javax.swing.JOptionPane;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -628,18 +630,18 @@ public class DialogRennt extends javax.swing.JDialog {
 //            Double.parseDouble(txtMonthlyRent.getText())
 //        );
 //
-//        try {
-//            boolean result = RentHouseController.addRentHouse(rentHouse, property);
-//            if (result) {
-//                JOptionPane.showMessageDialog(this, "RentHouse has been successfully added");
-//                btnRefreshActionPerformed(evt);
-//                clearAllTexts();
-//            } else {
-//                JOptionPane.showMessageDialog(this, "RentHouse hasn't been added");
-//            }
-//        } catch (Exception ex) {
-//            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+                boolean result = RentController.addRent(rent);
+                if (result) {
+                    JOptionPane.showMessageDialog(this, "Rent has been successfully added");
+                    btnRefreshActionPerformed(evt);
+                    //clearAllTexts();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Rent hasn't been added");
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } catch (ParseException ex) {
             Logger.getLogger(DialogRennt.class.getName()).log(Level.SEVERE, null, ex);
         }
