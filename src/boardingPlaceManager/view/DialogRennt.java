@@ -11,6 +11,7 @@ import boardingPlaceManager.dto.BoadereDTO;
 import boardingPlaceManager.dto.PropertyDTO;
 import boardingPlaceManager.dto.RentDTO;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +19,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -29,7 +32,7 @@ public class DialogRennt extends javax.swing.JDialog {
      * Creates new form DialogBoadereInOrders
      */
     public BoadereDTO boadere = null;
-    public PropertyDTO property=null;
+    public PropertyDTO property = null;
 
     public DialogRennt(java.awt.Frame parent, boolean modal, PropertyDTO property) throws Exception {
         super(parent, modal);
@@ -38,7 +41,7 @@ public class DialogRennt extends javax.swing.JDialog {
         setDefaultCloseOperation(2);
         //setLocationRelativeTo(null);
         loadAllBoaderes();
-        this.property=property;
+        this.property = property;
         setFees(property);
         btnRefreshActionPerformed(null);
 
@@ -593,10 +596,15 @@ public class DialogRennt extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAddMouseEntered
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        String rent_id = getID();
-        
-        RentDTO rent=new RentDTO(rent_id,property,boadere,txtFromDate.getText(),txtToDate.getText(),txtMonthlyFee.getText(),txtAdvanceFee.getText());
-        
+        try {
+            String rent_id = getID();
+            String textFromDate = txtFromDate.getText();
+            Date fromDate = new SimpleDateFormat("dd/MM/yyyy").parse(textFromDate);
+            String textToDate = txtToDate.getText();
+            Date toDate = new SimpleDateFormat("dd/MM/yyyy").parse(textFromDate);
+
+            RentDTO rent = new RentDTO(rent_id, property.getProperty_id(), boadere.getNic(), fromDate, toDate, Double.parseDouble(txtMonthlyFee.getText()), Double.parseDouble(txtAdvanceFee.getText()));
+
 //        if (checkText()== false) {
 //            UIManager UI = new UIManager();
 //            UI.put("OptionPane.background", Color.white);
@@ -632,6 +640,9 @@ public class DialogRennt extends javax.swing.JDialog {
 //        } catch (Exception ex) {
 //            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
 //        }
+        } catch (ParseException ex) {
+            Logger.getLogger(DialogRennt.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     /**
