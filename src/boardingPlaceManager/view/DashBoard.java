@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 /**
  *
@@ -20,6 +21,7 @@ public class DashBoard extends javax.swing.JFrame {
      * Creates new form DashBoard
      */
     public Color darkGreen = new Color(0, 102, 51);
+    public static JFrame dashBoard;
 
     public DashBoard() {
         initComponents();

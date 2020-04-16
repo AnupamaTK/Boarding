@@ -18,12 +18,12 @@ import boardingPlaceManager.dto.PropertyDTO;
  */
 public class BoadereController {
 
-    public static BoadereDAO boadereDAO = (BoadereDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.RENT_HOUSE);
-    public static PropertyDAO propertyDAO = (PropertyDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.PROPERTY);
+    public static BoadereDAO boadereDAO = (BoadereDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.BOADERE);
+    //public static PropertyDAO propertyDAO = (PropertyDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.PROPERTY);
 
     public static boolean addBoadere(BoadereDTO boadere, PropertyDTO property) throws Exception {
         //PropertyDTO propertyDto=new PropertyDTO(boadere.getProperty_id(),true);
-        boolean res = propertyDAO.add(property);
+        //boolean res = propertyDAO.add(property);
         boolean result = boadereDAO.add(boadere);
         return result;
     }
@@ -33,36 +33,18 @@ public class BoadereController {
         return result;
     }
 
-    public static boolean updateBoadere(BoadereDTO boadere, PropertyDTO property) throws Exception {
+    public static boolean updateBoadere(BoadereDTO boadere) throws Exception {
         boolean result = boadereDAO.update(boadere);
-        if (result == true) {
-            result = propertyDAO.update(property);
-        }
         return result;
     }
 
     public static BoadereDTO searchBoadere(BoadereDTO boadere) throws Exception {
-        BoadereDTO searchedBoadere = boadereDAO.search(boadere);
+        BoadereDTO searchedBoadere = boadereDAO.SearchByName(boadere.getName());
         return searchedBoadere;
     }
 
     public static ArrayList<BoadereDTO> getAllBoaderes() throws Exception {
         return boadereDAO.getAll();
     }
-
-//    public static BoadereDTO searchByAddress(String address) throws Exception {
-//        BoadereDTO searchedBoadere = boadereDAO.searchByAddress(address);
-//        return searchedBoadere;
-//    }
-//
-//    public static ArrayList<BoadereDTO> searchAvailable() throws Exception {
-//        ArrayList<BoadereDTO> availableBoaderes = boadereDAO.searchAvailable();
-//        return availableBoaderes;
-//    }
-//
-//    public static ArrayList<BoadereDTO> searchRented() throws Exception {
-//        ArrayList<BoadereDTO> availableBoaderes = boadereDAO.searchRented();
-//        return availableBoaderes;
-//    }
 
 }

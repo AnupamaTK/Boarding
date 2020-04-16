@@ -5,8 +5,12 @@
  */
 package boardingPlaceManager.view;
 
+import boardingPlaceManager.common.IDGenarator;
 import boardingPlaceManager.controller.BoadereController;
 import boardingPlaceManager.dto.BoadereDTO;
+import boardingPlaceManager.dto.PropertyDTO;
+import boardingPlaceManager.dto.RentDTO;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,14 +28,19 @@ public class DialogRennt extends javax.swing.JDialog {
     /**
      * Creates new form DialogBoadereInOrders
      */
-    public DialogRennt(java.awt.Frame parent, boolean modal) throws Exception {
+    public BoadereDTO boadere = null;
+    public PropertyDTO property=null;
+
+    public DialogRennt(java.awt.Frame parent, boolean modal, PropertyDTO property) throws Exception {
         super(parent, modal);
         // super(parent, modal);
         initComponents();
         setDefaultCloseOperation(2);
         //setLocationRelativeTo(null);
-        btnRefreshActionPerformed(null);
         loadAllBoaderes();
+        this.property=property;
+        setFees(property);
+        btnRefreshActionPerformed(null);
 
         tblBoaders.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -41,7 +50,7 @@ public class DialogRennt extends javax.swing.JDialog {
                     return;
                 }
 
-                cmbBoadereNames.setSelectedItem(tblBoaders.getValueAt(tblBoaders.getSelectedRow(), 0).toString());
+                cmbBoadereNames.setSelectedItem(tblBoaders.getValueAt(tblBoaders.getSelectedRow(), 1).toString());
 
             }
         });
@@ -61,6 +70,20 @@ public class DialogRennt extends javax.swing.JDialog {
         }
         AutoCompleteDecorator.decorate(cmbBoadereNames);
 
+    }
+
+    public String getID() {
+        String newID;
+
+        try {
+            newID = IDGenarator.getNewID("rent", "rent_id", "r");
+            return newID;
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     /**
@@ -388,7 +411,7 @@ public class DialogRennt extends javax.swing.JDialog {
         );
 
         btnRefresh.setBackground(new java.awt.Color(204, 204, 204));
-        btnRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lk/ijse/sareecenter/iconsS/RefreshFrame 1_50px.png"))); // NOI18N
+        btnRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Available Updates_20px.png"))); // NOI18N
         btnRefresh.setToolTipText("To Reload Table");
         btnRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -401,9 +424,9 @@ public class DialogRennt extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(1058, Short.MAX_VALUE)
-                .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addContainerGap(1089, Short.MAX_VALUE)
+                .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -412,9 +435,9 @@ public class DialogRennt extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(612, Short.MAX_VALUE)
-                .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(413, Short.MAX_VALUE)
+                .addComponent(btnRefresh)
+                .addGap(229, 229, 229))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -449,33 +472,32 @@ public class DialogRennt extends javax.swing.JDialog {
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void cmbBoadereNamesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbBoadereNamesItemStateChanged
-//         try {
-//            if (cmbBoadereNames.getSelectedIndex() == -1) {
-//                return;
-//            }
-//            
-//            BoadereDTO boadere = BoadereController.searchBoadere(new BoadereDTO(null,cmbBoadereNames.getSelectedItem().toString(), null, 0, null));
-//            
-//            if (boadere == null) {
-//                return;
-//            }
-//            
-//             DefaultTableModel dtm = (DefaultTableModel) tblBoaders.getModel();
-//             dtm.setRowCount(0);
-//             Object[] rowData = {boadere.getCID(),
-//                    boadere.getName(),
-//                    boadere.getNIC_no(),
-//                    boadere.getTel_no(),
-//                    boadere.getAddress()};
-//
-//                dtm.addRow(rowData);
-//            
-//            /*itemDescriptionText.setText(item.getDescription());
-//            qtyOnHandText.setText(item.getQtyOnHand() + "");
-//            itemPriceText.setText(item.getUnitPrice().toPlainString());*/
-//        } catch (Exception ex) {
-//            Logger.getLogger(PanelBoadere.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            if (cmbBoadereNames.getSelectedIndex() == -1) {
+                return;
+            }
+
+            boadere = BoadereController.searchBoadere(new BoadereDTO(null, cmbBoadereNames.getSelectedItem().toString(), null, null));
+
+            if (boadere == null) {
+                return;
+            }
+
+            DefaultTableModel dtm = (DefaultTableModel) tblBoaders.getModel();
+            dtm.setRowCount(0);
+            Object[] rowData = {boadere.getNic(),
+                boadere.getName(),
+                boadere.getTel(),
+                boadere.getAddress()};
+
+            dtm.addRow(rowData);
+
+            /*itemDescriptionText.setText(item.getDescription());
+            qtyOnHandText.setText(item.getQtyOnHand() + "");
+            itemPriceText.setText(item.getUnitPrice().toPlainString());*/
+        } catch (Exception ex) {
+            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_cmbBoadereNamesItemStateChanged
 
     private void cmbBoadereNamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbBoadereNamesActionPerformed
@@ -567,11 +589,14 @@ public class DialogRennt extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAddMouseExited
 
     private void btnAddMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseEntered
-       // btnAdd.setBackground(Color.lightGray);
+        // btnAdd.setBackground(Color.lightGray);
     }//GEN-LAST:event_btnAddMouseEntered
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-
+        String rent_id = getID();
+        
+        RentDTO rent=new RentDTO(rent_id,property,boadere,txtFromDate.getText(),txtToDate.getText(),txtMonthlyFee.getText(),txtAdvanceFee.getText());
+        
 //        if (checkText()== false) {
 //            UIManager UI = new UIManager();
 //            UI.put("OptionPane.background", Color.white);
@@ -641,7 +666,7 @@ public class DialogRennt extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    DialogRennt dialog = new DialogRennt(new javax.swing.JFrame(), true);
+                    DialogRennt dialog = new DialogRennt(new javax.swing.JFrame(), true, null);
                     dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                         @Override
                         public void windowClosing(java.awt.event.WindowEvent e) {
@@ -676,4 +701,9 @@ public class DialogRennt extends javax.swing.JDialog {
     private org.jdesktop.swingx.JXTextField txtMonthlyFee;
     private org.jdesktop.swingx.JXTextField txtToDate;
     // End of variables declaration//GEN-END:variables
+
+    private void setFees(PropertyDTO property) {
+        txtAdvanceFee.setText(property.getAdvance_fee().toString());
+        txtMonthlyFee.setText(property.getMonthly_rent().toString());
+    }
 }

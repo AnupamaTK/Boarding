@@ -110,4 +110,23 @@ public class BoadereDAOImpl implements BoadereDAO {
         return alBoarders;
     }
 
+    @Override
+    public BoadereDTO SearchByName(String Name) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        String sql = "SELECT * FROM boarder WHERE name='" + Name + "'";
+        Statement stm = connection.createStatement();
+        ResultSet rst = stm.executeQuery(sql);
+
+        if (rst.next()) {
+            return new BoadereDTO(
+                    rst.getString(1),
+                    rst.getString(2),
+                    rst.getString(3),
+                    rst.getString(4)
+            );
+        }
+
+        return null;
+    }
+
 }

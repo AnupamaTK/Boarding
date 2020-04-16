@@ -5,12 +5,12 @@
  */
 package boardingPlaceManager.dao;
 
-
 import boardingPlaceManager.dao.custom.impl.RentHouseDAOImpl;
 import boardingPlaceManager.dao.custom.impl.UserDAOImpl;
 import boardingPlaceManager.dao.custom.impl.PropertyDAOImpl;
 import boardingPlaceManager.dao.custom.impl.RentRoomDAOImpl;
 import boardingPlaceManager.dao.custom.impl.SharingRoomDAOImpl;
+import boardingPlaceManager.dao.custom.impl.BoadereDAOImpl;
 
 /**
  *
@@ -20,7 +20,7 @@ public class DAOFactory {
 
     public enum DAOTypes {
 
-        USER,RENT_HOUSE,PROPERTY,RENT_ROOM,SHARING_ROOM
+        USER, RENT_HOUSE, PROPERTY, RENT_ROOM, SHARING_ROOM, BOADERE
     }
 
     private static DAOFactory daoFactory;
@@ -39,18 +39,20 @@ public class DAOFactory {
     public SuperDAO getDAO(DAOTypes daoType) {
         //System.out.println(daoType+"DT");
         switch (daoType) {
-            
+
             case USER:
                 return new UserDAOImpl();
             case RENT_HOUSE:
-                return new RentHouseDAOImpl(); 
+                return new RentHouseDAOImpl();
             case PROPERTY:
                 return new PropertyDAOImpl();
             case RENT_ROOM:
                 return new RentRoomDAOImpl();
             case SHARING_ROOM:
                 return new SharingRoomDAOImpl();
-                
+            case BOADERE:
+                return new BoadereDAOImpl();
+
             default:
                 return null;
         }

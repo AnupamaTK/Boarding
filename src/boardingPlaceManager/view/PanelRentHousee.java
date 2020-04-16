@@ -77,7 +77,7 @@ public class PanelRentHousee extends JPanel {
                     if (availability == true) {
                         btnAddRent.setVisible(true);
                         btnViewRentDetails.setVisible(false);
-                        
+
                     } else {
                         btnViewRentDetails.setVisible(true);
                         btnAddRent.setVisible(false);
@@ -717,7 +717,7 @@ public class PanelRentHousee extends JPanel {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
-        if (checkText()== false) {
+        if (checkText() == false) {
             UIManager UI = new UIManager();
             UI.put("OptionPane.background", Color.white);
             UI.put("Panel.background", Color.white);
@@ -844,7 +844,7 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void txtNoOfRoomsPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtNoOfRoomsPropertyChange
-       
+
     }//GEN-LAST:event_txtNoOfRoomsPropertyChange
 
     private void txtNoOfRoomsInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtNoOfRoomsInputMethodTextChanged
@@ -892,7 +892,15 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_btnAddRentMouseEntered
 
     private void btnAddRentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddRentActionPerformed
-        // TODO add your handling code here:
+        try {
+            RentHouseDTO rentHouse = RentHouseController.searchByAddress(selectedAddress);
+            PropertyDTO property = new PropertyDTO(rentHouse.getProperty_id(), null, null, null);
+            property = PropertyController.searchProperty(property);
+            new DialogRennt(DashBoard.dashBoard, true,property).setVisible(true);
+            //btnGoToItem.requestFocus();
+        } catch (Exception ex) {
+            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnAddRentActionPerformed
 
     private void txtadvanceFeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtadvanceFeeActionPerformed
