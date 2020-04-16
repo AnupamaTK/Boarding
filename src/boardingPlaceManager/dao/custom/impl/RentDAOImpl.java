@@ -26,12 +26,15 @@ public class RentDAOImpl implements RentDAO {
     @Override
     public boolean add(RentDTO rent) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "INSERT INTO rent VALUES (?,?,?,?);";
+        String sql = "INSERT INTO rent VALUES (?,?,?,?.?,?,?);";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setObject(1, rent.getRent_id());
-        pstm.setObject(2, rent.getAvailability());
-        pstm.setObject(3, rent.getAdvance_fee());
-        pstm.setObject(4, rent.getMonthly_Rent());
+        pstm.setObject(2, rent.getProperty_id());
+        pstm.setObject(3, rent.getBoadere_id());
+        pstm.setObject(4, rent.getFrom_date());
+        pstm.setObject(5, rent.getTo_date());
+        pstm.setObject(6, rent.getAdvance_fee());
+        pstm.setObject(7, rent.getMonthly_rent());
 
         int affectedRows = pstm.executeUpdate();
         return (affectedRows > 0);
@@ -40,13 +43,16 @@ public class RentDAOImpl implements RentDAO {
     @Override
     public boolean update(RentDTO rent) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "UPDATE rent SET availability=?,advance_fee=?,monthly_Rent=? where rent_id=?";
+        String sql = "UPDATE rent SET property_id=?,boarder_id=?,from_date=?,to_date=?,monthly_fee=?,advance_fee=? where rent_id=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
 
-        pstm.setObject(1, rent.getAvailability());
-        pstm.setObject(2, rent.getAdvance_fee());
-        pstm.setObject(3, rent.getMonthly_Rent());
-        pstm.setObject(4, rent.getRent_id());
+        pstm.setObject(1, rent.getProperty_id());
+        pstm.setObject(2, rent.getBoadere_id());
+        pstm.setObject(3, rent.getFrom_date());
+        pstm.setObject(4, rent.getTo_date());
+        pstm.setObject(5, rent.getAdvance_fee());
+        pstm.setObject(6, rent.getMonthly_rent());
+        pstm.setObject(7, rent.getRent_id());
 
         int affectedRows = pstm.executeUpdate();
         return (affectedRows > 0);
@@ -72,9 +78,12 @@ public class RentDAOImpl implements RentDAO {
         if (rst.next()) {
             return new RentDTO(
                     rst.getString(1),
-                    rst.getBoolean(2),
-                    rst.getDouble(3),
-                    rst.getDouble(4)
+                    rst.getString(2),
+                    rst.getString(3),
+                    rst.getDate(4),
+                    rst.getDate(5),
+                    rst.getDouble(6),
+                    rst.getDouble(7)
             );
         }
 
@@ -100,28 +109,17 @@ public class RentDAOImpl implements RentDAO {
 
             alRents.add(new RentDTO(
                     rst.getString(1),
-                    rst.getBoolean(2),
-                    rst.getDouble(3),
-                    rst.getDouble(4)
+                    rst.getString(2),
+                    rst.getString(3),
+                    rst.getDate(4),
+                    rst.getDate(5),
+                    rst.getDouble(6),
+                    rst.getDouble(7)
             ));
 
         }
 
         return alRents;
-    }
-
-    @Override
-    public boolean CheckAvilability(String rentId) throws Exception {
-        Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "SELECT availability FROM rent WHERE rent_id='" + rentId + "'";
-        Statement stm = connection.createStatement();
-        ResultSet rst = stm.executeQuery(sql);
-        Boolean val = null;
-        if (rst.next()) {
-            val = rst.getBoolean(1);
-        }
-        return val;
-
     }
 
 }
