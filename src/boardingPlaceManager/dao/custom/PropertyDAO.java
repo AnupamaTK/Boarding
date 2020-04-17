@@ -14,4 +14,5 @@ import boardingPlaceManager.dto.PropertyDTO;
  */
 public interface PropertyDAO extends SuperDAO<PropertyDTO>{
    public boolean CheckAvilability(String property) throws Exception;
+   public boolean changeAvailability(String property_id,Boolean value)throws Exception;
 }

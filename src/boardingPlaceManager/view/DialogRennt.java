@@ -91,6 +91,13 @@ public class DialogRennt extends javax.swing.JDialog {
         return null;
     }
 
+    public boolean checkFields(String rent_id) {
+        if (txtAdvanceFee.getText().isEmpty() || txtMonthlyFee.getText().isEmpty() || rent_id == null || property.getProperty_id() == null || boadere.getNic() == null || datePickerFromDate.getDate() == null || datePickerToDate.getDate() == null) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -111,12 +118,12 @@ public class DialogRennt extends javax.swing.JDialog {
         txtMonthlyFee = new org.jdesktop.swingx.JXTextField();
         txtAdvanceFee = new org.jdesktop.swingx.JXTextField();
         jLabel8 = new javax.swing.JLabel();
-        txtFromDate = new org.jdesktop.swingx.JXTextField();
         jLabel9 = new javax.swing.JLabel();
-        txtToDate = new org.jdesktop.swingx.JXTextField();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         btnAdd = new org.jdesktop.swingx.JXButton();
+        datePickerToDate = new org.jdesktop.swingx.JXDatePicker();
+        datePickerFromDate = new org.jdesktop.swingx.JXDatePicker();
         btnRefresh = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -230,66 +237,10 @@ public class DialogRennt extends javax.swing.JDialog {
         jLabel8.setForeground(new java.awt.Color(0, 153, 153));
         jLabel8.setText("Advance Fee");
 
-        txtFromDate.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        txtFromDate.setPrompt("From Date");
-        txtFromDate.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                txtFromDateInputMethodTextChanged(evt);
-            }
-        });
-        txtFromDate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFromDateActionPerformed(evt);
-            }
-        });
-        txtFromDate.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                txtFromDatePropertyChange(evt);
-            }
-        });
-        txtFromDate.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtFromDateKeyPressed(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtFromDateKeyTyped(evt);
-            }
-        });
-
         jLabel9.setBackground(new java.awt.Color(255, 255, 255));
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 153, 153));
         jLabel9.setText("From Date");
-
-        txtToDate.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        txtToDate.setPrompt("To Date");
-        txtToDate.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                txtToDateInputMethodTextChanged(evt);
-            }
-        });
-        txtToDate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtToDateActionPerformed(evt);
-            }
-        });
-        txtToDate.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                txtToDatePropertyChange(evt);
-            }
-        });
-        txtToDate.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtToDateKeyPressed(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtToDateKeyTyped(evt);
-            }
-        });
 
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -309,16 +260,22 @@ public class DialogRennt extends javax.swing.JDialog {
         btnAdd.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnAdd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnAddMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnAddMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnAddMouseExited(evt);
             }
         });
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
+            }
+        });
+
+        datePickerFromDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                datePickerFromDateActionPerformed(evt);
             }
         });
 
@@ -330,42 +287,44 @@ public class DialogRennt extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1092, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(21, 21, 21)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1092, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(13, 13, 13)
-                                        .addComponent(txtMonthlyFee, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(13, 13, 13)
-                                        .addComponent(txtAdvanceFee, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(89, 89, 89)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(13, 13, 13)
-                                        .addComponent(txtFromDate, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(13, 13, 13)
-                                        .addComponent(txtToDate, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cmbBoadereNames, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(213, 213, 213))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(13, 13, 13)
+                                                .addComponent(txtMonthlyFee, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(13, 13, 13)
+                                                .addComponent(txtAdvanceFee, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(89, 89, 89)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(datePickerFromDate, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(datePickerToDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cmbBoadereNames, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(213, 213, 213))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -399,17 +358,13 @@ public class DialogRennt extends javax.swing.JDialog {
                                 .addComponent(txtAdvanceFee, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(3, 3, 3)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addComponent(txtFromDate, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(datePickerFromDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addComponent(txtToDate, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(datePickerToDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(26, 26, 26)
                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(121, Short.MAX_VALUE))
@@ -549,46 +504,6 @@ public class DialogRennt extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAdvanceFeeKeyTyped
 
-    private void txtFromDateInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtFromDateInputMethodTextChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFromDateInputMethodTextChanged
-
-    private void txtFromDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFromDateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFromDateActionPerformed
-
-    private void txtFromDatePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtFromDatePropertyChange
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFromDatePropertyChange
-
-    private void txtFromDateKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFromDateKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFromDateKeyPressed
-
-    private void txtFromDateKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFromDateKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFromDateKeyTyped
-
-    private void txtToDateInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtToDateInputMethodTextChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtToDateInputMethodTextChanged
-
-    private void txtToDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtToDateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtToDateActionPerformed
-
-    private void txtToDatePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtToDatePropertyChange
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtToDatePropertyChange
-
-    private void txtToDateKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtToDateKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtToDateKeyPressed
-
-    private void txtToDateKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtToDateKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtToDateKeyTyped
-
     private void btnAddMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseExited
         //btnAdd.setBackground(darkGreen);
     }//GEN-LAST:event_btnAddMouseExited
@@ -598,54 +513,38 @@ public class DialogRennt extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAddMouseEntered
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        try {
-            String rent_id = getID();
-            String textFromDate = txtFromDate.getText();
-            Date fromDate = new SimpleDateFormat("dd/MM/yyyy").parse(textFromDate);
-            String textToDate = txtToDate.getText();
-            Date toDate = new SimpleDateFormat("dd/MM/yyyy").parse(textFromDate);
 
-            RentDTO rent = new RentDTO(rent_id, property.getProperty_id(), boadere.getNic(), fromDate, toDate, Double.parseDouble(txtMonthlyFee.getText()), Double.parseDouble(txtAdvanceFee.getText()));
+        String rent_id = getID();
+        //String textFromDate = datePickerFromDate.getDate();
+        //Date fromDate = new SimpleDateFormat("dd/MM/yyyy").parse(textFromDate);
+        //String textToDate = "";
+        //Date toDate = new SimpleDateFormat("dd/MM/yyyy").parse(textToDate);
 
-//        if (checkText()== false) {
-//            UIManager UI = new UIManager();
-//            UI.put("OptionPane.background", Color.white);
-//            UI.put("Panel.background", Color.white);
-//
-//            JOptionPane.showMessageDialog(this, "All fields should be filled to save");
-//            return;
-//        }
-//        RentHouseDTO rentHouse = new RentHouseDTO(
-//            getID(),
-//            Integer.parseInt(txtNoOfRooms.getText()),
-//            Integer.parseInt(txtNoOfBathRooms.getText()),
-//            Integer.parseInt(txtNoOfStory.getText()),
-//            txtAddress.getText()
-//        );
-//
-//        PropertyDTO property = new PropertyDTO(
-//            getID(),
-//            true,
-//            Double.parseDouble(txtadvanceFee.getText()),
-//            Double.parseDouble(txtMonthlyRent.getText())
-//        );
-//
-        try {
-                boolean result = RentController.addRent(rent);
-                if (result) {
-                    JOptionPane.showMessageDialog(this, "Rent has been successfully added");
-                    btnRefreshActionPerformed(evt);
-                    //clearAllTexts();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Rent hasn't been added");
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (ParseException ex) {
-            Logger.getLogger(DialogRennt.class.getName()).log(Level.SEVERE, null, ex);
+        RentDTO rent = new RentDTO(rent_id, property.getProperty_id(), boadere.getNic(), datePickerFromDate.getDate(), datePickerToDate.getDate(), Double.parseDouble(txtMonthlyFee.getText()), Double.parseDouble(txtAdvanceFee.getText()));
+
+        if (checkFields(rent_id) == false) {
+            JOptionPane.showMessageDialog(this, "Can't add rent. All fields are required");
+
         }
+        try {
+            boolean result = RentController.addRent(rent);
+            if (result) {
+
+                JOptionPane.showMessageDialog(this, "Rent has been successfully added");
+                btnRefreshActionPerformed(evt);
+                //clearAllTexts();
+            } else {
+                JOptionPane.showMessageDialog(this, "Rent hasn't been added");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void datePickerFromDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datePickerFromDateActionPerformed
+        // System.out.println(datePickerFromDate.getDate());
+    }//GEN-LAST:event_datePickerFromDateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -698,6 +597,8 @@ public class DialogRennt extends javax.swing.JDialog {
     private org.jdesktop.swingx.JXButton btnAdd;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JComboBox<String> cmbBoadereNames;
+    private org.jdesktop.swingx.JXDatePicker datePickerFromDate;
+    private org.jdesktop.swingx.JXDatePicker datePickerToDate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -710,9 +611,7 @@ public class DialogRennt extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblBoaders;
     private org.jdesktop.swingx.JXTextField txtAdvanceFee;
-    private org.jdesktop.swingx.JXTextField txtFromDate;
     private org.jdesktop.swingx.JXTextField txtMonthlyFee;
-    private org.jdesktop.swingx.JXTextField txtToDate;
     // End of variables declaration//GEN-END:variables
 
     private void setFees(PropertyDTO property) {

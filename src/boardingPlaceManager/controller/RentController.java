@@ -8,7 +8,7 @@ package boardingPlaceManager.controller;
 import java.util.ArrayList;
 import boardingPlaceManager.dao.DAOFactory;
 import boardingPlaceManager.dao.custom.RentDAO;
-import boardingPlaceManager.dao.custom.RentDAO;
+import boardingPlaceManager.dao.custom.PropertyDAO;
 import boardingPlaceManager.dto.RentDTO;
 import boardingPlaceManager.dto.RentDTO;
 
@@ -19,9 +19,12 @@ import boardingPlaceManager.dto.RentDTO;
 public class RentController {
 
     public static RentDAO rentDAO = (RentDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.RENT);
+    public static PropertyDAO propertyDAO = (PropertyDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.PROPERTY);
 
     public static boolean addRent(RentDTO rent) throws Exception {
         boolean result = rentDAO.add(rent);
+        if(result==true)
+            propertyDAO.changeAvailability(rent.getProperty_id(), false);
         return result;
     }
 

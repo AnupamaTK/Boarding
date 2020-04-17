@@ -124,4 +124,17 @@ public class PropertyDAOImpl implements PropertyDAO {
 
     }
 
+    @Override
+    public boolean changeAvailability(String property_id,Boolean value) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        String sql = "UPDATE property SET availability=? where property_id=?";
+        PreparedStatement pstm = connection.prepareStatement(sql);
+
+        pstm.setObject(2, property_id);
+        pstm.setObject(1, value);
+
+        int affectedRows = pstm.executeUpdate();
+        return (affectedRows > 0);
+    }
+
 }
