@@ -17,29 +17,31 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import boardingPlaceManager.common.IDGenarator;
+import boardingPlaceManager.controller.BoadereController;
 import boardingPlaceManager.controller.PropertyController;
-import boardingPlaceManager.controller.RentHouseController;
+import boardingPlaceManager.controller.RentController;
+import boardingPlaceManager.dto.BoadereDTO;
 import boardingPlaceManager.dto.PropertyDTO;
-import boardingPlaceManager.dto.RentHouseDTO;
+import boardingPlaceManager.dto.RentDTO;
 import javax.swing.UIManager;
-//import static boardingPlaceManager.view.PanelRentHouse.dark;
+//import static boardingPlaceManager.view.PanelRent.dark;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 /**
  *
  * @author User
  */
-public class PanelRentHousee extends JPanel {
+public class PanelRent extends JPanel {
 
     /**
-     * Creates new form panelRentHouse
+     * Creates new form panelRent
      */
     private Color darkGreen = new Color(102, 102, 102);
     private String selectedAddress;
     private boolean fieldsUpdated = false;
     private int type = 0;
 
-    public PanelRentHousee() throws SQLException {
+    public PanelRent(PropertyDTO property) throws SQLException {
         // super(parent, modal);
         initComponents();
         //auto generate id
@@ -50,30 +52,29 @@ public class PanelRentHousee extends JPanel {
 
             //setLocationRelativeTo(null);
         } catch (Exception ex) {
-            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         btnRefreshActionPerformed(null);
 
-        tblRentHouse.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        tblRent.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
 
-                if (tblRentHouse.getSelectedRow() == -1) {
+                if (tblRent.getSelectedRow() == -1) {
                     return;
                 }
 
-                txtNoOfRooms.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 0).toString());
-                txtNoOfBathRooms.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 1).toString());
-                txtNoOfStory.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 2).toString());
-                txtAddress.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 3).toString());
-                txtadvanceFee.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 4).toString());
-                txtMonthlyRent.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 5).toString());
+                txtBoardereName.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 0).toString());
+                txtFromDate.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 1).toString());
+                txtToDate.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 2).toString());
+                txtadvanceFee.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 4).toString());
+                txtMonthlyRent.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 5).toString());
 
-                selectedAddress = txtAddress.getText();
-                try {
-                    RentHouseDTO rentHouse = RentHouseController.searchByAddress(selectedAddress);
-                    Boolean availability = PropertyController.checkAvailability(rentHouse.getProperty_id());
+//                selectedAddress = txtAddress.getText();
+//                try {
+//                    RentDTO rent = RentController.searchByAddress(selectedAddress);
+//                    Boolean availability = PropertyController.checkAvailability(rent.getProperty_id());
 //                    if (availability == true) {
 //                        btnAddRent.setVisible(true);
 //                        btnViewRentDetails.setVisible(false);
@@ -82,9 +83,9 @@ public class PanelRentHousee extends JPanel {
 //                        btnViewRentDetails.setVisible(true);
 //                        btnAddRent.setVisible(false);
 //                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
-                }
+//                } catch (Exception ex) {
+//                    Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+//                }
             }
         });
     }
@@ -92,7 +93,7 @@ public class PanelRentHousee extends JPanel {
     /* private void getID() throws SQLException {
         String newID;
         try {
-            newID = IDGenarator.getNewID("RentHouse", "cid", "c");
+            newID = IDGenarator.getNewID("Rent", "cid", "c");
             txtCustID.setText(newID);
 
         } catch (ClassNotFoundException | SQLException e) {
@@ -100,10 +101,9 @@ public class PanelRentHousee extends JPanel {
     }*/
     private void clearAllTexts() {
 
-        txtNoOfRooms.setText("");
-        txtNoOfStory.setText("");
-        txtNoOfBathRooms.setText("");
-        txtAddress.setText("");
+        txtBoardereName.setText("");
+        txtToDate.setText("");
+        txtFromDate.setText("");
         txtadvanceFee.setText("");
         txtMonthlyRent.setText("");
     }
@@ -115,9 +115,9 @@ public class PanelRentHousee extends JPanel {
             newID = IDGenarator.getNewID("property", "property_id", "p");
             return newID;
         } catch (SQLException ex) {
-            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -125,23 +125,23 @@ public class PanelRentHousee extends JPanel {
     //to check text field inputs are empty
     public boolean checkText() {
         System.out.println("Chk");
-        if (txtAddress.getText().isEmpty() || txtNoOfBathRooms.getText().isEmpty() || txtNoOfRooms.getText().isEmpty() || txtNoOfStory.getText().isEmpty() || txtMonthlyRent.getText().isEmpty() || txtadvanceFee.getText().isEmpty()) {
+        if (txtFromDate.getText().isEmpty() || txtBoardereName.getText().isEmpty() || txtToDate.getText().isEmpty() || txtMonthlyRent.getText().isEmpty() || txtadvanceFee.getText().isEmpty()) {
             return false;
         }
         return true;
     }
 
 //    private void setCustName() throws Exception {
-//        ArrayList<RentHouseDTO> allRentHouses = RentHouseController.getAllRentHouses();
+//        ArrayList<RentDTO> allRents = RentController.getAllRents();
 //        cmbCustName.removeAllItems();
 //
-//        if (allRentHouses == null) {
+//        if (allRents == null) {
 //            return;
 //        }
-//        for (RentHouseDTO rentHouse : allRentHouses) {
+//        for (RentDTO rent : allRents) {
 //
 //            
-//            cmbCustName.addItem(rentHouse.getName());
+//            cmbCustName.addItem(rent.getName());
 //            
 //        }
 //        AutoCompleteDecorator.decorate(cmbCustName);
@@ -150,7 +150,7 @@ public class PanelRentHousee extends JPanel {
     /* public void getID() {
         String newID;
         try {
-            newID = IDGenarator.getNewID("RentHouse", "cid", "C");
+            newID = IDGenarator.getNewID("Rent", "cid", "C");
             txtCustID.setText(newID);
         } catch (SQLException ex) {
             Logger.getLogger(PanelGRN.class.getName()).log(Level.SEVERE, null, ex);
@@ -176,13 +176,11 @@ public class PanelRentHousee extends JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        txtNoOfRooms = new org.jdesktop.swingx.JXTextField();
+        txtBoardereName = new org.jdesktop.swingx.JXTextField();
         btnCancel = new javax.swing.JButton();
-        txtNoOfBathRooms = new org.jdesktop.swingx.JXTextField();
-        txtAddress = new org.jdesktop.swingx.JXTextField();
+        txtFromDate = new org.jdesktop.swingx.JXTextField();
         jLabel10 = new javax.swing.JLabel();
-        txtNoOfStory = new org.jdesktop.swingx.JXTextField();
+        txtToDate = new org.jdesktop.swingx.JXTextField();
         btnAddRent = new org.jdesktop.swingx.JXButton();
         btnViewRentDetails = new org.jdesktop.swingx.JXButton();
         jLabel9 = new javax.swing.JLabel();
@@ -192,7 +190,7 @@ public class PanelRentHousee extends JPanel {
         jPanel4 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tblRentHouse = new org.jdesktop.swingx.JXTable();
+        tblRent = new org.jdesktop.swingx.JXTable();
         btnRefresh = new javax.swing.JButton();
         cmbType = new javax.swing.JComboBox<>();
 
@@ -329,50 +327,43 @@ public class PanelRentHousee extends JPanel {
         jLabel7.setBackground(new java.awt.Color(255, 255, 255));
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel7.setText("No of rooms");
+        jLabel7.setText("Boadere Name");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 121, 130, 37));
 
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel5.setText("No of bathrooms");
+        jLabel5.setText("From Date");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 181, -1, 37));
 
-        jLabel6.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel6.setText("Address");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 293, 137, 37));
-
-        txtNoOfRooms.setToolTipText("No of rooms");
-        txtNoOfRooms.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        txtNoOfRooms.setPrompt("No of rooms");
-        txtNoOfRooms.addInputMethodListener(new java.awt.event.InputMethodListener() {
+        txtBoardereName.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtBoardereName.setPrompt("Boadere Name");
+        txtBoardereName.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                txtNoOfRoomsInputMethodTextChanged(evt);
+                txtBoardereNameInputMethodTextChanged(evt);
             }
         });
-        txtNoOfRooms.addActionListener(new java.awt.event.ActionListener() {
+        txtBoardereName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNoOfRoomsActionPerformed(evt);
+                txtBoardereNameActionPerformed(evt);
             }
         });
-        txtNoOfRooms.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+        txtBoardereName.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                txtNoOfRoomsPropertyChange(evt);
+                txtBoardereNamePropertyChange(evt);
             }
         });
-        txtNoOfRooms.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtBoardereName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtNoOfRoomsKeyPressed(evt);
+                txtBoardereNameKeyPressed(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtNoOfRoomsKeyTyped(evt);
+                txtBoardereNameKeyTyped(evt);
             }
         });
-        jPanel1.add(txtNoOfRooms, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 124, 170, 30));
+        jPanel1.add(txtBoardereName, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 124, 170, 30));
 
         btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Cancel 2_20px.png"))); // NOI18N
         btnCancel.setToolTipText("Click to clear fields");
@@ -383,55 +374,41 @@ public class PanelRentHousee extends JPanel {
         });
         jPanel1.add(btnCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(406, 619, 48, 30));
 
-        txtNoOfBathRooms.setToolTipText("No of Bathrooms");
-        txtNoOfBathRooms.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        txtNoOfBathRooms.setPrompt("No of bahrooms");
-        txtNoOfBathRooms.addActionListener(new java.awt.event.ActionListener() {
+        txtFromDate.setToolTipText("No of Bathrooms");
+        txtFromDate.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtFromDate.setPrompt("From Date");
+        txtFromDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNoOfBathRoomsActionPerformed(evt);
+                txtFromDateActionPerformed(evt);
             }
         });
-        txtNoOfBathRooms.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtFromDate.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtNoOfBathRoomsKeyPressed(evt);
+                txtFromDateKeyPressed(evt);
             }
         });
-        jPanel1.add(txtNoOfBathRooms, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 184, 170, 30));
-
-        txtAddress.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        txtAddress.setPrompt("Address");
-        txtAddress.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtAddressActionPerformed(evt);
-            }
-        });
-        txtAddress.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtAddressKeyPressed(evt);
-            }
-        });
-        jPanel1.add(txtAddress, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 296, 170, 30));
+        jPanel1.add(txtFromDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 184, 170, 30));
 
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel10.setText("No of story");
+        jLabel10.setText("To Date");
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 236, -1, 37));
 
-        txtNoOfStory.setToolTipText("No of Story");
-        txtNoOfStory.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        txtNoOfStory.setPrompt("No of story");
-        txtNoOfStory.addActionListener(new java.awt.event.ActionListener() {
+        txtToDate.setToolTipText("No of Story");
+        txtToDate.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtToDate.setPrompt("To Date");
+        txtToDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNoOfStoryActionPerformed(evt);
+                txtToDateActionPerformed(evt);
             }
         });
-        txtNoOfStory.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtToDate.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtNoOfStoryKeyPressed(evt);
+                txtToDateKeyPressed(evt);
             }
         });
-        jPanel1.add(txtNoOfStory, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 239, 170, 30));
+        jPanel1.add(txtToDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 239, 170, 30));
 
         btnAddRent.setBackground(new java.awt.Color(153, 153, 153));
         btnAddRent.setForeground(new java.awt.Color(255, 255, 255));
@@ -453,7 +430,7 @@ public class PanelRentHousee extends JPanel {
                 btnAddRentActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAddRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 500, 150, 32));
+        jPanel1.add(btnAddRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 460, 150, 32));
 
         btnViewRentDetails.setBackground(new java.awt.Color(153, 153, 153));
         btnViewRentDetails.setForeground(new java.awt.Color(255, 255, 255));
@@ -481,7 +458,7 @@ public class PanelRentHousee extends JPanel {
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 153, 153));
         jLabel9.setText("Advance Fee");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, 137, 37));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 137, 37));
 
         txtadvanceFee.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         txtadvanceFee.setPrompt("Advance Fee");
@@ -495,13 +472,13 @@ public class PanelRentHousee extends JPanel {
                 txtadvanceFeeKeyPressed(evt);
             }
         });
-        jPanel1.add(txtadvanceFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 350, 170, 30));
+        jPanel1.add(txtadvanceFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 290, 170, 30));
 
         jLabel12.setBackground(new java.awt.Color(255, 255, 255));
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(0, 153, 153));
         jLabel12.setText("Monthly Rent");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, 137, 37));
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 137, 37));
 
         txtMonthlyRent.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         txtMonthlyRent.setPrompt("Monthly Rent");
@@ -515,37 +492,37 @@ public class PanelRentHousee extends JPanel {
                 txtMonthlyRentKeyPressed(evt);
             }
         });
-        jPanel1.add(txtMonthlyRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 400, 170, 30));
+        jPanel1.add(txtMonthlyRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 340, 170, 30));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel8.setBackground(new java.awt.Color(255, 255, 255));
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 23)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel8.setText("View Rent Houses");
+        jLabel8.setText("View Rent Details");
 
-        tblRentHouse.setForeground(new java.awt.Color(51, 51, 51));
-        tblRentHouse.setModel(new javax.swing.table.DefaultTableModel(
+        tblRent.setForeground(new java.awt.Color(51, 51, 51));
+        tblRent.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "No of rooms", "No of bathrooms", "No of story", "Address", "Advance fee", "Monthly Rent"
+                "Boadere Name", "From Date", "To Date", "Monthly Rent", "Advance fee"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, true, true, false, true, true
+                true, true, true, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tblRentHouse.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        jScrollPane3.setViewportView(tblRentHouse);
+        tblRent.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jScrollPane3.setViewportView(tblRent);
 
         btnRefresh.setBackground(new java.awt.Color(255, 255, 255));
         btnRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Spinner Frame 3_20px.png"))); // NOI18N
@@ -557,7 +534,7 @@ public class PanelRentHousee extends JPanel {
         });
 
         cmbType.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        cmbType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Available", "Rented" }));
+        cmbType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Past", "Current ", "Future" }));
         cmbType.setToolTipText("Click to select Item");
         cmbType.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -629,34 +606,34 @@ public class PanelRentHousee extends JPanel {
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
 
-        int n = JOptionPane.showConfirmDialog(
-                this, "Confirm deletion?",
-                "An Inane Question",
-                JOptionPane.YES_NO_OPTION);
-        if (n == JOptionPane.NO_OPTION) {
-            return;
-        }
-
-        try {
-            RentHouseDTO rentHouse = RentHouseController.searchByAddress(selectedAddress);
-
-            try {
-                boolean result = RentHouseController.deleteRentHouse(rentHouse);
-
-                if (result) {
-                    JOptionPane.showMessageDialog(this, "RentHouse has been successfully removed");
-                    btnRefreshActionPerformed(evt);
-                    clearAllTexts();
-                } else {
-                    JOptionPane.showMessageDialog(this, "RentHouse hasn't been removed");
-                }
-
-            } catch (Exception ex) {
-                Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        int n = JOptionPane.showConfirmDialog(
+//                this, "Confirm deletion?",
+//                "An Inane Question",
+//                JOptionPane.YES_NO_OPTION);
+//        if (n == JOptionPane.NO_OPTION) {
+//            return;
+//        }
+//
+//        try {
+//            RentDTO rent = RentController.searchByAddress(selectedAddress);
+//
+//            try {
+//                boolean result = RentController.deleteRent(rent);
+//
+//                if (result) {
+//                    JOptionPane.showMessageDialog(this, "Rent has been successfully removed");
+//                    btnRefreshActionPerformed(evt);
+//                    clearAllTexts();
+//                } else {
+//                    JOptionPane.showMessageDialog(this, "Rent hasn't been removed");
+//                }
+//
+//            } catch (Exception ex) {
+//                Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        } catch (Exception ex) {
+//            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnRemoveMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRemoveMouseExited
@@ -668,43 +645,43 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_btnRemoveMouseEntered
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        if (fieldsUpdated == false) {
-            JOptionPane.showMessageDialog(this, "No change found");
-            return;
-        }
-
-        try {
-            RentHouseDTO rentHouse = RentHouseController.searchByAddress(selectedAddress);
-            rentHouse.setNo_of_rooms(Integer.parseInt(txtNoOfRooms.getText()));
-            rentHouse.setNo_of_bathrooms(Integer.parseInt(txtNoOfBathRooms.getText()));
-            rentHouse.setNo_of_story(Integer.parseInt(txtNoOfStory.getText()));
-            rentHouse.setAddress(txtAddress.getText());
-
-            PropertyDTO property = new PropertyDTO(
-                    rentHouse.getProperty_id(),
-                    PropertyController.checkAvailability(rentHouse.getProperty_id()),
-                    Double.parseDouble(txtadvanceFee.getText()),
-                    Double.parseDouble(txtMonthlyRent.getText())
-            );
-
-            try {
-
-                boolean result = RentHouseController.updateRentHouse(rentHouse, property);
-
-                if (result) {
-                    JOptionPane.showMessageDialog(this, "RentHouse details has been successfully updated");
-                    btnRefreshActionPerformed(evt);
-                    clearAllTexts();
-                } else {
-                    JOptionPane.showMessageDialog(this, "RentHouse details hasn't been updated");
-                }
-
-            } catch (Exception ex) {
-                Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        if (fieldsUpdated == false) {
+//            JOptionPane.showMessageDialog(this, "No change found");
+//            return;
+//        }
+//
+//        try {
+//            RentDTO rent = RentController.searchByAddress(selectedAddress);
+//            rent.setNo_of_rooms(Integer.parseInt(txtBoardereName.getText()));
+//            rent.setNo_of_bathrooms(Integer.parseInt(txtFromDate.getText()));
+//            rent.setNo_of_story(Integer.parseInt(txtToDate.getText()));
+//            rent.setAddress(txtAddress.getText());
+//
+//            PropertyDTO property = new PropertyDTO(
+//                    rent.getProperty_id(),
+//                    PropertyController.checkAvailability(rent.getProperty_id()),
+//                    Double.parseDouble(txtadvanceFee.getText()),
+//                    Double.parseDouble(txtMonthlyRent.getText())
+//            );
+//
+//            try {
+//
+//                boolean result = RentController.updateRent(rent, property);
+//
+//                if (result) {
+//                    JOptionPane.showMessageDialog(this, "Rent details has been successfully updated");
+//                    btnRefreshActionPerformed(evt);
+//                    clearAllTexts();
+//                } else {
+//                    JOptionPane.showMessageDialog(this, "Rent details hasn't been updated");
+//                }
+//
+//            } catch (Exception ex) {
+//                Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        } catch (Exception ex) {
+//            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnUpdateMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseExited
@@ -717,41 +694,41 @@ public class PanelRentHousee extends JPanel {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
-        if (checkText() == false) {
-            UIManager UI = new UIManager();
-            UI.put("OptionPane.background", Color.white);
-            UI.put("Panel.background", Color.white);
-
-            JOptionPane.showMessageDialog(this, "All fields should be filled to save");
-            return;
-        }
-        RentHouseDTO rentHouse = new RentHouseDTO(
-                getID(),
-                Integer.parseInt(txtNoOfRooms.getText()),
-                Integer.parseInt(txtNoOfBathRooms.getText()),
-                Integer.parseInt(txtNoOfStory.getText()),
-                txtAddress.getText()
-        );
-
-        PropertyDTO property = new PropertyDTO(
-                getID(),
-                true,
-                Double.parseDouble(txtadvanceFee.getText()),
-                Double.parseDouble(txtMonthlyRent.getText())
-        );
-
-        try {
-            boolean result = RentHouseController.addRentHouse(rentHouse, property);
-            if (result) {
-                JOptionPane.showMessageDialog(this, "RentHouse has been successfully added");
-                btnRefreshActionPerformed(evt);
-                clearAllTexts();
-            } else {
-                JOptionPane.showMessageDialog(this, "RentHouse hasn't been added");
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        if (checkText() == false) {
+//            UIManager UI = new UIManager();
+//            UI.put("OptionPane.background", Color.white);
+//            UI.put("Panel.background", Color.white);
+//
+//            JOptionPane.showMessageDialog(this, "All fields should be filled to save");
+//            return;
+//        }
+//        RentDTO rent = new RentDTO(
+//                getID(),
+//                Integer.parseInt(txtBoardereName.getText()),
+//                Integer.parseInt(txtFromDate.getText()),
+//                Integer.parseInt(txtToDate.getText()),
+//                txtAddress.getText()
+//        );
+//
+//        PropertyDTO property = new PropertyDTO(
+//                getID(),
+//                true,
+//                Double.parseDouble(txtadvanceFee.getText()),
+//                Double.parseDouble(txtMonthlyRent.getText())
+//        );
+//
+//        try {
+//            boolean result = RentController.addRent(rent, property);
+//            if (result) {
+//                JOptionPane.showMessageDialog(this, "Rent has been successfully added");
+//                btnRefreshActionPerformed(evt);
+//                clearAllTexts();
+//            } else {
+//                JOptionPane.showMessageDialog(this, "Rent hasn't been added");
+//            }
+//        } catch (Exception ex) {
+//            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnAddMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseExited
@@ -777,11 +754,13 @@ public class PanelRentHousee extends JPanel {
                 type = 1;
             } else if (cmbType.getSelectedIndex() == 2) {
                 type = 2;
+            } else if (cmbType.getSelectedIndex() == 3) {
+                type = 3;
             }
             btnRefreshActionPerformed(null);
 
         } catch (Exception ex) {
-            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_cmbTypeItemStateChanged
 
@@ -789,48 +768,43 @@ public class PanelRentHousee extends JPanel {
         //  getCID.requestFocus();
     }//GEN-LAST:event_jPanel1MouseEntered
 
-    private void txtNoOfBathRoomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNoOfBathRoomsActionPerformed
-        txtNoOfStory.requestFocus();
-    }//GEN-LAST:event_txtNoOfBathRoomsActionPerformed
+    private void txtFromDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFromDateActionPerformed
+        txtToDate.requestFocus();
+    }//GEN-LAST:event_txtFromDateActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         clearAllTexts();
     }//GEN-LAST:event_btnCancelActionPerformed
 
-    private void txtNoOfRoomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNoOfRoomsActionPerformed
-        txtNoOfBathRooms.requestFocus();
-    }//GEN-LAST:event_txtNoOfRoomsActionPerformed
+    private void txtBoardereNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBoardereNameActionPerformed
+        txtFromDate.requestFocus();
+    }//GEN-LAST:event_txtBoardereNameActionPerformed
 
-    private void txtAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAddressActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtAddressActionPerformed
-
-    private void txtNoOfStoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNoOfStoryActionPerformed
-        txtAddress.requestFocus();
-    }//GEN-LAST:event_txtNoOfStoryActionPerformed
+    private void txtToDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtToDateActionPerformed
+//        txtAddress.requestFocus();
+    }//GEN-LAST:event_txtToDateActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         try {
-            ArrayList<RentHouseDTO> allRentHouses = RentHouseController.getAllRentHouses();
-            if (type == 1) {
-                allRentHouses = RentHouseController.searchAvailable();
-            } else if (type == 2) {
-                allRentHouses = RentHouseController.searchRented();
+            ArrayList<RentDTO> allRents = RentController.getAllRents();
+            if (type==0||type == 1 || type == 2 || type == 3) {
+                allRents = RentController.searchRent(TOOL_TIP_TEXT_KEY, type);
             }
-            if (allRentHouses != null) {
-                DefaultTableModel dtm = (DefaultTableModel) tblRentHouse.getModel();
+            if (allRents != null) {
+                DefaultTableModel dtm = (DefaultTableModel) tblRent.getModel();
 
                 dtm.setRowCount(0);
 
-                for (RentHouseDTO rentHouse : allRentHouses) {
-                    PropertyDTO property = new PropertyDTO(rentHouse.getProperty_id(), null, null, null);
-                    property = PropertyController.searchProperty(property);
-                    Object[] rowData = {rentHouse.getNo_of_rooms(),
-                        rentHouse.getNo_of_bathrooms(),
-                        rentHouse.getNo_of_story(),
-                        rentHouse.getAddress(),
-                        property.getAdvance_fee(),
-                        property.getMonthly_rent()
+                for (RentDTO rent : allRents) {
+                    //PropertyDTO property = new PropertyDTO(rent.getProperty_id(), null, null, null);
+                    //  property = PropertyController.searchProperty(property);
+                    BoadereDTO boadereDTO = new BoadereDTO(rent.getBoadere_id(), "", "", "");
+                    BoadereDTO boadere = BoadereController.searchBoadere(boadereDTO);
+                    Object[] rowData = {boadere.getName(),
+                        rent.getFrom_date(),
+                        rent.getTo_date(),
+                        rent.getMonthly_rent(),
+                        rent.getAdvance_fee()
                     };
 
                     dtm.addRow(rowData);
@@ -839,37 +813,33 @@ public class PanelRentHousee extends JPanel {
 
             }
         } catch (Exception ex) {
-            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnRefreshActionPerformed
 
-    private void txtNoOfRoomsPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtNoOfRoomsPropertyChange
+    private void txtBoardereNamePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtBoardereNamePropertyChange
 
-    }//GEN-LAST:event_txtNoOfRoomsPropertyChange
+    }//GEN-LAST:event_txtBoardereNamePropertyChange
 
-    private void txtNoOfRoomsInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtNoOfRoomsInputMethodTextChanged
+    private void txtBoardereNameInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtBoardereNameInputMethodTextChanged
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNoOfRoomsInputMethodTextChanged
+    }//GEN-LAST:event_txtBoardereNameInputMethodTextChanged
 
-    private void txtNoOfRoomsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNoOfRoomsKeyTyped
+    private void txtBoardereNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBoardereNameKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNoOfRoomsKeyTyped
+    }//GEN-LAST:event_txtBoardereNameKeyTyped
 
-    private void txtNoOfRoomsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNoOfRoomsKeyPressed
+    private void txtBoardereNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBoardereNameKeyPressed
         fieldsUpdated = true;
-    }//GEN-LAST:event_txtNoOfRoomsKeyPressed
+    }//GEN-LAST:event_txtBoardereNameKeyPressed
 
-    private void txtNoOfBathRoomsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNoOfBathRoomsKeyPressed
+    private void txtFromDateKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFromDateKeyPressed
         fieldsUpdated = true;
-    }//GEN-LAST:event_txtNoOfBathRoomsKeyPressed
+    }//GEN-LAST:event_txtFromDateKeyPressed
 
-    private void txtNoOfStoryKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNoOfStoryKeyPressed
+    private void txtToDateKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtToDateKeyPressed
         fieldsUpdated = true;
-    }//GEN-LAST:event_txtNoOfStoryKeyPressed
-
-    private void txtAddressKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAddressKeyPressed
-        fieldsUpdated = true;
-    }//GEN-LAST:event_txtAddressKeyPressed
+    }//GEN-LAST:event_txtToDateKeyPressed
 
     private void btnViewRentDetailsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnViewRentDetailsMouseEntered
         // TODO add your handling code here:
@@ -880,15 +850,15 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_btnViewRentDetailsMouseExited
 
     private void btnViewRentDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewRentDetailsActionPerformed
-   try {
-            RentHouseDTO rentHouse = RentHouseController.searchByAddress(selectedAddress);
-            PropertyDTO property = new PropertyDTO(rentHouse.getProperty_id(), null, null, null);
-            property = PropertyController.searchProperty(property);
-            new DialogViewRentDetails(DashBoard.dashBoard, true, new PanelRent(property)).setVisible(true);
-            //btnGoToItem.requestFocus();
-        } catch (Exception ex) {
-            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            RentDTO rent = RentController.searchByAddress(selectedAddress);
+//            PropertyDTO property = new PropertyDTO(rent.getProperty_id(), null, null, null);
+//            property = PropertyController.searchProperty(property);
+//            new DialogViewRentDetails(DashBoard.dashBoard, true, property).setVisible(true);
+//            //btnGoToItem.requestFocus();
+//        } catch (Exception ex) {
+//            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_btnViewRentDetailsActionPerformed
 
     private void btnAddRentMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddRentMouseExited
@@ -900,15 +870,15 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_btnAddRentMouseEntered
 
     private void btnAddRentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddRentActionPerformed
-        try {
-            RentHouseDTO rentHouse = RentHouseController.searchByAddress(selectedAddress);
-            PropertyDTO property = new PropertyDTO(rentHouse.getProperty_id(), null, null, null);
-            property = PropertyController.searchProperty(property);
-            new DialogRennt(DashBoard.dashBoard, true, property).setVisible(true);
-            //btnGoToItem.requestFocus();
-        } catch (Exception ex) {
-            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            RentDTO rent = RentController.searchByAddress(selectedAddress);
+//            PropertyDTO property = new PropertyDTO(rent.getProperty_id(), null, null, null);
+//            property = PropertyController.searchProperty(property);
+//            new DialogRennt(DashBoard.dashBoard, true, property).setVisible(true);
+//            //btnGoToItem.requestFocus();
+//        } catch (Exception ex) {
+//            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_btnAddRentActionPerformed
 
     private void txtadvanceFeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtadvanceFeeActionPerformed
@@ -941,7 +911,6 @@ public class PanelRentHousee extends JPanel {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -950,12 +919,11 @@ public class PanelRentHousee extends JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane3;
-    private org.jdesktop.swingx.JXTable tblRentHouse;
-    private org.jdesktop.swingx.JXTextField txtAddress;
+    private org.jdesktop.swingx.JXTable tblRent;
+    private org.jdesktop.swingx.JXTextField txtBoardereName;
+    private org.jdesktop.swingx.JXTextField txtFromDate;
     private org.jdesktop.swingx.JXTextField txtMonthlyRent;
-    private org.jdesktop.swingx.JXTextField txtNoOfBathRooms;
-    private org.jdesktop.swingx.JXTextField txtNoOfRooms;
-    private org.jdesktop.swingx.JXTextField txtNoOfStory;
+    private org.jdesktop.swingx.JXTextField txtToDate;
     private org.jdesktop.swingx.JXTextField txtadvanceFee;
     // End of variables declaration//GEN-END:variables
 }

@@ -122,4 +122,114 @@ public class RentDAOImpl implements RentDAO {
         return alRents;
     }
 
+    @Override
+    public ArrayList<RentDTO> searchPastRents(String property_id) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        String sql = "SELECT * FROM rent where to_date < curDate()";
+        Statement stm = connection.createStatement();
+        ResultSet rst = stm.executeQuery(sql);
+
+        ArrayList<RentDTO> alRents = null;
+        while (rst.next()) {
+            if (alRents == null) {
+                alRents = new ArrayList<>();
+            }
+
+            alRents.add(new RentDTO(
+                    rst.getString(1),
+                    rst.getString(2),
+                    rst.getString(3),
+                    rst.getDate(4),
+                    rst.getDate(5),
+                    rst.getDouble(6),
+                    rst.getDouble(7)
+            ));
+
+        }
+
+        return alRents;
+    }
+
+    @Override
+    public ArrayList<RentDTO> searchCurrentRents(String Property_id) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        String sql = "SELECT * FROM rent where from_date < curDate()< to_date";
+        Statement stm = connection.createStatement();
+        ResultSet rst = stm.executeQuery(sql);
+
+        ArrayList<RentDTO> alRents = null;
+        while (rst.next()) {
+            if (alRents == null) {
+                alRents = new ArrayList<>();
+            }
+
+            alRents.add(new RentDTO(
+                    rst.getString(1),
+                    rst.getString(2),
+                    rst.getString(3),
+                    rst.getDate(4),
+                    rst.getDate(5),
+                    rst.getDouble(6),
+                    rst.getDouble(7)
+            ));
+
+        }
+
+        return alRents;
+    }
+
+    @Override
+    public ArrayList<RentDTO> searchFutureRents(String Property_id) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        String sql = "SELECT * FROM rent where from_date > curDate()";
+        Statement stm = connection.createStatement();
+        ResultSet rst = stm.executeQuery(sql);
+
+        ArrayList<RentDTO> alRents = null;
+        while (rst.next()) {
+            if (alRents == null) {
+                alRents = new ArrayList<>();
+            }
+
+            alRents.add(new RentDTO(
+                    rst.getString(1),
+                    rst.getString(2),
+                    rst.getString(3),
+                    rst.getDate(4),
+                    rst.getDate(5),
+                    rst.getDouble(6),
+                    rst.getDouble(7)
+            ));
+
+        }
+
+        return alRents;
+    }
+
+    @Override
+    public ArrayList<RentDTO> searchByPropertyId(String property_id) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        String sql = "SELECT * FROM rent WHERE property_id='" + property_id + "'";
+        Statement stm = connection.createStatement();
+        ResultSet rst = stm.executeQuery(sql);
+
+        ArrayList<RentDTO> alRents = null;
+        while (rst.next()) {
+            if (alRents == null) {
+                alRents = new ArrayList<>();
+            }
+
+            alRents.add(new RentDTO(
+                    rst.getString(1),
+                    rst.getString(2),
+                    rst.getString(3),
+                    rst.getDate(4),
+                    rst.getDate(5),
+                    rst.getDouble(6),
+                    rst.getDouble(7)
+            ));
+        }
+        return alRents;
+    }
+
 }

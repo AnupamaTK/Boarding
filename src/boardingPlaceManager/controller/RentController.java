@@ -23,8 +23,9 @@ public class RentController {
 
     public static boolean addRent(RentDTO rent) throws Exception {
         boolean result = rentDAO.add(rent);
-        if(result==true)
+        if (result == true) {
             propertyDAO.changeAvailability(rent.getProperty_id(), false);
+        }
         return result;
     }
 
@@ -47,6 +48,19 @@ public class RentController {
         return rentDAO.getAll();
     }
 
-   
+    public static ArrayList<RentDTO> searchRent(String property_id, Integer type) throws Exception {
+
+        ArrayList<RentDTO> searchedRent = null;
+        if (type == 0) {
+            searchedRent = rentDAO.searchByPropertyId(property_id);
+        } else if (type == 1) {
+            searchedRent = rentDAO.searchPastRents(property_id);
+        } else if (type == 2) {
+            searchedRent = rentDAO.searchCurrentRents(property_id);
+        } else if (type == 3) {
+            searchedRent = rentDAO.searchFutureRents(property_id);
+        }
+        return searchedRent;
+    }
 
 }

@@ -419,7 +419,7 @@ public class PanelRentRoom extends JPanel {
         jLabel9.setText("Cust Name");
 
         cmbCustName.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        cmbCustName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCustName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Available", "Rented" }));
         cmbCustName.setToolTipText("Click to select Item");
         cmbCustName.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
