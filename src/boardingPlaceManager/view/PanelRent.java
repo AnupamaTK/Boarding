@@ -68,8 +68,8 @@ public class PanelRent extends JPanel {
                 txtBoardereName.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 0).toString());
                 txtFromDate.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 1).toString());
                 txtToDate.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 2).toString());
-                txtadvanceFee.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 4).toString());
-                txtMonthlyRent.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 5).toString());
+                txtadvanceFee.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 3).toString());
+                txtMonthlyRent.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 4).toString());
 
 //                selectedAddress = txtAddress.getText();
 //                try {
@@ -787,7 +787,7 @@ public class PanelRent extends JPanel {
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         try {
             ArrayList<RentDTO> allRents = RentController.getAllRents();
-            if (type==0||type == 1 || type == 2 || type == 3) {
+            if (type == 1 || type == 2 || type == 3) {
                 allRents = RentController.searchRent(TOOL_TIP_TEXT_KEY, type);
             }
             if (allRents != null) {
@@ -796,9 +796,11 @@ public class PanelRent extends JPanel {
                 dtm.setRowCount(0);
 
                 for (RentDTO rent : allRents) {
+                    System.out.println("In Rent Loop");
                     //PropertyDTO property = new PropertyDTO(rent.getProperty_id(), null, null, null);
                     //  property = PropertyController.searchProperty(property);
                     BoadereDTO boadereDTO = new BoadereDTO(rent.getBoadere_id(), "", "", "");
+                    System.out.println("..."+rent.getBoadere_id());
                     BoadereDTO boadere = BoadereController.searchBoadere(boadereDTO);
                     Object[] rowData = {boadere.getName(),
                         rent.getFrom_date(),
@@ -811,6 +813,8 @@ public class PanelRent extends JPanel {
 
                 }
 
+            }else{
+                System.err.println("NULL CAME here");
             }
         } catch (Exception ex) {
             Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);

@@ -38,13 +38,18 @@ public class BoadereController {
         return result;
     }
 
-    public static BoadereDTO searchBoadere(BoadereDTO boadere) throws Exception {
+    public static BoadereDTO searchBoadereByName(BoadereDTO boadere) throws Exception {
         BoadereDTO searchedBoadere = boadereDAO.SearchByName(boadere.getName());
         return searchedBoadere;
     }
 
     public static ArrayList<BoadereDTO> getAllBoaderes() throws Exception {
         return boadereDAO.getAll();
+    }
+
+    public static BoadereDTO searchBoadere(BoadereDTO boadere) throws Exception {
+        BoadereDTO searchedBoadere = boadereDAO.search(boadere);
+        return searchedBoadere;
     }
 
 }

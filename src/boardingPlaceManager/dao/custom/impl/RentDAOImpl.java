@@ -96,6 +96,7 @@ public class RentDAOImpl implements RentDAO {
 //     * @return
 //     * @throws Exception
     public ArrayList<RentDTO> getAll() throws Exception {
+        System.out.println("Came");
         Connection connection = DBConnection.getInstance().getConnection();
         String sql = "SELECT * FROM rent";
         Statement stm = connection.createStatement();
@@ -118,7 +119,6 @@ public class RentDAOImpl implements RentDAO {
             ));
 
         }
-
         return alRents;
     }
 

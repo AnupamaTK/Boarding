@@ -437,7 +437,7 @@ public class DialogRennt extends javax.swing.JDialog {
                 return;
             }
 
-            boadere = BoadereController.searchBoadere(new BoadereDTO(null, cmbBoadereNames.getSelectedItem().toString(), null, null));
+            boadere = BoadereController.searchBoadereByName(new BoadereDTO(null, cmbBoadereNames.getSelectedItem().toString(), null, null));
 
             if (boadere == null) {
                 return;
