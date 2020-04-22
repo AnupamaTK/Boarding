@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -23,6 +24,8 @@ import boardingPlaceManager.controller.RentController;
 import boardingPlaceManager.dto.BoadereDTO;
 import boardingPlaceManager.dto.PropertyDTO;
 import boardingPlaceManager.dto.RentDTO;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.swing.UIManager;
 //import static boardingPlaceManager.view.PanelRent.dark;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -37,15 +40,26 @@ public class PanelRent extends JPanel {
      * Creates new form panelRent
      */
     private Color darkGreen = new Color(102, 102, 102);
-    private String selectedAddress;
+    private String selectedID;
     private boolean fieldsUpdated = false;
     private int type = 0;
+    private PropertyDTO property = null;
+    private RentDTO rent = new RentDTO();
 
-    public PanelRent(PropertyDTO property) throws SQLException {
+    public PanelRent(PropertyDTO propertyDTO) throws SQLException {
         // super(parent, modal);
         initComponents();
-        //auto generate id
+        property = propertyDTO;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        try {
+            loadAllBoaderes();
+        } catch (Exception ex) {
+            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        datePickerFromDate.setDate(null);
+        datePickerToDate.setDate(null);
 
+        //auto generate id
         try {
             // setCustName();
             // getID();
@@ -61,19 +75,29 @@ public class PanelRent extends JPanel {
             @Override
             public void valueChanged(ListSelectionEvent e) {
 
-                if (tblRent.getSelectedRow() == -1) {
-                    return;
-                }
+                try {
+                    if (tblRent.getSelectedRow() == -1) {
+                        return;
+                    }
+                    
+                    cmbBoadereNames.setSelectedItem(tblRent.getValueAt(tblRent.getSelectedRow(), 0).toString());
+                    //txtBoardereName.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 0).toString());
+                    //txtFromDate.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 1).toString());
+                    //txtToDate.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 2).toString());
+                    txtadvanceFee.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 3).toString());
+                    txtMonthlyRent.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 4).toString());
+                    Date toDate = new SimpleDateFormat("yyyy-mm-dd").parse(tblRent.getValueAt(tblRent.getSelectedRow(), 1).toString());
+                    datePickerFromDate.setDate(toDate);
+                    Date fromDate = new SimpleDateFormat("yyyy-mm-dd").parse(tblRent.getValueAt(tblRent.getSelectedRow(), 2).toString());
+                    datePickerFromDate.setDate(fromDate);
+                    //Date d=tblRent.getValueAt(tblRent.getSelectedRow(), 2);
+// rent=new RentDTO();
+//try {
+rent = new RentDTO("", property.getProperty_id(), cmbBoadereNames.getSelectedItem().toString(), fromDate, toDate, Double.parseDouble(txtMonthlyRent.getText()), Double.parseDouble(txtadvanceFee.getText()));
 
-                txtBoardereName.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 0).toString());
-                txtFromDate.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 1).toString());
-                txtToDate.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 2).toString());
-                txtadvanceFee.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 3).toString());
-                txtMonthlyRent.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 4).toString());
-
-//                selectedAddress = txtAddress.getText();
+//                selectedID = txtAddress.getText();
 //                try {
-//                    RentDTO rent = RentController.searchByAddress(selectedAddress);
+//                    RentDTO rent = RentController.searchByAddress(selectedID);
 //                    Boolean availability = PropertyController.checkAvailability(rent.getProperty_id());
 //                    if (availability == true) {
 //                        btnAddRent.setVisible(true);
@@ -86,6 +110,13 @@ public class PanelRent extends JPanel {
 //                } catch (Exception ex) {
 //                    Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
 //                }
+//                } catch (ParseException ex) {
+//                    Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+                } catch (ParseException ex) {
+                    Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             }
         });
     }
@@ -99,11 +130,29 @@ public class PanelRent extends JPanel {
         } catch (ClassNotFoundException | SQLException e) {
         }
     }*/
+    private void loadAllBoaderes() throws Exception {
+        ArrayList<BoadereDTO> allBoaderes = BoadereController.getAllBoaderes();
+        cmbBoadereNames.removeAllItems();
+
+        if (allBoaderes == null) {
+            return;
+        }
+        for (BoadereDTO boaderes : allBoaderes) {
+
+            cmbBoadereNames.addItem(boaderes.getName());
+
+        }
+        AutoCompleteDecorator.decorate(cmbBoadereNames);
+        cmbBoadereNames.setSelectedIndex(-1);
+
+    }
+
     private void clearAllTexts() {
 
-        txtBoardereName.setText("");
-        txtToDate.setText("");
-        txtFromDate.setText("");
+        //txtBoardereName.setText("");
+        cmbBoadereNames.setSelectedIndex(-1);
+        datePickerFromDate.setDate(null);
+        datePickerToDate.setDate(null);
         txtadvanceFee.setText("");
         txtMonthlyRent.setText("");
     }
@@ -125,7 +174,7 @@ public class PanelRent extends JPanel {
     //to check text field inputs are empty
     public boolean checkText() {
         System.out.println("Chk");
-        if (txtFromDate.getText().isEmpty() || txtBoardereName.getText().isEmpty() || txtToDate.getText().isEmpty() || txtMonthlyRent.getText().isEmpty() || txtadvanceFee.getText().isEmpty()) {
+        if (datePickerFromDate.getDate()==null || cmbBoadereNames.getSelectedIndex() < 0 ||datePickerToDate.getDate()==null || txtMonthlyRent.getText().isEmpty() || txtadvanceFee.getText().isEmpty()) {
             return false;
         }
         return true;
@@ -170,23 +219,22 @@ public class PanelRent extends JPanel {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        btnAdd = new org.jdesktop.swingx.JXButton();
         btnUpdate = new org.jdesktop.swingx.JXButton();
         btnRemove = new org.jdesktop.swingx.JXButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        txtBoardereName = new org.jdesktop.swingx.JXTextField();
         btnCancel = new javax.swing.JButton();
-        txtFromDate = new org.jdesktop.swingx.JXTextField();
         jLabel10 = new javax.swing.JLabel();
-        txtToDate = new org.jdesktop.swingx.JXTextField();
         btnAddRent = new org.jdesktop.swingx.JXButton();
         btnViewRentDetails = new org.jdesktop.swingx.JXButton();
         jLabel9 = new javax.swing.JLabel();
         txtadvanceFee = new org.jdesktop.swingx.JXTextField();
         jLabel12 = new javax.swing.JLabel();
         txtMonthlyRent = new org.jdesktop.swingx.JXTextField();
+        cmbBoadereNames = new javax.swing.JComboBox<>();
+        datePickerToDate = new org.jdesktop.swingx.JXDatePicker();
+        datePickerFromDate = new org.jdesktop.swingx.JXDatePicker();
         jPanel4 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -206,27 +254,6 @@ public class PanelRent extends JPanel {
         jLabel11.setText("Rent Houses");
         jLabel11.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        btnAdd.setBackground(new java.awt.Color(102, 102, 102));
-        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
-        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Plus_20px_1.png"))); // NOI18N
-        btnAdd.setText("Add");
-        btnAdd.setToolTipText("Click to add");
-        btnAdd.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnAdd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnAddMouseExited(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnAddMouseEntered(evt);
-            }
-        });
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
-            }
-        });
-
         btnUpdate.setBackground(new java.awt.Color(102, 102, 102));
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Available Updates_20px.png"))); // NOI18N
@@ -235,11 +262,11 @@ public class PanelRent extends JPanel {
         btnUpdate.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnUpdate.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnUpdateMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnUpdateMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnUpdateMouseExited(evt);
             }
         });
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
@@ -276,9 +303,8 @@ public class PanelRent extends JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap(28, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btnRemove, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnRemove, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                    .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(2, 2, 2))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
@@ -290,9 +316,7 @@ public class PanelRent extends JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(56, 56, 56)
                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(190, 190, 190)
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(228, 228, 228)
                 .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -336,35 +360,6 @@ public class PanelRent extends JPanel {
         jLabel5.setText("From Date");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 181, -1, 37));
 
-        txtBoardereName.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        txtBoardereName.setPrompt("Boadere Name");
-        txtBoardereName.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                txtBoardereNameInputMethodTextChanged(evt);
-            }
-        });
-        txtBoardereName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBoardereNameActionPerformed(evt);
-            }
-        });
-        txtBoardereName.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                txtBoardereNamePropertyChange(evt);
-            }
-        });
-        txtBoardereName.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtBoardereNameKeyPressed(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtBoardereNameKeyTyped(evt);
-            }
-        });
-        jPanel1.add(txtBoardereName, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 124, 170, 30));
-
         btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Cancel 2_20px.png"))); // NOI18N
         btnCancel.setToolTipText("Click to clear fields");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -374,41 +369,11 @@ public class PanelRent extends JPanel {
         });
         jPanel1.add(btnCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(406, 619, 48, 30));
 
-        txtFromDate.setToolTipText("No of Bathrooms");
-        txtFromDate.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        txtFromDate.setPrompt("From Date");
-        txtFromDate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFromDateActionPerformed(evt);
-            }
-        });
-        txtFromDate.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtFromDateKeyPressed(evt);
-            }
-        });
-        jPanel1.add(txtFromDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 184, 170, 30));
-
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 153, 153));
         jLabel10.setText("To Date");
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 236, -1, 37));
-
-        txtToDate.setToolTipText("No of Story");
-        txtToDate.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        txtToDate.setPrompt("To Date");
-        txtToDate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtToDateActionPerformed(evt);
-            }
-        });
-        txtToDate.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtToDateKeyPressed(evt);
-            }
-        });
-        jPanel1.add(txtToDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 239, 170, 30));
 
         btnAddRent.setBackground(new java.awt.Color(153, 153, 153));
         btnAddRent.setForeground(new java.awt.Color(255, 255, 255));
@@ -493,6 +458,35 @@ public class PanelRent extends JPanel {
             }
         });
         jPanel1.add(txtMonthlyRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 340, 170, 30));
+
+        cmbBoadereNames.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        cmbBoadereNames.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbBoadereNames.setToolTipText("Select Customer Name");
+        cmbBoadereNames.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbBoadereNamesItemStateChanged(evt);
+            }
+        });
+        cmbBoadereNames.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbBoadereNamesActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cmbBoadereNames, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 130, 170, -1));
+
+        datePickerToDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                datePickerToDateActionPerformed(evt);
+            }
+        });
+        jPanel1.add(datePickerToDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 240, 170, -1));
+
+        datePickerFromDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                datePickerFromDateActionPerformed(evt);
+            }
+        });
+        jPanel1.add(datePickerFromDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 190, 170, -1));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -615,7 +609,7 @@ public class PanelRent extends JPanel {
 //        }
 //
 //        try {
-//            RentDTO rent = RentController.searchByAddress(selectedAddress);
+//            RentDTO rent = RentController.searchByAddress(selectedID);
 //
 //            try {
 //                boolean result = RentController.deleteRent(rent);
@@ -651,7 +645,8 @@ public class PanelRent extends JPanel {
 //        }
 //
 //        try {
-//            RentDTO rent = RentController.searchByAddress(selectedAddress);
+//            RentDTO rent = RentController.searchRentWithotID(this.rent);
+//            rent.setBoadere_id(txtBoardereName);
 //            rent.setNo_of_rooms(Integer.parseInt(txtBoardereName.getText()));
 //            rent.setNo_of_bathrooms(Integer.parseInt(txtFromDate.getText()));
 //            rent.setNo_of_story(Integer.parseInt(txtToDate.getText()));
@@ -692,53 +687,6 @@ public class PanelRent extends JPanel {
         btnUpdate.setBackground(Color.lightGray);
     }//GEN-LAST:event_btnUpdateMouseEntered
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-
-//        if (checkText() == false) {
-//            UIManager UI = new UIManager();
-//            UI.put("OptionPane.background", Color.white);
-//            UI.put("Panel.background", Color.white);
-//
-//            JOptionPane.showMessageDialog(this, "All fields should be filled to save");
-//            return;
-//        }
-//        RentDTO rent = new RentDTO(
-//                getID(),
-//                Integer.parseInt(txtBoardereName.getText()),
-//                Integer.parseInt(txtFromDate.getText()),
-//                Integer.parseInt(txtToDate.getText()),
-//                txtAddress.getText()
-//        );
-//
-//        PropertyDTO property = new PropertyDTO(
-//                getID(),
-//                true,
-//                Double.parseDouble(txtadvanceFee.getText()),
-//                Double.parseDouble(txtMonthlyRent.getText())
-//        );
-//
-//        try {
-//            boolean result = RentController.addRent(rent, property);
-//            if (result) {
-//                JOptionPane.showMessageDialog(this, "Rent has been successfully added");
-//                btnRefreshActionPerformed(evt);
-//                clearAllTexts();
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Rent hasn't been added");
-//            }
-//        } catch (Exception ex) {
-//            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }//GEN-LAST:event_btnAddActionPerformed
-
-    private void btnAddMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseExited
-        btnAdd.setBackground(darkGreen);
-    }//GEN-LAST:event_btnAddMouseExited
-
-    private void btnAddMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseEntered
-        btnAdd.setBackground(Color.lightGray);
-    }//GEN-LAST:event_btnAddMouseEntered
-
     private void cmbTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTypeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbTypeActionPerformed
@@ -768,27 +716,15 @@ public class PanelRent extends JPanel {
         //  getCID.requestFocus();
     }//GEN-LAST:event_jPanel1MouseEntered
 
-    private void txtFromDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFromDateActionPerformed
-        txtToDate.requestFocus();
-    }//GEN-LAST:event_txtFromDateActionPerformed
-
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         clearAllTexts();
     }//GEN-LAST:event_btnCancelActionPerformed
-
-    private void txtBoardereNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBoardereNameActionPerformed
-        txtFromDate.requestFocus();
-    }//GEN-LAST:event_txtBoardereNameActionPerformed
-
-    private void txtToDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtToDateActionPerformed
-//        txtAddress.requestFocus();
-    }//GEN-LAST:event_txtToDateActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         try {
             ArrayList<RentDTO> allRents = RentController.getAllRents();
             if (type == 1 || type == 2 || type == 3) {
-                allRents = RentController.searchRent(TOOL_TIP_TEXT_KEY, type);
+                allRents = RentController.searchRent(property.getProperty_id(), type);
             }
             if (allRents != null) {
                 DefaultTableModel dtm = (DefaultTableModel) tblRent.getModel();
@@ -800,7 +736,7 @@ public class PanelRent extends JPanel {
                     //PropertyDTO property = new PropertyDTO(rent.getProperty_id(), null, null, null);
                     //  property = PropertyController.searchProperty(property);
                     BoadereDTO boadereDTO = new BoadereDTO(rent.getBoadere_id(), "", "", "");
-                    System.out.println("..."+rent.getBoadere_id());
+                    System.out.println("..." + rent.getBoadere_id());
                     BoadereDTO boadere = BoadereController.searchBoadere(boadereDTO);
                     Object[] rowData = {boadere.getName(),
                         rent.getFrom_date(),
@@ -813,37 +749,13 @@ public class PanelRent extends JPanel {
 
                 }
 
-            }else{
+            } else {
                 System.err.println("NULL CAME here");
             }
         } catch (Exception ex) {
             Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnRefreshActionPerformed
-
-    private void txtBoardereNamePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtBoardereNamePropertyChange
-
-    }//GEN-LAST:event_txtBoardereNamePropertyChange
-
-    private void txtBoardereNameInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtBoardereNameInputMethodTextChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBoardereNameInputMethodTextChanged
-
-    private void txtBoardereNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBoardereNameKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBoardereNameKeyTyped
-
-    private void txtBoardereNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBoardereNameKeyPressed
-        fieldsUpdated = true;
-    }//GEN-LAST:event_txtBoardereNameKeyPressed
-
-    private void txtFromDateKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFromDateKeyPressed
-        fieldsUpdated = true;
-    }//GEN-LAST:event_txtFromDateKeyPressed
-
-    private void txtToDateKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtToDateKeyPressed
-        fieldsUpdated = true;
-    }//GEN-LAST:event_txtToDateKeyPressed
 
     private void btnViewRentDetailsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnViewRentDetailsMouseEntered
         // TODO add your handling code here:
@@ -855,7 +767,7 @@ public class PanelRent extends JPanel {
 
     private void btnViewRentDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewRentDetailsActionPerformed
 //        try {
-//            RentDTO rent = RentController.searchByAddress(selectedAddress);
+//            RentDTO rent = RentController.searchByAddress(selectedID);
 //            PropertyDTO property = new PropertyDTO(rent.getProperty_id(), null, null, null);
 //            property = PropertyController.searchProperty(property);
 //            new DialogViewRentDetails(DashBoard.dashBoard, true, property).setVisible(true);
@@ -875,7 +787,7 @@ public class PanelRent extends JPanel {
 
     private void btnAddRentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddRentActionPerformed
 //        try {
-//            RentDTO rent = RentController.searchByAddress(selectedAddress);
+//            RentDTO rent = RentController.searchByAddress(selectedID);
 //            PropertyDTO property = new PropertyDTO(rent.getProperty_id(), null, null, null);
 //            property = PropertyController.searchProperty(property);
 //            new DialogRennt(DashBoard.dashBoard, true, property).setVisible(true);
@@ -901,16 +813,59 @@ public class PanelRent extends JPanel {
         fieldsUpdated = true;
     }//GEN-LAST:event_txtMonthlyRentKeyPressed
 
+    private void cmbBoadereNamesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbBoadereNamesItemStateChanged
+//        try {
+//            if (cmbBoadereNames.getSelectedIndex() == -1) {
+//                return;
+//            }
+//
+//            boadere = BoadereController.searchBoadereByName(new BoadereDTO(null, cmbBoadereNames.getSelectedItem().toString(), null, null));
+//
+//            if (boadere == null) {
+//                return;
+//            }
+//
+//            DefaultTableModel dtm = (DefaultTableModel) tblBoaders.getModel();
+//            dtm.setRowCount(0);
+//            Object[] rowData = {boadere.getNic(),
+//                boadere.getName(),
+//                boadere.getTel(),
+//                boadere.getAddress()};
+//
+//            dtm.addRow(rowData);
+//
+//            /*itemDescriptionText.setText(item.getDescription());
+//            qtyOnHandText.setText(item.getQtyOnHand() + "");
+//            itemPriceText.setText(item.getUnitPrice().toPlainString());*/
+//        } catch (Exception ex) {
+//            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+    }//GEN-LAST:event_cmbBoadereNamesItemStateChanged
+
+    private void cmbBoadereNamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbBoadereNamesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbBoadereNamesActionPerformed
+
+    private void datePickerToDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datePickerToDateActionPerformed
+        // System.out.println(datePickerFromDate.getDate());
+    }//GEN-LAST:event_datePickerToDateActionPerformed
+
+    private void datePickerFromDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datePickerFromDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_datePickerFromDateActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.jdesktop.swingx.JXButton btnAdd;
     private org.jdesktop.swingx.JXButton btnAddRent;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnRefresh;
     private org.jdesktop.swingx.JXButton btnRemove;
     private org.jdesktop.swingx.JXButton btnUpdate;
     private org.jdesktop.swingx.JXButton btnViewRentDetails;
+    private javax.swing.JComboBox<String> cmbBoadereNames;
     private javax.swing.JComboBox<String> cmbType;
+    private org.jdesktop.swingx.JXDatePicker datePickerFromDate;
+    private org.jdesktop.swingx.JXDatePicker datePickerToDate;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -924,10 +879,7 @@ public class PanelRent extends JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane3;
     private org.jdesktop.swingx.JXTable tblRent;
-    private org.jdesktop.swingx.JXTextField txtBoardereName;
-    private org.jdesktop.swingx.JXTextField txtFromDate;
     private org.jdesktop.swingx.JXTextField txtMonthlyRent;
-    private org.jdesktop.swingx.JXTextField txtToDate;
     private org.jdesktop.swingx.JXTextField txtadvanceFee;
     // End of variables declaration//GEN-END:variables
 }

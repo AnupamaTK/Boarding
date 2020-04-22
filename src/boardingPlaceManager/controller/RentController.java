@@ -62,5 +62,10 @@ public class RentController {
         }
         return searchedRent;
     }
+    
+    public static RentDTO searchRentWithotID(RentDTO rent) throws Exception {
+        RentDTO searchedRent = rentDAO.search(rent);
+        return searchedRent;
+    }
 
 }

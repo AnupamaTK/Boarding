@@ -231,5 +231,27 @@ public class RentDAOImpl implements RentDAO {
         }
         return alRents;
     }
+    
+    @Override
+    public RentDTO searchRentWithoutId(RentDTO rent) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        String sql = "SELECT * FROM rent WHERE property_id='" + rent.getProperty_id()+"and boardere_id='"+rent.getBoadere_id()+"and from_date='"+rent.getFrom_date()+"and toDate='"+rent.getTo_date()+"and monthly_fee='"+rent.getMonthly_rent()+"and advance_fee='"+rent.getAdvance_fee()+"'";
+        Statement stm = connection.createStatement();
+        ResultSet rst = stm.executeQuery(sql);
+
+        if (rst.next()) {
+            return new RentDTO(
+                    rst.getString(1),
+                    rst.getString(2),
+                    rst.getString(3),
+                    rst.getDate(4),
+                    rst.getDate(5),
+                    rst.getDouble(6),
+                    rst.getDouble(7)
+            );
+        }
+
+        return null;
+    }
 
 }
