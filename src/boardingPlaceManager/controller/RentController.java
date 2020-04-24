@@ -35,6 +35,7 @@ public class RentController {
     }
 
     public static boolean updateRent(RentDTO rent) throws Exception {
+        System.out.println("rnet controller");
         boolean result = rentDAO.update(rent);
         return result;
     }
@@ -64,7 +65,7 @@ public class RentController {
     }
     
     public static RentDTO searchRentWithotID(RentDTO rent) throws Exception {
-        RentDTO searchedRent = rentDAO.search(rent);
+        RentDTO searchedRent = rentDAO.searchRentWithoutId(rent);
         return searchedRent;
     }
 
