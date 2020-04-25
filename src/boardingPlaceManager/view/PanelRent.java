@@ -24,9 +24,11 @@ import boardingPlaceManager.controller.RentController;
 import boardingPlaceManager.dto.BoadereDTO;
 import boardingPlaceManager.dto.PropertyDTO;
 import boardingPlaceManager.dto.RentDTO;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+//import java.time.DateTimeFormatter;
 import javax.swing.UIManager;
 //import static boardingPlaceManager.view.PanelRent.dark;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -50,8 +52,9 @@ public class PanelRent extends JPanel {
     private Date toDate = null;
 
     public PanelRent(PropertyDTO propertyDTO) throws SQLException {
-        // super(parent, modal);
+
         initComponents();
+        tblRent.removeColumn(tblRent.getColumnModel().getColumn(5));
         property = propertyDTO;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
         try {
@@ -61,15 +64,13 @@ public class PanelRent extends JPanel {
         }
         datePickerFromDate.setDate(null);
         datePickerToDate.setDate(null);
-        // datePickerFromDate.
         fieldsUpdated = false;
+        datePickerFromDate.setFormats("yyyy-MM-dd");
+        datePickerToDate.setFormats("yyyy-MM-dd");
 
         //auto generate id
         try {
-            // setCustName();
-            // getID();
 
-            //setLocationRelativeTo(null);
         } catch (Exception ex) {
             Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -80,43 +81,22 @@ public class PanelRent extends JPanel {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 fieldsUpdated = false;
+
                 try {
                     if (tblRent.getSelectedRow() == -1) {
                         return;
                     }
 
+                    selectedID = tblRent.getModel().getValueAt(tblRent.getSelectedRow(), 5).toString();
+                    //System.out.println(selectedID + "IDID");
                     cmbBoadereNames.setSelectedItem(tblRent.getValueAt(tblRent.getSelectedRow(), 0).toString());
                     txtadvanceFee.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 3).toString());
                     txtMonthlyRent.setText(tblRent.getValueAt(tblRent.getSelectedRow(), 4).toString());
-//                    Date toDate = new SimpleDateFormat("yyyy-MM-dd").parse(tblRent.getValueAt(tblRent.getSelectedRow(), 1).toString());
-//                    System.out.println(toDate+"Table TO Date"+tblRent.getValueAt(tblRent.getSelectedRow(), 1).toString());
                     datePickerFromDate.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(tblRent.getValueAt(tblRent.getSelectedRow(), 1).toString()));
-//                    Date fromDate = new SimpleDateFormat("yyyy-MM-dd").parse(tblRent.getValueAt(tblRent.getSelectedRow(), 2).toString());
-//                    System.out.println("From" + fromDate + "To" + toDate);
                     datePickerToDate.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(tblRent.getValueAt(tblRent.getSelectedRow(), 2).toString()));
-                    //Date d=tblRent.getValueAt(tblRent.getSelectedRow(), 2);
-// rent=new RentDTO();
-//try {
-                    rent = new RentDTO("", property.getProperty_id(), cmbBoadereNames.getSelectedItem().toString(), fromDate, toDate, Double.parseDouble(txtMonthlyRent.getText()), Double.parseDouble(txtadvanceFee.getText()));
 
-//                selectedID = txtAddress.getText();
-//                try {
-//                    RentDTO rent = RentController.searchByAddress(selectedID);
-//                    Boolean availability = PropertyController.checkAvailability(rent.getProperty_id());
-//                    if (availability == true) {
-//                        btnAddRent.setVisible(true);
-//                        btnViewRentDetails.setVisible(false);
-//
-//                    } else {
-//                        btnViewRentDetails.setVisible(true);
-//                        btnAddRent.setVisible(false);
-//                    }
-//                } catch (Exception ex) {
-//                    Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                } catch (ParseException ex) {
-//                    Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
-//                }
+                    rent = new RentDTO(selectedID, "", "", null, null, 0.0, 0.0);
+
                 } catch (ParseException ex) {
                     Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -125,15 +105,6 @@ public class PanelRent extends JPanel {
         });
     }
 
-    /* private void getID() throws SQLException {
-        String newID;
-        try {
-            newID = IDGenarator.getNewID("Rent", "cid", "c");
-            txtCustID.setText(newID);
-
-        } catch (ClassNotFoundException | SQLException e) {
-        }
-    }*/
     private void loadAllBoaderes() throws Exception {
         ArrayList<BoadereDTO> allBoaderes = BoadereController.getAllBoaderes();
         cmbBoadereNames.removeAllItems();
@@ -490,17 +461,17 @@ public class PanelRent extends JPanel {
         tblRent.setForeground(new java.awt.Color(51, 51, 51));
         tblRent.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Boadere Name", "From Date", "To Date", "Monthly Rent", "Advance fee"
+                "Boadere Name", "From Date", "To Date", "Monthly Rent", "Advance fee", "Rent Id"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, true, true, false, true
+                true, true, true, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -592,34 +563,34 @@ public class PanelRent extends JPanel {
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
 
-//        int n = JOptionPane.showConfirmDialog(
-//                this, "Confirm deletion?",
-//                "An Inane Question",
-//                JOptionPane.YES_NO_OPTION);
-//        if (n == JOptionPane.NO_OPTION) {
-//            return;
-//        }
-//
-//        try {
-//            RentDTO rent = RentController.searchByAddress(selectedID);
-//
-//            try {
-//                boolean result = RentController.deleteRent(rent);
-//
-//                if (result) {
-//                    JOptionPane.showMessageDialog(this, "Rent has been successfully removed");
-//                    btnRefreshActionPerformed(evt);
-//                    clearAllTexts();
-//                } else {
-//                    JOptionPane.showMessageDialog(this, "Rent hasn't been removed");
-//                }
-//
-//            } catch (Exception ex) {
-//                Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        } catch (Exception ex) {
-//            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        int n = JOptionPane.showConfirmDialog(
+                this, "Confirm deletion?",
+                "An Inane Question",
+                JOptionPane.YES_NO_OPTION);
+        if (n == JOptionPane.NO_OPTION) {
+            return;
+        }
+
+        try {
+            RentDTO rent = RentController.searchRent(new RentDTO(selectedID, "", "", null, null, 0.0, 0.0));
+
+            try {
+                boolean result = RentController.deleteRent(rent);
+
+                if (result) {
+                    JOptionPane.showMessageDialog(this, "Rent has been successfully removed");
+                    btnRefreshActionPerformed(evt);
+                    clearAllTexts();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Rent hasn't been removed");
+                }
+
+            } catch (Exception ex) {
+                Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnRemoveMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRemoveMouseExited
@@ -635,14 +606,19 @@ public class PanelRent extends JPanel {
             JOptionPane.showMessageDialog(this, "No change found");
             return;
         }
+
+        if (datePickerFromDate.getDate().after(datePickerToDate.getDate())) {
+            JOptionPane.showMessageDialog(this, "To Date should be a date after from date");
+            return;
+        }
         try {
 
             BoadereDTO boadere = BoadereController.searchBoadereByName(new BoadereDTO(null, cmbBoadereNames.getSelectedItem().toString(), null, null));
 
             try {
 
-                RentDTO newRent = RentController.searchRentWithotID(this.rent);
-                System.out.println(boadere.getName() + "bbbbb" + newRent);
+                RentDTO newRent = RentController.searchRent(this.rent);
+                //System.out.println(boadere.getName() + "bbbbb" + newRent);
 
                 newRent.setBoadere_id(boadere.getNic());
                 newRent.setMonthly_rent(Double.parseDouble(txtMonthlyRent.getText()));
@@ -651,14 +627,14 @@ public class PanelRent extends JPanel {
 //                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 //                String fromDate = simpleDateFormat.format(datePickerFromDate.getDate());
 //                System.out.println(fromDate);
-                newRent.setFrom_date(fromDate);
+                newRent.setFrom_date(datePickerFromDate.getDate());
                 //String toDate = simpleDateFormat.format(datePickerFromDate.getDate());
 
                 // String toDate = simpleDateFormat.format(datePickerToDate.getDate());
-                newRent.setTo_date(toDate);
+                newRent.setTo_date(datePickerFromDate.getDate());
 
                 try {
-
+                    System.out.println(newRent);
                     boolean result = RentController.updateRent(newRent);
 
                     if (result) {
@@ -739,12 +715,13 @@ public class PanelRent extends JPanel {
                     BoadereDTO boadereDTO = new BoadereDTO(rent.getBoadere_id(), "", "", "");
                     System.out.println("..." + rent.getBoadere_id());
                     BoadereDTO boadere = BoadereController.searchBoadere(boadereDTO);
-                    Object[] rowData = {boadere.getName(),
+                    Object[] rowData = {
+                        boadere.getName(),
                         rent.getFrom_date(),
                         rent.getTo_date(),
                         rent.getMonthly_rent(),
-                        rent.getAdvance_fee()
-                    };
+                        rent.getAdvance_fee(),
+                        rent.getRent_id()};
 
                     dtm.addRow(rowData);
 

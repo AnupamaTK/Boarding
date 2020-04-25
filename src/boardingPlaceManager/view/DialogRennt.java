@@ -439,6 +439,11 @@ public class DialogRennt extends javax.swing.JDialog {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
+        if (datePickerFromDate.getDate().after(datePickerToDate.getDate())) {
+            JOptionPane.showMessageDialog(this, "To Date should be a date after from date");
+            return;
+        }
+
         String rent_id = getID();
         //String textFromDate = datePickerFromDate.getDate();
         //Date fromDate = new SimpleDateFormat("dd/MM/yyyy").parse(textFromDate);
