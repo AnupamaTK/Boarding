@@ -21,11 +21,9 @@ import boardingPlaceManager.common.IDGenarator;
 import boardingPlaceManager.controller.BoadereController;
 import boardingPlaceManager.controller.PropertyController;
 import boardingPlaceManager.controller.RentController;
-import boardingPlaceManager.controller.RentHouseController;
 import boardingPlaceManager.dto.BoadereDTO;
 import boardingPlaceManager.dto.PropertyDTO;
 import boardingPlaceManager.dto.RentDTO;
-import boardingPlaceManager.dto.RentHouseDTO;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,7 +37,7 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
  *
  * @author User
  */
-public class PanelRent extends JPanel {
+public class PanelPayments extends JPanel {
 
     /**
      * Creates new form panelRent
@@ -53,7 +51,7 @@ public class PanelRent extends JPanel {
     private Date fromDate = null;
     private Date toDate = null;
 
-    public PanelRent(PropertyDTO propertyDTO) throws SQLException {
+    public PanelPayments(PropertyDTO propertyDTO) throws SQLException {
 
         initComponents();
         tblRent.removeColumn(tblRent.getColumnModel().getColumn(5));
@@ -62,7 +60,7 @@ public class PanelRent extends JPanel {
         try {
             loadAllBoaderes();
         } catch (Exception ex) {
-            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
         }
         datePickerFromDate.setDate(null);
         datePickerToDate.setDate(null);
@@ -74,7 +72,7 @@ public class PanelRent extends JPanel {
         try {
 
         } catch (Exception ex) {
-            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         btnRefreshActionPerformed(null);
@@ -100,7 +98,7 @@ public class PanelRent extends JPanel {
                     rent = new RentDTO(selectedID, "", "", null, null, 0.0, 0.0);
 
                 } catch (ParseException ex) {
-                    Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             }
@@ -141,9 +139,9 @@ public class PanelRent extends JPanel {
             newID = IDGenarator.getNewID("property", "property_id", "p");
             return newID;
         } catch (SQLException ex) {
-            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -435,7 +433,7 @@ public class PanelRent extends JPanel {
         jLabel8.setBackground(new java.awt.Color(255, 255, 255));
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 23)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel8.setText("View Rent Details");
+        jLabel8.setText("View Payment Details");
 
         tblRent.setForeground(new java.awt.Color(51, 51, 51));
         tblRent.setModel(new javax.swing.table.DefaultTableModel(
@@ -565,10 +563,10 @@ public class PanelRent extends JPanel {
                 }
 
             } catch (Exception ex) {
-                Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (Exception ex) {
-            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnRemoveActionPerformed
 
@@ -625,13 +623,13 @@ public class PanelRent extends JPanel {
                     }
 
                 } catch (Exception ex) {
-                    Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } catch (Exception ex) {
-                Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (Exception ex) {
-            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -664,7 +662,7 @@ public class PanelRent extends JPanel {
             btnRefreshActionPerformed(null);
 
         } catch (Exception ex) {
-            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_cmbTypeItemStateChanged
 
@@ -703,7 +701,7 @@ public class PanelRent extends JPanel {
                 dtm.setRowCount(0);
             }
         } catch (Exception ex) {
-            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnRefreshActionPerformed
 
@@ -720,7 +718,7 @@ public class PanelRent extends JPanel {
             fromDate = new SimpleDateFormat("yyyy-MM-dd").parse(fromDateS);
             //        System.out.println("Date" + datePickerFromDate.getDate());
         } catch (ParseException ex) {
-            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_datePickerFromDateActionPerformed
 
@@ -737,7 +735,7 @@ public class PanelRent extends JPanel {
             toDate = new SimpleDateFormat("yyyy-MM-dd").parse(fromDateS);
             //        System.out.println("Date" + datePickerFromDate.getDate());
         } catch (ParseException ex) {
-            Logger.getLogger(PanelRent.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_datePickerToDateActionPerformed
 
@@ -800,15 +798,7 @@ public class PanelRent extends JPanel {
     }//GEN-LAST:event_txtadvanceFeeActionPerformed
 
     private void btnPaymentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaymentsActionPerformed
- try {
-            RentDTO rentHouse = RentController.searchRent(this.rent);
-            PropertyDTO property = new PropertyDTO(rentHouse.getProperty_id(), null, null, null);
-            property = PropertyController.searchProperty(property);
-            new DialogPayments(DashBoard.dashBoard, true, new PanelPayments(property)).setVisible(true);
-            //btnGoToItem.requestFocus();
-        } catch (Exception ex) {
-            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }//GEN-LAST:event_btnPaymentsActionPerformed
 
     private void btnPaymentsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPaymentsMouseExited

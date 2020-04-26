@@ -9,6 +9,7 @@ import boardingPlaceManager.common.IDGenarator;
 import boardingPlaceManager.controller.BoadereController;
 import boardingPlaceManager.controller.RentController;
 import boardingPlaceManager.dto.BoadereDTO;
+import boardingPlaceManager.dto.PaymentDTO;
 import boardingPlaceManager.dto.PropertyDTO;
 import boardingPlaceManager.dto.RentDTO;
 import javax.swing.JOptionPane;
@@ -22,7 +23,9 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  *
@@ -82,6 +85,20 @@ public class DialogRennt extends javax.swing.JDialog {
 
         try {
             newID = IDGenarator.getNewID("rent", "rent_id", "r");
+            return newID;
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public String getPaynebtID() {
+        String newID;
+
+        try {
+            newID = IDGenarator.getNewID("payment", "payment_id", "p");
             return newID;
         } catch (SQLException ex) {
             Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
@@ -315,17 +332,17 @@ public class DialogRennt extends javax.swing.JDialog {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 11, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(413, Short.MAX_VALUE)
+                .addContainerGap(425, Short.MAX_VALUE)
                 .addComponent(btnRefresh)
                 .addGap(229, 229, 229))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 683, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
@@ -445,17 +462,39 @@ public class DialogRennt extends javax.swing.JDialog {
         }
 
         String rent_id = getID();
-        //String textFromDate = datePickerFromDate.getDate();
-        //Date fromDate = new SimpleDateFormat("dd/MM/yyyy").parse(textFromDate);
-        //String textToDate = "";
-        //Date toDate = new SimpleDateFormat("dd/MM/yyyy").parse(textToDate);
-
         RentDTO rent = new RentDTO(rent_id, property.getProperty_id(), boadere.getNic(), datePickerFromDate.getDate(), datePickerToDate.getDate(), Double.parseDouble(txtMonthlyFee.getText()), Double.parseDouble(txtAdvanceFee.getText()));
 
         if (checkFields(rent_id) == false) {
             JOptionPane.showMessageDialog(this, "Can't add rent. All fields are required");
-
         }
+
+        ArrayList<PaymentDTO> payments = new ArrayList<>();
+        Date rentedDate = rent.getFrom_date();
+
+        Calendar c = new GregorianCalendar(rentedDate.getYear(), rentedDate.getMonth(), rentedDate.getDate());
+        Calendar rentedCalander = c;
+        int i = 0;
+        while (i < 15) {
+            c.add(Calendar.MONTH, i);
+           // System.out.println("Current date : " + (c.get(Calendar.MONTH) + 1)
+                   // + "-" + c.get(Calendar.DATE) + "-" + c.get(Calendar.YEAR));
+            
+            Date selectedDate=new Date();
+            selectedDate.setYear(c.getTime().getYear());
+            selectedDate.setMonth(c.getTime().getMonth());
+            selectedDate.setDate(c.getTime().getDate());
+            
+            PaymentDTO paymnet=new PaymentDTO(getPaynebtID(), rent_id, selectedDate, null, null, 0.0);
+            payments.add(paymnet);
+            //System.out.println("Milies"+selectedDate);
+            c.setTime(rentedDate);
+            i++;
+            
+        }
+        
+        System.out.println("Dates Dued"+payments.get(6).getDue_date());
+        
+
         try {
             boolean result = RentController.addRent(rent);
             if (result) {
