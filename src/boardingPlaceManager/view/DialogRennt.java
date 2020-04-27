@@ -7,6 +7,7 @@ package boardingPlaceManager.view;
 
 import boardingPlaceManager.common.IDGenarator;
 import boardingPlaceManager.controller.BoadereController;
+import boardingPlaceManager.controller.PaymentController;
 import boardingPlaceManager.controller.RentController;
 import boardingPlaceManager.dto.BoadereDTO;
 import boardingPlaceManager.dto.PaymentDTO;
@@ -14,6 +15,7 @@ import boardingPlaceManager.dto.PropertyDTO;
 import boardingPlaceManager.dto.RentDTO;
 import javax.swing.JOptionPane;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -23,9 +25,11 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import java.text.SimpleDateFormat;
+import static java.time.temporal.ChronoUnit.DAYS;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+//import static java.util.concurrent.TimeUnit.DAYS;
 
 /**
  *
@@ -85,20 +89,6 @@ public class DialogRennt extends javax.swing.JDialog {
 
         try {
             newID = IDGenarator.getNewID("rent", "rent_id", "r");
-            return newID;
-        } catch (SQLException ex) {
-            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-    
-    public String getPaynebtID() {
-        String newID;
-
-        try {
-            newID = IDGenarator.getNewID("payment", "payment_id", "p");
             return newID;
         } catch (SQLException ex) {
             Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
@@ -472,33 +462,58 @@ public class DialogRennt extends javax.swing.JDialog {
         Date rentedDate = rent.getFrom_date();
 
         Calendar c = new GregorianCalendar(rentedDate.getYear(), rentedDate.getMonth(), rentedDate.getDate());
-        Calendar rentedCalander = c;
-        int i = 0;
-        while (i < 15) {
-            c.add(Calendar.MONTH, i);
-           // System.out.println("Current date : " + (c.get(Calendar.MONTH) + 1)
-                   // + "-" + c.get(Calendar.DATE) + "-" + c.get(Calendar.YEAR));
-            
-            Date selectedDate=new Date();
-            selectedDate.setYear(c.getTime().getYear());
-            selectedDate.setMonth(c.getTime().getMonth());
-            selectedDate.setDate(c.getTime().getDate());
-            
-            PaymentDTO paymnet=new PaymentDTO(getPaynebtID(), rent_id, selectedDate, null, null, 0.0);
-            payments.add(paymnet);
-            //System.out.println("Milies"+selectedDate);
-            c.setTime(rentedDate);
-            i++;
-            
+        Calendar temp = new GregorianCalendar(rentedDate.getYear(), rentedDate.getMonth(), rentedDate.getDate());
+        int i = 1;
+        boolean flag = true;
+        //String pid = getPaymentID();
+        while (flag) {
+            try {
+                c.add(Calendar.MONTH, i);
+                temp.add(Calendar.MONTH, (i - 1));
+        
+
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date selectedDate = new Date(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE));
+                String dateString = dateFormat.format(selectedDate);
+                Date dueDate = dateFormat.parse(dateString); //date after a month
+
+                Date tempDate = new Date(temp.get(Calendar.YEAR), temp.get(Calendar.MONTH), temp.get(Calendar.DATE));
+                String tempDateString = dateFormat.format(tempDate);
+                Date dueTempDate = dateFormat.parse(tempDateString); //date before a month
+
+                long difference = (rent.getTo_date().getTime() - dueTempDate.getTime());
+                float diff = (difference / (1000 * 60 * 60 * 24));
+
+                //long diff1 = Math.round((rent.getTo_date().getTime() - dueTempDate.getTime()) / (double) 86400000);
+                System.out.println("Temp"+dueTempDate+"     "+dueDate + ":" + diff);
+                if (diff >= 28) {
+                    payments.add(new PaymentDTO(null, rent_id, dueDate, null, "Monthly Payment", 0.0));
+                } else {
+                    c.add(Calendar.MONTH, -1);
+                    temp.add(Calendar.MONTH, -1);
+
+                    Date selectedDate2 = new Date(temp.get(Calendar.YEAR), temp.get(Calendar.MONTH), temp.get(Calendar.DATE));
+                    String dateString2 = dateFormat.format(selectedDate2);
+                    Date dueDate2 = dateFormat.parse(dateString2);
+                    Double payment = rent.getMonthly_rent() * (diff / 30);
+                    payments.add(new PaymentDTO(null, rent_id, rent.getTo_date(), null, "Monthly Payment", payment));
+                    flag = false;
+                }
+                c.setTime(rentedDate);
+                temp.setTime(rentedDate);
+                i++;
+
+            } catch (ParseException ex) {
+                Logger.getLogger(DialogRennt.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
-        
-        System.out.println("Dates Dued"+payments.get(6).getDue_date());
-        
 
         try {
             boolean result = RentController.addRent(rent);
             if (result) {
-
+                System.out.println(payments);
+                PaymentController.addPayments(payments);
                 JOptionPane.showMessageDialog(this, "Rent has been successfully added");
                 btnRefreshActionPerformed(evt);
                 //clearAllTexts();
