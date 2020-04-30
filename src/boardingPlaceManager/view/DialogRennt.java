@@ -131,6 +131,7 @@ public class DialogRennt extends javax.swing.JDialog {
         btnAdd = new org.jdesktop.swingx.JXButton();
         datePickerToDate = new org.jdesktop.swingx.JXDatePicker();
         datePickerFromDate = new org.jdesktop.swingx.JXDatePicker();
+        chkAdvancePayments = new javax.swing.JCheckBox();
         btnRefresh = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -302,6 +303,9 @@ public class DialogRennt extends javax.swing.JDialog {
         });
         jPanel1.add(datePickerFromDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(567, 426, 120, -1));
 
+        chkAdvancePayments.setText("Advance Paid");
+        jPanel1.add(chkAdvancePayments, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 500, -1, -1));
+
         btnRefresh.setBackground(new java.awt.Color(204, 204, 204));
         btnRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Available Updates_20px.png"))); // NOI18N
         btnRefresh.setToolTipText("To Reload Table");
@@ -466,13 +470,17 @@ public class DialogRennt extends javax.swing.JDialog {
         int i = 1;
         boolean flag = true;
         //String pid = getPaymentID();
+
+        if (chkAdvancePayments.isSelected() == true) {
+            payments.add(new PaymentDTO(null, rent_id, rent.getFrom_date(), rent.getFrom_date(), "Advance Payment", rent.getAdvance_fee()));
+        }
         while (flag) {
             try {
                 c.add(Calendar.MONTH, i);
                 temp.add(Calendar.MONTH, (i - 1));
-        
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
                 Date selectedDate = new Date(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE));
                 String dateString = dateFormat.format(selectedDate);
                 Date dueDate = dateFormat.parse(dateString); //date after a month
@@ -485,7 +493,7 @@ public class DialogRennt extends javax.swing.JDialog {
                 float diff = (difference / (1000 * 60 * 60 * 24));
 
                 //long diff1 = Math.round((rent.getTo_date().getTime() - dueTempDate.getTime()) / (double) 86400000);
-                System.out.println("Temp"+dueTempDate+"     "+dueDate + ":" + diff);
+                //System.out.println("Last" + rent.getTo_date() + "Temp" + dueTempDate + "     " + dueDate + ":" + diff);
                 if (diff >= 28) {
                     payments.add(new PaymentDTO(null, rent_id, dueDate, null, "Monthly Payment", 0.0));
                 } else {
@@ -496,11 +504,15 @@ public class DialogRennt extends javax.swing.JDialog {
                     String dateString2 = dateFormat.format(selectedDate2);
                     Date dueDate2 = dateFormat.parse(dateString2);
                     Double payment = rent.getMonthly_rent() * (diff / 30);
-                    payments.add(new PaymentDTO(null, rent_id, rent.getTo_date(), null, "Monthly Payment", payment));
+                    if (payment >= 1000) {
+                        payments.add(new PaymentDTO(null, rent_id, rent.getTo_date(), null, "Monthly Payment", payment));
+                    }
                     flag = false;
                 }
-                c.setTime(rentedDate);
-                temp.setTime(rentedDate);
+                c = new GregorianCalendar(rentedDate.getYear(), rentedDate.getMonth(), rentedDate.getDate());
+                temp = new GregorianCalendar(rentedDate.getYear(), rentedDate.getMonth(), rentedDate.getDate());
+
+                // System.out.println("New c:" + c + "    +temp:" + temp);
                 i++;
 
             } catch (ParseException ex) {
@@ -580,6 +592,7 @@ public class DialogRennt extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXButton btnAdd;
     private javax.swing.JButton btnRefresh;
+    private javax.swing.JCheckBox chkAdvancePayments;
     private javax.swing.JComboBox<String> cmbBoadereNames;
     private org.jdesktop.swingx.JXDatePicker datePickerFromDate;
     private org.jdesktop.swingx.JXDatePicker datePickerToDate;

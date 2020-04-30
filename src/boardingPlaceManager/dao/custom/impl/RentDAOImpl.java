@@ -153,7 +153,7 @@ public class RentDAOImpl implements RentDAO {
     @Override
     public ArrayList<RentDTO> searchCurrentRents(String Property_id) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM rent where from_date < curDate()< to_date and property_id='" + Property_id + "'";
+        String sql = "SELECT * FROM rent where from_date <= curDate() and curdate() <= to_date and property_id='" + Property_id + "'";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 
