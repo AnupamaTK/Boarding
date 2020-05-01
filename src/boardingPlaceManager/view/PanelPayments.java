@@ -25,6 +25,7 @@ import boardingPlaceManager.dto.PaymentDTO;
 import boardingPlaceManager.dto.PaymentDTO;
 import boardingPlaceManager.dto.PropertyDTO;
 import boardingPlaceManager.dto.PaymentDTO;
+import boardingPlaceManager.dto.RentDTO;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,20 +50,21 @@ public class PanelPayments extends JPanel {
     private String rentNo;
     private boolean fieldsUpdated = false;
     private int type = 0;
-    private PropertyDTO property = null;
+    private RentDTO rent = null;
     private PaymentDTO payment = new PaymentDTO();
     private Date fromDate = null;
     private Date toDate = null;
     private TableColumn myTableColumn2;
     private TableColumn myTableColumn3;
 
-    public PanelPayments(PropertyDTO propertyDTO) throws SQLException {
+    public PanelPayments(RentDTO rentDTO) throws SQLException {
 
         initComponents();
         tblPayment.removeColumn(tblPayment.getColumnModel().getColumn(5));
         tblPayment.removeColumn(tblPayment.getColumnModel().getColumn(4));
 
-        property = propertyDTO;
+        rent = rentDTO;
+        rentNo=rent.getRent_id();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
 //        try {
 //            loadAllPayments();
@@ -95,14 +97,15 @@ public class PanelPayments extends JPanel {
                     }
 
                     selectedID = tblPayment.getModel().getValueAt(tblPayment.getSelectedRow(), 4).toString();
-                    rentNo = tblPayment.getModel().getValueAt(tblPayment.getSelectedRow(), 5).toString();
+                    //rentNo = tblPayment.getModel().getValueAt(tblPayment.getSelectedRow(), 5).toString();
                     //System.out.println(selectedID + "IDID");
-                   // cmbPaymentNames.setSelectedItem(tblPayment.getValueAt(tblPayment.getSelectedRow(), 0).toString());
+                    // cmbPaymentNames.setSelectedItem(tblPayment.getValueAt(tblPayment.getSelectedRow(), 0).toString());
                     txtDescription.setText(tblPayment.getValueAt(tblPayment.getSelectedRow(), 3).toString());
                     txtAmount.setText(tblPayment.getValueAt(tblPayment.getSelectedRow(), 4).toString());
                     datePickerDueDate.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(tblPayment.getValueAt(tblPayment.getSelectedRow(), 0).toString()));
                     datePickerPaymentDate.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(tblPayment.getValueAt(tblPayment.getSelectedRow(), 1).toString()));
 
+                    System.out.println("Rent No" + rentNo);
                     //payment = new PaymentDTO(selectedID, "", "", null, null, 0.0, 0.0);
 
                 } catch (ParseException ex) {
@@ -128,7 +131,6 @@ public class PanelPayments extends JPanel {
 //        cmbPaymentNames.setSelectedIndex(-1);
 //
 //    }
-
     private void clearAllTexts() {
 
         //txtBoardereName.setText("");
@@ -156,7 +158,7 @@ public class PanelPayments extends JPanel {
     //to check text field inputs are empty
     public boolean checkText() {
         System.out.println("Chk");
-        if (datePickerDueDate.getDate() == null ||  datePickerPaymentDate.getDate() == null || txtAmount.getText().isEmpty() || txtDescription.getText().isEmpty()) {
+        if (datePickerDueDate.getDate() == null || datePickerPaymentDate.getDate() == null || txtAmount.getText().isEmpty() || txtDescription.getText().isEmpty()) {
             return false;
         }
         return true;
@@ -653,7 +655,18 @@ public class PanelPayments extends JPanel {
     }//GEN-LAST:event_cmbTypeActionPerformed
 
     private void cmbTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTypeItemStateChanged
-//
+
+        if (cmbType.getSelectedIndex() == -1) {
+            type = 0;
+        } else if (cmbType.getSelectedIndex() == 0) {
+            type = 0;
+        } else if (cmbType.getSelectedIndex() == 1) {
+            type = 1;
+        } else if (cmbType.getSelectedIndex() == 2) {
+            type = 2;
+        } else if (cmbType.getSelectedIndex() == 3) {
+            type = 3;
+        }
 //        try {
 //            if (cmbType.getSelectedIndex() == -1) {
 //                tblPayment.getColumnModel().addColumn(myTableColumn2);
@@ -682,7 +695,7 @@ public class PanelPayments extends JPanel {
         try {
 //            ArrayList<PaymentDTO> allPayments = PaymentController.getAllPayments();
 //            if (type == 1 || type == 2 || type == 3) {
-            ArrayList<PaymentDTO> allPayments = PaymentController.searchPayment(property.getProperty_id(), type);
+            ArrayList<PaymentDTO> allPayments = PaymentController.searchPayment(rentNo, type);
 
             if (allPayments != null) {
                 DefaultTableModel dtm = (DefaultTableModel) tblPayment.getModel();
@@ -701,7 +714,7 @@ public class PanelPayments extends JPanel {
                         payment.getDue_date(),
                         payment.getPayment_date(),
                         payment.getDescription(),
-                        payment.getAmount(),       
+                        payment.getAmount(),
                         payment.getPayment_id(),
                         payment.getRent_no()
                     };

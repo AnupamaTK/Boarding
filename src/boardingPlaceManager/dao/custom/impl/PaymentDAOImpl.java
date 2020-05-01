@@ -122,8 +122,10 @@ public class PaymentDAOImpl implements PaymentDAO {
     
     @Override
     public ArrayList<PaymentDTO> searchByRentNo(String rent_no) throws Exception {
+        //System.out.println("PayDAOIMPL");
         Connection connection = DBConnection.getInstance().getConnection();
         String sql = "SELECT * FROM payment WHERE rent_no='" + rent_no + "'";
+       //String sql = "SELECT * FROM payment";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 
@@ -146,9 +148,9 @@ public class PaymentDAOImpl implements PaymentDAO {
     }
     
     @Override
-    public ArrayList<PaymentDTO> searchNotCompletedPayments(String property_id) throws Exception {
+    public ArrayList<PaymentDTO> searchNotCompletedPayments(String rent_no) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM payment where payment_date IS NOT NULL and due_date <= curDate()";
+        String sql = "SELECT * FROM payment where payment_date IS NOT NULL and due_date <= curDate() and rent_no='" + rent_no + "'";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 
@@ -173,9 +175,9 @@ public class PaymentDAOImpl implements PaymentDAO {
     }
     
     @Override
-    public ArrayList<PaymentDTO> searchCompletedPayments(String property_id) throws Exception {
+    public ArrayList<PaymentDTO> searchCompletedPayments(String rent_no) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM payment where payment_date IS NOT NULL and due_date <= curDate()";
+        String sql = "SELECT * FROM payment where payment_date IS NOT NULL and due_date <= curDate() rent_no='" + rent_no + "'";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 
@@ -202,7 +204,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     @Override
     public ArrayList<PaymentDTO> searchFuturePayments(String rent_no) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql =  "SELECT * FROM payment where payment_date IS NULL and due_date > curDate()";
+        String sql =  "SELECT * FROM payment where payment_date IS NULL and due_date > curDate() and rent_no='" + rent_no + "'";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 

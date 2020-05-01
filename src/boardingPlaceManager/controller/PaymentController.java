@@ -60,7 +60,7 @@ public class PaymentController {
     }
     
     public static ArrayList<PaymentDTO> searchPayment(String rent_no, Integer type) throws Exception {
-
+        //System.out.println("pay controller");
         ArrayList<PaymentDTO> searchedPayment = null;
         if (type == 0) {
             searchedPayment = paymentDAO.searchByRentNo(rent_no);

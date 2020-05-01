@@ -801,10 +801,10 @@ public class PanelRent extends JPanel {
 
     private void btnPaymentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaymentsActionPerformed
  try {
-            RentDTO rentHouse = RentController.searchRent(this.rent);
-            PropertyDTO property = new PropertyDTO(rentHouse.getProperty_id(), null, null, null);
-            property = PropertyController.searchProperty(property);
-            new DialogPayments(DashBoard.dashBoard, true, new PanelPayments(property)).setVisible(true);
+            //RentDTO rentHouse = RentController.searchRent(this.rent);
+            //PropertyDTO property = new PropertyDTO(rentHouse.getProperty_id(), null, null, null);
+            //property = PropertyController.searchProperty(property);
+            new DialogPayments(DashBoard.dashBoard, true, new PanelPayments(rent)).setVisible(true);
             //btnGoToItem.requestFocus();
         } catch (Exception ex) {
             Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
