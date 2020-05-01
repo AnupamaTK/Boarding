@@ -177,7 +177,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     @Override
     public ArrayList<PaymentDTO> searchCompletedPayments(String rent_no) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM payment where payment_date IS NOT NULL and due_date <= curDate() rent_no='" + rent_no + "'";
+        String sql = "SELECT * FROM payment where payment_date IS NOT NULL and rent_no='" + rent_no + "'";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 
