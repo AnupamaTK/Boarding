@@ -58,6 +58,21 @@ public class PaymentController {
         }
         return result;
     }
+    
+    public static ArrayList<PaymentDTO> searchPayment(String rent_no, Integer type) throws Exception {
+
+        ArrayList<PaymentDTO> searchedPayment = null;
+        if (type == 0) {
+            searchedPayment = paymentDAO.searchByRentNo(rent_no);
+        } else if (type == 1) {
+            searchedPayment = paymentDAO.searchCompletedPayments(rent_no);
+        } else if (type == 2) {
+            searchedPayment = paymentDAO.searchNotCompletedPayments(rent_no);
+        } else if (type == 3) {
+            searchedPayment = paymentDAO.searchFuturePayments(rent_no);
+        }
+        return searchedPayment;
+    }
 
 //    public static PaymentDTO searchByAddress(String address) throws Exception {
 //        PaymentDTO searchedPayment = paymentDAO.searchByAddress(address);

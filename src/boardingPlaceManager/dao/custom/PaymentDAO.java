@@ -16,13 +16,13 @@ import java.util.ArrayList;
  */
 public interface PaymentDAO extends SuperDAO<PaymentDTO> {
 
-//    public ArrayList<PaymentDTO> searchPastPayments(String property_id) throws Exception;
+   public ArrayList<PaymentDTO> searchCompletedPayments(String rent_no) throws Exception;
 //
-//    public ArrayList<PaymentDTO> searchCurrentPayments(String property_id) throws Exception;
+   public ArrayList<PaymentDTO> searchNotCompletedPayments(String rent_no) throws Exception;
 //
-//    public ArrayList<PaymentDTO> searchFuturePayments(String property_id) throws Exception;
+    public ArrayList<PaymentDTO> searchFuturePayments(String property_id) throws Exception;
 //
-//    public ArrayList<PaymentDTO> searchByPropertyId(String property_id) throws Exception;
+    public ArrayList<PaymentDTO> searchByRentNo(String rent_no) throws Exception;
 //    
 //    public PaymentDTO searchPaymentWithoutId(PaymentDTO rent) throws Exception;
 
