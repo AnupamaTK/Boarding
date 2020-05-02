@@ -28,7 +28,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     public boolean add(PaymentDTO payment) throws Exception {
 
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "INSERT INTO payment VALUES (?,?,?,?,?,?.?);";
+        String sql = "INSERT INTO payment VALUES (?,?,?,?,?,?,?);";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setObject(1, null);
         pstm.setObject(2, payment.getRent_no());
@@ -45,9 +45,9 @@ public class PaymentDAOImpl implements PaymentDAO {
     @Override
     public boolean update(PaymentDTO payment) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "UPDATE payment SET rent_no=?,due_date=?,payment_date=?,description=?,amount=? where payment_id=?";
+        String sql = "UPDATE payment SET rent_no=?,due_date=?,payment_date=?,description=?,due_amount=?,paid_amount=? where payment_id=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
-
+        System.out.println("LL"+payment.getDescription());
         pstm.setObject(1, payment.getRent_no());
         pstm.setObject(2, payment.getDue_date());
         pstm.setObject(3, payment.getPayment_date());

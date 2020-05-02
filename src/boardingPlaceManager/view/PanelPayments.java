@@ -132,6 +132,12 @@ public class PanelPayments extends JPanel {
                         btnClickToPay.setVisible(false);
                         hidePaymentDetails();
                     }
+                    payment=new PaymentDTO(selectedID, "", null, null, "", 0.0, 0.0);
+                    try {
+                        payment=PaymentController.searchPayment(payment);
+                    } catch (Exception ex) {
+                        Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
                 } catch (ParseException ex) {
                     Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
@@ -402,7 +408,7 @@ public class PanelPayments extends JPanel {
         jLabel9.setText("Description");
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 137, 37));
 
-        txtDescription.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtDescription.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtDescription.setPrompt("Description");
         txtDescription.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -880,36 +886,46 @@ public class PanelPayments extends JPanel {
         long millis = System.currentTimeMillis();
         java.sql.Date curDate = new java.sql.Date(millis);
         System.out.println(txtDescription.getText());
-        if (txtDescription.getText().equalsIgnoreCase("Monthly Payment") || txtDescription.getText().equalsIgnoreCase("Monthly Payment(Partial)")) {
+        Boolean flag = false;
+        String descriptionTemp="";
+        //if (txtDescription.getText().equalsIgnoreCase("Monthly Payment") || txtDescription.getText().equalsIgnoreCase("Monthly Payment(Partial)")) {
             try {
                 System.out.println("Rent MP" + rent);
 
-                if (Double.parseDouble(txtPayingAmount.getText()) < Double.parseDouble(txtDueAmount.getText())) {
-                    Double balance = Double.parseDouble(txtDescription.getText()) - Double.parseDouble(txtPayingAmount.getText());
-
-                    PaymentDTO newPayment = new PaymentDTO(null, rentNo, datePickerDueDate.getDate(), null, "Monthly Payment(Partial)", balance, 0.0);
+                if (Double.parseDouble(txtPayingAmount.getText()) < payment.getDueAmount()) {
+                    Double balance = payment.getDueAmount() - Double.parseDouble(txtPayingAmount.getText());
+                    descriptionTemp=payment.getDescription();
+                    PaymentDTO newPayment = new PaymentDTO(null, rentNo, datePickerDueDate.getDate(), null, descriptionTemp+"(Partial)", balance, 0.0);
                     try {
                         PaymentController.addPayment(newPayment);
                         PaymentDTO partialPayment = new PaymentDTO(selectedID, "", null, null, "", 0.0, 0.0);
                         partialPayment = PaymentController.searchPayment(partialPayment);
                         if (partialPayment != null) {
-                            partialPayment.setDescription("Monthly Payment(Partial)");
+                            // System.out.println("ppartial not null");
+                            partialPayment.setDescription(descriptionTemp+"(Partial)");
                             partialPayment.setPaidAmount(Double.parseDouble(txtPayingAmount.getText()));
                             partialPayment.setPayment_date(curDate);
+                            flag = PaymentController.updatePayment(partialPayment);
                         }
                     } catch (Exception ex) {
                         Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                } else {
+                    String description = descriptionTemp;
+                    if (txtDescription.getText().equalsIgnoreCase(descriptionTemp+"(Partial)")) {
+                        description = descriptionTemp+"(Partial)";
+                    }
+                    PaymentDTO payment = new PaymentDTO(selectedID, "", null, null, "", 0.0, 0.0);
+                    payment = PaymentController.searchPayment(payment);
+                    payment.setPaidAmount(Double.parseDouble(txtPayingAmount.getText()));
+                    payment.setPayment_date(curDate);
+                    payment.setDescription(description);
+                    flag = PaymentController.updatePayment(payment);
                 }
-                String description = "Monthly Payment";
-                if (txtDescription.getText().equalsIgnoreCase("Monthly Payment(Partial)")) {
-                    description = "Monthly Payment(Partial)";
+                if (flag == true) {
+                    JOptionPane.showMessageDialog(this, "Payment Successfull");
+                    btnRefreshActionPerformed(evt);
                 }
-                PaymentDTO payment = new PaymentDTO(selectedID, "", null, null, "", 0.0, 0.0);
-                payment = PaymentController.searchPayment(payment);
-                payment.setPaidAmount(Double.parseDouble(txtPayingAmount.getText()));
-                payment.setPayment_date(curDate);
-                payment.setDescription(description);
 
 //            PaymentDTO newPayment = new PaymentDTO(selectedID, "", null, null, "", 0.0, 0.0);
 //            try {
@@ -930,7 +946,7 @@ public class PanelPayments extends JPanel {
             } catch (Exception ex) {
                 Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+        
     }//GEN-LAST:event_btnPayActionPerformed
 
     private void btnPayMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPayMouseExited

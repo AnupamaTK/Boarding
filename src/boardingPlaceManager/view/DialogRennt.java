@@ -474,7 +474,7 @@ public class DialogRennt extends javax.swing.JDialog {
         if (chkAdvancePayments.isSelected() == true) {
             payments.add(new PaymentDTO(null, rent_id, rent.getFrom_date(), rent.getFrom_date(), "Advance Payment", rent.getAdvance_fee(),rent.getAdvance_fee()));
         }
-        payments.add(new PaymentDTO(null, rent_id, rent.getFrom_date(), null, "Advance Payment", rent.getAdvance_fee(),0.0));
+        //payments.add(new PaymentDTO(null, rent_id, rent.getFrom_date(), null, "Advance Payment", rent.getAdvance_fee(),0.0));
         while (flag) {
             try {
                 c.add(Calendar.MONTH, i);

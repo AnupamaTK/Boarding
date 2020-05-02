@@ -17,7 +17,7 @@ public class PaymentDTO extends SuperDTO{
     private String rent_no;
     private Date due_date;
     private Date payment_date;
-    private String description;
+    private String discription;
     private double dueAmount;
     private double paidAmount;
     
@@ -27,7 +27,7 @@ public class PaymentDTO extends SuperDTO{
 
     @Override
     public String toString() {
-        return "PaymentDTO{" + "payment_id=" + payment_id + ", rent_no=" + rent_no + ", due_date=" + due_date + ", payment_date=" + payment_date + ", description=" + description + ", dueAmount=" + dueAmount + ", paidAmount=" + paidAmount + '}';
+        return "PaymentDTO{" + "payment_id=" + payment_id + ", rent_no=" + rent_no + ", due_date=" + due_date + ", payment_date=" + payment_date + ", discription=" + discription + ", dueAmount=" + dueAmount + ", paidAmount=" + paidAmount + '}';
     }
 
     public double getPaidAmount() {
@@ -38,12 +38,12 @@ public class PaymentDTO extends SuperDTO{
         this.paidAmount = paidAmount;
     }
 
-    public PaymentDTO(String payment_id, String rent_no, Date due_date, Date payment_date, String description, double dueAmount, double paidAmount) {
+    public PaymentDTO(String payment_id, String rent_no, Date due_date, Date payment_date, String discription, double dueAmount, double paidAmount) {
         this.payment_id = payment_id;
         this.rent_no = rent_no;
         this.due_date = due_date;
         this.payment_date = payment_date;
-        this.description = description;
+        this.discription = discription;
         this.dueAmount = dueAmount;
         this.paidAmount = paidAmount;
     }
@@ -83,11 +83,11 @@ public class PaymentDTO extends SuperDTO{
     }
 
     public String getDescription() {
-        return description;
+        return discription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescription(String discription) {
+        this.discription = discription;
     }
 
     public double getDueAmount() {
