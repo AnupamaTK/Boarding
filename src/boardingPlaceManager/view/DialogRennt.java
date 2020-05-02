@@ -472,8 +472,9 @@ public class DialogRennt extends javax.swing.JDialog {
         //String pid = getPaymentID();
 
         if (chkAdvancePayments.isSelected() == true) {
-            payments.add(new PaymentDTO(null, rent_id, rent.getFrom_date(), rent.getFrom_date(), "Advance Payment", rent.getAdvance_fee()));
+            payments.add(new PaymentDTO(null, rent_id, rent.getFrom_date(), rent.getFrom_date(), "Advance Payment", rent.getAdvance_fee(),rent.getAdvance_fee()));
         }
+        payments.add(new PaymentDTO(null, rent_id, rent.getFrom_date(), null, "Advance Payment", rent.getAdvance_fee(),0.0));
         while (flag) {
             try {
                 c.add(Calendar.MONTH, i);
@@ -495,7 +496,7 @@ public class DialogRennt extends javax.swing.JDialog {
                 //long diff1 = Math.round((rent.getTo_date().getTime() - dueTempDate.getTime()) / (double) 86400000);
                 //System.out.println("Last" + rent.getTo_date() + "Temp" + dueTempDate + "     " + dueDate + ":" + diff);
                 if (diff >= 28) {
-                    payments.add(new PaymentDTO(null, rent_id, dueDate, null, "Monthly Payment", 0.0));
+                    payments.add(new PaymentDTO(null, rent_id, dueDate, null, "Monthly Payment", 0.0,0.0));
                 } else {
                     c.add(Calendar.MONTH, -1);
                     temp.add(Calendar.MONTH, -1);
@@ -505,7 +506,7 @@ public class DialogRennt extends javax.swing.JDialog {
                     Date dueDate2 = dateFormat.parse(dateString2);
                     Double payment = rent.getMonthly_rent() * (diff / 30);
                     if (payment >= 1000) {
-                        payments.add(new PaymentDTO(null, rent_id, rent.getTo_date(), null, "Monthly Payment", payment));
+                        payments.add(new PaymentDTO(null, rent_id, rent.getTo_date(), null, "Monthly Payment", payment,0.0));
                     }
                     flag = false;
                 }

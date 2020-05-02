@@ -18,20 +18,37 @@ public class PaymentDTO extends SuperDTO{
     private Date due_date;
     private Date payment_date;
     private String description;
-    private double amount;
+    private double dueAmount;
+    private double paidAmount;
     
 
     public PaymentDTO() {
     }
 
-    public PaymentDTO(String payment_id, String rent_no, Date due_date, Date payment_date, String description, double amount) {
+    @Override
+    public String toString() {
+        return "PaymentDTO{" + "payment_id=" + payment_id + ", rent_no=" + rent_no + ", due_date=" + due_date + ", payment_date=" + payment_date + ", description=" + description + ", dueAmount=" + dueAmount + ", paidAmount=" + paidAmount + '}';
+    }
+
+    public double getPaidAmount() {
+        return paidAmount;
+    }
+
+    public void setPaidAmount(double paidAmount) {
+        this.paidAmount = paidAmount;
+    }
+
+    public PaymentDTO(String payment_id, String rent_no, Date due_date, Date payment_date, String description, double dueAmount, double paidAmount) {
         this.payment_id = payment_id;
         this.rent_no = rent_no;
         this.due_date = due_date;
         this.payment_date = payment_date;
         this.description = description;
-        this.amount = amount;
+        this.dueAmount = dueAmount;
+        this.paidAmount = paidAmount;
     }
+
+   
 
     public String getPayment_id() {
         return payment_id;
@@ -73,18 +90,15 @@ public class PaymentDTO extends SuperDTO{
         this.description = description;
     }
 
-    public double getAmount() {
-        return amount;
+    public double getDueAmount() {
+        return dueAmount;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setDueAmount(double dueAmount) {
+        this.dueAmount = dueAmount;
     }
 
-    @Override
-    public String toString() {
-        return "PaymentDTO{" + "payment_id=" + payment_id + ", rent_no=" + rent_no + ", due_date=" + due_date + ", payment_date=" + payment_date + ", description=" + description + ", amount=" + amount + '}';
-    }
+    
 
     
 }

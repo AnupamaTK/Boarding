@@ -18,7 +18,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import boardingPlaceManager.common.IDGenarator;
-import boardingPlaceManager.controller.PaymentController;
+import boardingPlaceManager.controller.RentController;
 import boardingPlaceManager.controller.PropertyController;
 import boardingPlaceManager.controller.PaymentController;
 import boardingPlaceManager.dto.PaymentDTO;
@@ -60,10 +60,15 @@ public class PanelPayments extends JPanel {
     public PanelPayments(RentDTO rentDTO) throws SQLException {
 
         initComponents();
+        tblPayment.removeColumn(tblPayment.getColumnModel().getColumn(6));
         tblPayment.removeColumn(tblPayment.getColumnModel().getColumn(5));
-        tblPayment.removeColumn(tblPayment.getColumnModel().getColumn(4));
 
         rent = rentDTO;
+        try {
+            rent = RentController.searchRent(rent);
+        } catch (Exception ex) {
+            Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
+        }
         rentNo = rent.getRent_id();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
 //        try {
@@ -76,6 +81,7 @@ public class PanelPayments extends JPanel {
         fieldsUpdated = false;
         datePickerDueDate.setFormats("yyyy-MM-dd");
         datePickerPaymentDate.setFormats("yyyy-MM-dd");
+        hidePaymentDetails();
 
         //auto generate id
         try {
@@ -96,17 +102,29 @@ public class PanelPayments extends JPanel {
                         return;
                     }
 
-                    selectedID = tblPayment.getModel().getValueAt(tblPayment.getSelectedRow(), 4).toString();
+                    selectedID = tblPayment.getModel().getValueAt(tblPayment.getSelectedRow(), 5).toString();
                     //rentNo = tblPayment.getModel().getValueAt(tblPayment.getSelectedRow(), 5).toString();
                     //System.out.println(selectedID + "IDID");
                     // cmbPaymentNames.setSelectedItem(tblPayment.getValueAt(tblPayment.getSelectedRow(), 0).toString());
                     txtDescription.setText(tblPayment.getValueAt(tblPayment.getSelectedRow(), 2).toString());
-                    txtAmount.setText(tblPayment.getValueAt(tblPayment.getSelectedRow(), 3).toString());
-                    datePickerDueDate.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(tblPayment.getValueAt(tblPayment.getSelectedRow(), 0).toString()));
-                    datePickerPaymentDate.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(tblPayment.getValueAt(tblPayment.getSelectedRow(), 1).toString()));
+                    txtDueAmount.setText(tblPayment.getValueAt(tblPayment.getSelectedRow(), 3).toString());
+                    txtPaidAmount.setText(tblPayment.getValueAt(tblPayment.getSelectedRow(), 4).toString());
+                    if (tblPayment.getValueAt(tblPayment.getSelectedRow(), 0) != null) {
+                        datePickerDueDate.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(tblPayment.getValueAt(tblPayment.getSelectedRow(), 0).toString()));
+                    } else {
+                        // System.out.println("Null");
+                        datePickerDueDate.setDate(null);
+                    }
 
-                    System.out.println("Rent No" + rentNo);
-                    //payment = new PaymentDTO(selectedID, "", "", null, null, 0.0, 0.0);
+                    if (tblPayment.getValueAt(tblPayment.getSelectedRow(), 1) != null) {
+                        datePickerPaymentDate.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(tblPayment.getValueAt(tblPayment.getSelectedRow(), 1).toString()));
+                        btnClickToPay.setVisible(false);
+                        hidePaymentDetails();
+                    } else {
+                        //System.out.println("Null");
+                        datePickerPaymentDate.setDate(null);
+                        btnClickToPay.setVisible(true);
+                    }
 
                 } catch (ParseException ex) {
                     Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
@@ -138,7 +156,21 @@ public class PanelPayments extends JPanel {
         datePickerDueDate.setDate(null);
         datePickerPaymentDate.setDate(null);
         txtDescription.setText("");
-        txtAmount.setText("");
+        txtDueAmount.setText("");
+    }
+
+    private void hidePaymentDetails() {
+        btnPay.setVisible(false);
+        lblAmount.setVisible(false);
+        txtPayingAmount.setVisible(false);
+        //btnClickToPay.setVisible(false);
+    }
+
+    private void showPaymentDetails() {
+        btnPay.setVisible(true);
+        lblAmount.setVisible(true);
+        txtPayingAmount.setVisible(true);
+        //btnClickToPay.setVisible(true);
     }
 
     public String getID() {
@@ -158,7 +190,7 @@ public class PanelPayments extends JPanel {
     //to check text field inputs are empty
     public boolean checkText() {
         System.out.println("Chk");
-        if (datePickerDueDate.getDate() == null || datePickerPaymentDate.getDate() == null || txtAmount.getText().isEmpty() || txtDescription.getText().isEmpty()) {
+        if (datePickerDueDate.getDate() == null || datePickerPaymentDate.getDate() == null || txtDueAmount.getText().isEmpty() || txtDescription.getText().isEmpty()) {
             return false;
         }
         return true;
@@ -183,14 +215,18 @@ public class PanelPayments extends JPanel {
         jLabel5 = new javax.swing.JLabel();
         btnCancel = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        btnPayments = new org.jdesktop.swingx.JXButton();
+        btnPay = new org.jdesktop.swingx.JXButton();
         jLabel9 = new javax.swing.JLabel();
         txtDescription = new org.jdesktop.swingx.JXTextField();
         jLabel12 = new javax.swing.JLabel();
-        txtAmount = new org.jdesktop.swingx.JXTextField();
-        cmbPaymentNames = new javax.swing.JComboBox<>();
+        txtDueAmount = new org.jdesktop.swingx.JXTextField();
         datePickerPaymentDate = new org.jdesktop.swingx.JXDatePicker();
         datePickerDueDate = new org.jdesktop.swingx.JXDatePicker();
+        lblAmount = new javax.swing.JLabel();
+        txtPayingAmount = new org.jdesktop.swingx.JXTextField();
+        btnClickToPay = new org.jdesktop.swingx.JXButton();
+        jLabel13 = new javax.swing.JLabel();
+        txtPaidAmount = new org.jdesktop.swingx.JXTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -305,16 +341,16 @@ public class PanelPayments extends JPanel {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel7.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel7.setText("Boadere Name");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 130, 37));
+        jLabel7.setText("Payment Details");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 160, 37));
 
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 153, 153));
         jLabel5.setText("Due Date");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 181, -1, 37));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, -1, 37));
 
         btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Cancel 2_20px.png"))); // NOI18N
         btnCancel.setToolTipText("Click to clear fields");
@@ -328,36 +364,36 @@ public class PanelPayments extends JPanel {
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel10.setText("Paymet Date");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 236, -1, 37));
+        jLabel10.setText("Payment Date");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, -1, 37));
 
-        btnPayments.setBackground(new java.awt.Color(153, 153, 153));
-        btnPayments.setForeground(new java.awt.Color(255, 255, 255));
-        btnPayments.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Money_20px.png"))); // NOI18N
-        btnPayments.setText("Payments");
-        btnPayments.setToolTipText("Click to add");
-        btnPayments.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnPayments.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnPayments.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnPay.setBackground(new java.awt.Color(153, 153, 153));
+        btnPay.setForeground(new java.awt.Color(255, 255, 255));
+        btnPay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Money_20px.png"))); // NOI18N
+        btnPay.setText("Confirm Payment");
+        btnPay.setToolTipText("Click to add");
+        btnPay.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnPay.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnPay.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnPaymentsMouseEntered(evt);
+                btnPayMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnPaymentsMouseExited(evt);
+                btnPayMouseExited(evt);
             }
         });
-        btnPayments.addActionListener(new java.awt.event.ActionListener() {
+        btnPay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPaymentsActionPerformed(evt);
+                btnPayActionPerformed(evt);
             }
         });
-        jPanel1.add(btnPayments, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 420, 140, 32));
+        jPanel1.add(btnPay, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 550, 170, 32));
 
         jLabel9.setBackground(new java.awt.Color(255, 255, 255));
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 153, 153));
         jLabel9.setText("Description");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 137, 37));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 137, 37));
 
         txtDescription.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         txtDescription.setPrompt("Description");
@@ -371,47 +407,27 @@ public class PanelPayments extends JPanel {
                 txtDescriptionKeyPressed(evt);
             }
         });
-        jPanel1.add(txtDescription, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 290, 170, 30));
+        jPanel1.add(txtDescription, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 280, 170, 30));
 
         jLabel12.setBackground(new java.awt.Color(255, 255, 255));
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel12.setText("Amount");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 137, 37));
+        jLabel12.setText("Due Amount");
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 137, 37));
 
-        txtAmount.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        txtAmount.setPrompt("Amount");
-        txtAmount.addActionListener(new java.awt.event.ActionListener() {
+        txtDueAmount.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtDueAmount.setPrompt("Due Amount");
+        txtDueAmount.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtAmountActionPerformed(evt);
+                txtDueAmountActionPerformed(evt);
             }
         });
-        txtAmount.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtDueAmount.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtAmountKeyPressed(evt);
+                txtDueAmountKeyPressed(evt);
             }
         });
-        jPanel1.add(txtAmount, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 340, 170, 30));
-
-        cmbPaymentNames.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        cmbPaymentNames.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbPaymentNames.setToolTipText("Select Customer Name");
-        cmbPaymentNames.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cmbPaymentNamesItemStateChanged(evt);
-            }
-        });
-        cmbPaymentNames.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbPaymentNamesActionPerformed(evt);
-            }
-        });
-        cmbPaymentNames.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                cmbPaymentNamesPropertyChange(evt);
-            }
-        });
-        jPanel1.add(cmbPaymentNames, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 60, 170, -1));
+        jPanel1.add(txtDueAmount, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 330, 170, 30));
 
         datePickerPaymentDate.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -423,7 +439,7 @@ public class PanelPayments extends JPanel {
                 datePickerPaymentDateActionPerformed(evt);
             }
         });
-        jPanel1.add(datePickerPaymentDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 240, 170, -1));
+        jPanel1.add(datePickerPaymentDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 230, 170, -1));
 
         datePickerDueDate.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -435,7 +451,69 @@ public class PanelPayments extends JPanel {
                 datePickerDueDateActionPerformed(evt);
             }
         });
-        jPanel1.add(datePickerDueDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 190, 170, -1));
+        jPanel1.add(datePickerDueDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, 170, -1));
+
+        lblAmount.setBackground(new java.awt.Color(255, 255, 255));
+        lblAmount.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblAmount.setForeground(new java.awt.Color(0, 153, 153));
+        lblAmount.setText("Amount");
+        jPanel1.add(lblAmount, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 500, 137, 37));
+
+        txtPayingAmount.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtPayingAmount.setPrompt("Paying Amount");
+        txtPayingAmount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPayingAmountActionPerformed(evt);
+            }
+        });
+        txtPayingAmount.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPayingAmountKeyPressed(evt);
+            }
+        });
+        jPanel1.add(txtPayingAmount, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 500, 170, 30));
+
+        btnClickToPay.setBackground(new java.awt.Color(153, 153, 153));
+        btnClickToPay.setForeground(new java.awt.Color(255, 255, 255));
+        btnClickToPay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Money_20px.png"))); // NOI18N
+        btnClickToPay.setText("Click to add Payment");
+        btnClickToPay.setToolTipText("Click to add");
+        btnClickToPay.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnClickToPay.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnClickToPay.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnClickToPayMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnClickToPayMouseExited(evt);
+            }
+        });
+        btnClickToPay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClickToPayActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnClickToPay, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 430, 170, 32));
+
+        jLabel13.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(0, 153, 153));
+        jLabel13.setText("Paid Amount");
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 137, 37));
+
+        txtPaidAmount.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtPaidAmount.setPrompt("Paid Amount");
+        txtPaidAmount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPaidAmountActionPerformed(evt);
+            }
+        });
+        txtPaidAmount.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPaidAmountKeyPressed(evt);
+            }
+        });
+        jPanel1.add(txtPaidAmount, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 380, 170, 30));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -447,17 +525,17 @@ public class PanelPayments extends JPanel {
         tblPayment.setForeground(new java.awt.Color(51, 51, 51));
         tblPayment.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Due Date", "Payment Date", "Description", "Amount", "Payment ID", "Rent No"
+                "Due Date", "Payment Date", "Description", "Due Amount", "Paid Amount", "Payment ID", "Rent No"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, true, true, false, true, true
+                true, true, true, false, true, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -715,7 +793,8 @@ public class PanelPayments extends JPanel {
                         payment.getDue_date(),
                         payment.getPayment_date(),
                         payment.getDescription(),
-                        payment.getAmount(),
+                        payment.getDueAmount(),
+                        payment.getPaidAmount(),
                         payment.getPayment_id(),
                         payment.getRent_no()
                     };
@@ -774,51 +853,13 @@ public class PanelPayments extends JPanel {
         fieldsUpdated = true;
     }//GEN-LAST:event_datePickerPaymentDateMousePressed
 
-    private void cmbPaymentNamesPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_cmbPaymentNamesPropertyChange
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbPaymentNamesPropertyChange
-
-    private void cmbPaymentNamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPaymentNamesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbPaymentNamesActionPerformed
-
-    private void cmbPaymentNamesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbPaymentNamesItemStateChanged
+    private void txtDueAmountKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDueAmountKeyPressed
         fieldsUpdated = true;
-        //        try {
-        //            if (cmbPaymentNames.getSelectedIndex() == -1) {
-        //                return;
-        //            }
-        //
-        //            boadere = PaymentController.searchPaymentByName(new PaymentDTO(null, cmbPaymentNames.getSelectedItem().toString(), null, null));
+    }//GEN-LAST:event_txtDueAmountKeyPressed
 
-        //            if (boadere == null) {
-        //                return;
-        //            }
-        //
-        //            DefaultTableModel dtm = (DefaultTableModel) tblBoaders.getModel();
-        //            dtm.setRowCount(0);
-        //            Object[] rowData = {boadere.getNic(),
-        //                boadere.getName(),
-        //                boadere.getTel(),
-        //                boadere.getAddress()};
-        //
-        //            dtm.addRow(rowData);
-        //
-        //            /*itemDescriptionText.setText(item.getDescription());
-        //            qtyOnHandText.setText(item.getQtyOnHand() + "");
-        //            itemPriceText.setText(item.getUnitPrice().toPlainString());*/
-        //        } catch (Exception ex) {
-        //            Logger.getLogger(PanelPaymentHousee.class.getName()).log(Level.SEVERE, null, ex);
-        //        }
-    }//GEN-LAST:event_cmbPaymentNamesItemStateChanged
-
-    private void txtAmountKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAmountKeyPressed
-        fieldsUpdated = true;
-    }//GEN-LAST:event_txtAmountKeyPressed
-
-    private void txtAmountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAmountActionPerformed
+    private void txtDueAmountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDueAmountActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtAmountActionPerformed
+    }//GEN-LAST:event_txtDueAmountActionPerformed
 
     private void txtDescriptionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescriptionKeyPressed
         fieldsUpdated = true;
@@ -828,36 +869,98 @@ public class PanelPayments extends JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDescriptionActionPerformed
 
-    private void btnPaymentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaymentsActionPerformed
+    private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
+        long millis = System.currentTimeMillis();
+        java.sql.Date curDate = new java.sql.Date(millis);
+        System.out.println(txtDescription.getText());
+        if (txtDescription.getText().equalsIgnoreCase("Monthly Payment")) {
+            System.out.println("Rent MP" + rent);
 
-    }//GEN-LAST:event_btnPaymentsActionPerformed
+            if (Double.parseDouble(txtPayingAmount.getText()) < rent.getMonthly_rent()) {
+                Double balance = rent.getMonthly_rent() - Double.parseDouble(txtPayingAmount.getText());
 
-    private void btnPaymentsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPaymentsMouseExited
+                PaymentDTO newPayment = new PaymentDTO(null, rentNo, datePickerDueDate.getDate(), curDate, "Monthly Payment(Partial)", balance, 0.0);
+                try {
+                    PaymentController.addPayment(newPayment);
+                } catch (Exception ex) {
+                    Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            PaymentDTO newPayment = new PaymentDTO(selectedID, "", null, null, "", 0.0, 0.0);
+            try {
+                newPayment = PaymentController.searchPayment(payment);
+                if (newPayment != null) {
+                    newPayment.setDescription("Monthly Payment(Partial)");
+                    newPayment.setPayment_date(curDate);
+                    newPayment.setDueAmount(Double.parseDouble(txtPayingAmount.getText()));
+                    Boolean flag = PaymentController.addPayment(newPayment);
+                    if (flag == true) {
+                        JOptionPane.showMessageDialog(this, "Payment Successfull");
+                        btnRefreshActionPerformed(evt);
+                    }
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_btnPayActionPerformed
+
+    private void btnPayMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPayMouseExited
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnPaymentsMouseExited
+    }//GEN-LAST:event_btnPayMouseExited
 
-    private void btnPaymentsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPaymentsMouseEntered
+    private void btnPayMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPayMouseEntered
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnPaymentsMouseEntered
+    }//GEN-LAST:event_btnPayMouseEntered
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         clearAllTexts();
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    private void txtPayingAmountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPayingAmountActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPayingAmountActionPerformed
+
+    private void txtPayingAmountKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPayingAmountKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPayingAmountKeyPressed
+
+    private void btnClickToPayMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClickToPayMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnClickToPayMouseEntered
+
+    private void btnClickToPayMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClickToPayMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnClickToPayMouseExited
+
+    private void btnClickToPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClickToPayActionPerformed
+        showPaymentDetails();
+    }//GEN-LAST:event_btnClickToPayActionPerformed
+
+    private void txtPaidAmountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPaidAmountActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPaidAmountActionPerformed
+
+    private void txtPaidAmountKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPaidAmountKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPaidAmountKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
-    private org.jdesktop.swingx.JXButton btnPayments;
+    private org.jdesktop.swingx.JXButton btnClickToPay;
+    private org.jdesktop.swingx.JXButton btnPay;
     private javax.swing.JButton btnRefresh;
     private org.jdesktop.swingx.JXButton btnRemove;
     private org.jdesktop.swingx.JXButton btnUpdate;
-    private javax.swing.JComboBox<String> cmbPaymentNames;
     private javax.swing.JComboBox<String> cmbType;
     private org.jdesktop.swingx.JXDatePicker datePickerDueDate;
     private org.jdesktop.swingx.JXDatePicker datePickerPaymentDate;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -867,8 +970,11 @@ public class PanelPayments extends JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblAmount;
     private org.jdesktop.swingx.JXTable tblPayment;
-    private org.jdesktop.swingx.JXTextField txtAmount;
     private org.jdesktop.swingx.JXTextField txtDescription;
+    private org.jdesktop.swingx.JXTextField txtDueAmount;
+    private org.jdesktop.swingx.JXTextField txtPaidAmount;
+    private org.jdesktop.swingx.JXTextField txtPayingAmount;
     // End of variables declaration//GEN-END:variables
 }

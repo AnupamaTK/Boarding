@@ -28,14 +28,15 @@ public class PaymentDAOImpl implements PaymentDAO {
     public boolean add(PaymentDTO payment) throws Exception {
 
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "INSERT INTO payment VALUES (?,?,?,?,?,?);";
+        String sql = "INSERT INTO payment VALUES (?,?,?,?,?,?.?);";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setObject(1, null);
         pstm.setObject(2, payment.getRent_no());
         pstm.setObject(3, payment.getDue_date());
         pstm.setObject(4, payment.getPayment_date());
         pstm.setObject(5, payment.getDescription());
-        pstm.setObject(6, payment.getAmount());
+        pstm.setObject(6, payment.getDueAmount());
+        pstm.setObject(7, payment.getPaidAmount());
 
         int affectedRows = pstm.executeUpdate();
         return (affectedRows > 0);
@@ -51,8 +52,9 @@ public class PaymentDAOImpl implements PaymentDAO {
         pstm.setObject(2, payment.getDue_date());
         pstm.setObject(3, payment.getPayment_date());
         pstm.setObject(4, payment.getDescription());
-        pstm.setObject(5, payment.getAmount());
-        pstm.setObject(6, payment.getPayment_id());
+        pstm.setObject(5, payment.getDueAmount());
+        pstm.setObject(6, payment.getPaidAmount());
+        pstm.setObject(7, payment.getPayment_id());
 
         int affectedRows = pstm.executeUpdate();
         return (affectedRows > 0);
@@ -82,7 +84,8 @@ public class PaymentDAOImpl implements PaymentDAO {
                     rst.getDate(3),
                     rst.getDate(4),
                     rst.getString(5),
-                    rst.getDouble(6)
+                    rst.getDouble(6),
+                    rst.getDouble(7)
             );
         }
 
@@ -112,7 +115,8 @@ public class PaymentDAOImpl implements PaymentDAO {
                     rst.getDate(3),
                     rst.getDate(4),
                     rst.getString(5),
-                    rst.getDouble(6)
+                    rst.getDouble(6),
+                    rst.getDouble(7)
             ));
 
         }
@@ -141,7 +145,8 @@ public class PaymentDAOImpl implements PaymentDAO {
                     rst.getDate(3),
                     rst.getDate(4),
                     rst.getString(5),
-                    rst.getDouble(6)
+                    rst.getDouble(6),
+                    rst.getDouble(7)
             ));
         }
         return alPayments;
@@ -150,7 +155,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     @Override
     public ArrayList<PaymentDTO> searchNotCompletedPayments(String rent_no) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM payment where payment_date IS NOT NULL and due_date <= curDate() and rent_no='" + rent_no + "'";
+        String sql = "SELECT * FROM payment where due_amount <> paid_amount and due_date <= curDate() and rent_no='" + rent_no + "'";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 
@@ -166,7 +171,8 @@ public class PaymentDAOImpl implements PaymentDAO {
                     rst.getDate(3),
                     rst.getDate(4),
                     rst.getString(5),
-                    rst.getDouble(6)
+                    rst.getDouble(6),
+                    rst.getDouble(7)
             ));
 
         }
@@ -177,7 +183,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     @Override
     public ArrayList<PaymentDTO> searchCompletedPayments(String rent_no) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM payment where payment_date IS NOT NULL and rent_no='" + rent_no + "'";
+        String sql = "SELECT * FROM payment where due_amount=paid_amount and rent_no='" + rent_no + "'";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 
@@ -193,7 +199,8 @@ public class PaymentDAOImpl implements PaymentDAO {
                     rst.getDate(3),
                     rst.getDate(4),
                     rst.getString(5),
-                    rst.getDouble(6)
+                    rst.getDouble(6),
+                    rst.getDouble(7)
             ));
 
         }
@@ -204,7 +211,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     @Override
     public ArrayList<PaymentDTO> searchFuturePayments(String rent_no) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql =  "SELECT * FROM payment where payment_date IS NULL and due_date > curDate() and rent_no='" + rent_no + "'";
+        String sql =  "SELECT * FROM payment where due_amount <> paid_amount and due_date > curDate() and rent_no='" + rent_no + "'";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 
@@ -220,7 +227,8 @@ public class PaymentDAOImpl implements PaymentDAO {
                     rst.getDate(3),
                     rst.getDate(4),
                     rst.getString(5),
-                    rst.getDouble(6)
+                    rst.getDouble(6),
+                    rst.getDouble(7)
             ));
 
         }
