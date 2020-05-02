@@ -170,6 +170,7 @@ public class PanelPayments extends JPanel {
         datePickerPaymentDate.setDate(null);
         txtDescription.setText("");
         txtDueAmount.setText("");
+        txtPaidAmount.setText("");
     }
 
     private void hidePaymentDetails() {
@@ -639,7 +640,34 @@ public class PanelPayments extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+ int n = JOptionPane.showConfirmDialog(
+                this, "Confirm deletion?",
+                "An Inane Question",
+                JOptionPane.YES_NO_OPTION);
+        if (n == JOptionPane.NO_OPTION) {
+            return;
+        }
 
+        try {
+            //RentHouseDTO rentHouse = RentHouseController.searchByAddress(selectedAddress);
+
+            try {
+                boolean result = PaymentController.deletePayment(payment);
+
+                if (result) {
+                    JOptionPane.showMessageDialog(this, "Payment has been successfully removed");
+                    btnRefreshActionPerformed(evt);
+                    clearAllTexts();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Payment hasn't been removed");
+                }
+
+            } catch (Exception ex) {
+                Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
+        }
 //        int n = JOptionPane.showConfirmDialog(
 //                this, "Confirm deletion?",
 //                "An Inane Question",
