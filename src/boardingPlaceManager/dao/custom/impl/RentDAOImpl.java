@@ -174,7 +174,7 @@ public class RentDAOImpl implements RentDAO {
             ));
 
         }
-
+        System.out.println("In Current"+alRents);
         return alRents;
     }
 
@@ -202,12 +202,13 @@ public class RentDAOImpl implements RentDAO {
             ));
 
         }
-
+        System.out.println("In Future"+alRents);
         return alRents;
     }
 
     @Override
     public ArrayList<RentDTO> searchByPropertyId(String property_id) throws Exception {
+        System.out.println("RENTIMPL"+property_id);
         Connection connection = DBConnection.getInstance().getConnection();
         String sql = "SELECT * FROM rent WHERE property_id='" + property_id + "'";
         Statement stm = connection.createStatement();
@@ -229,6 +230,7 @@ public class RentDAOImpl implements RentDAO {
                     rst.getDouble(7)
             ));
         }
+        System.out.println("In All"+alRents);
         return alRents;
     }
     

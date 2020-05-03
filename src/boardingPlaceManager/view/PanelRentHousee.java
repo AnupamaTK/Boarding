@@ -778,6 +778,7 @@ public class PanelRentHousee extends JPanel {
             } else if (cmbType.getSelectedIndex() == 2) {
                 type = 2;
             }
+            System.out.println("Ststae changed");
             btnRefreshActionPerformed(null);
 
         } catch (Exception ex) {
@@ -810,6 +811,8 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_txtNoOfStoryActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+
+        DefaultTableModel dtm = (DefaultTableModel) tblRentHouse.getModel();
         try {
             ArrayList<RentHouseDTO> allRentHouses = RentHouseController.getAllRentHouses();
             if (type == 1) {
@@ -818,7 +821,6 @@ public class PanelRentHousee extends JPanel {
                 allRentHouses = RentHouseController.searchRented();
             }
             if (allRentHouses != null) {
-                DefaultTableModel dtm = (DefaultTableModel) tblRentHouse.getModel();
 
                 dtm.setRowCount(0);
 
@@ -837,6 +839,8 @@ public class PanelRentHousee extends JPanel {
 
                 }
 
+            } else {
+                dtm.setRowCount(0);
             }
         } catch (Exception ex) {
             Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
@@ -880,7 +884,7 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_btnViewRentDetailsMouseExited
 
     private void btnViewRentDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewRentDetailsActionPerformed
-   try {
+        try {
             RentHouseDTO rentHouse = RentHouseController.searchByAddress(selectedAddress);
             PropertyDTO property = new PropertyDTO(rentHouse.getProperty_id(), null, null, null);
             property = PropertyController.searchProperty(property);

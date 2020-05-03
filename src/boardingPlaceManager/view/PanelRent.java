@@ -648,6 +648,7 @@ public class PanelRent extends JPanel {
     }//GEN-LAST:event_cmbTypeActionPerformed
 
     private void cmbTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTypeItemStateChanged
+        System.out.println("State changed 1");
         try {
             if (cmbType.getSelectedIndex() == -1) {
                 type = 0;
@@ -661,6 +662,7 @@ public class PanelRent extends JPanel {
             } else if (cmbType.getSelectedIndex() == 3) {
                 type = 3;
             }
+            System.out.println("State changed");
             btnRefreshActionPerformed(null);
 
         } catch (Exception ex) {
@@ -669,6 +671,7 @@ public class PanelRent extends JPanel {
     }//GEN-LAST:event_cmbTypeItemStateChanged
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        System.out.println("Bgn Refresh");
         try {
 //            ArrayList<RentDTO> allRents = RentController.getAllRents();
 //            if (type == 1 || type == 2 || type == 3) {
