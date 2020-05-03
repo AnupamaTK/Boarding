@@ -147,21 +147,6 @@ public class PanelPayments extends JPanel {
         });
     }
 
-//    private void loadAllPayments() throws Exception {
-//        ArrayList<PaymentDTO> allPayments = PaymentController.getAllPayments();
-//        //cmbPaymentNames.removeAllItems();
-//
-//        if (allPayments == null) {
-//            return;
-//        }
-//        for (PaymentDTO payments : allPayments) {
-//
-//            //cmbPaymentNames.addItem(payments.get());
-//        }
-//        AutoCompleteDecorator.decorate(cmbPaymentNames);
-//        cmbPaymentNames.setSelectedIndex(-1);
-//
-//    }
     private void clearAllTexts() {
 
         //txtBoardereName.setText("");
@@ -641,7 +626,7 @@ public class PanelPayments extends JPanel {
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         int n = JOptionPane.showConfirmDialog(
-                this, "Confirm deletion?",
+                this, "Confirm deletion? Can't get Payment Details Back",
                 "An Inane Question",
                 JOptionPane.YES_NO_OPTION);
         if (n == JOptionPane.NO_OPTION) {
@@ -649,7 +634,6 @@ public class PanelPayments extends JPanel {
         }
 
         try {
-            //RentHouseDTO rentHouse = RentHouseController.searchByAddress(selectedAddress);
 
             try {
                 boolean result = PaymentController.deletePayment(payment);
@@ -668,34 +652,7 @@ public class PanelPayments extends JPanel {
         } catch (Exception ex) {
             Logger.getLogger(PanelRentHousee.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        int n = JOptionPane.showConfirmDialog(
-//                this, "Confirm deletion?",
-//                "An Inane Question",
-//                JOptionPane.YES_NO_OPTION);
-//        if (n == JOptionPane.NO_OPTION) {
-//            return;
-//        }
-//
-//        try {
-//            PaymentDTO payment = PaymentController.searchPayment(new PaymentDTO(selectedID, "", "", null, null, 0.0, 0.0));
-//
-//            try {
-//                boolean result = PaymentController.deletePayment(payment);
-//
-//                if (result) {
-//                    JOptionPane.showMessageDialog(this, "Payment has been successfully removed");
-//                    btnRefreshActionPerformed(evt);
-//                    clearAllTexts();
-//                } else {
-//                    JOptionPane.showMessageDialog(this, "Payment hasn't been removed");
-//                }
-//
-//            } catch (Exception ex) {
-//                Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        } catch (Exception ex) {
-//            Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnRemoveMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRemoveMouseExited
@@ -729,7 +686,7 @@ public class PanelPayments extends JPanel {
             newPayment.setDue_date(datePickerDueDate.getDate());
             if (newPayment.getPaidAmount() != 0.0) {
                 newPayment.setPayment_date(datePickerDueDate.getDate());
-            }else{
+            } else {
                 newPayment.setPayment_date(null);
             }
 
@@ -742,9 +699,32 @@ public class PanelPayments extends JPanel {
                     newPayment.setDescription(newPayment.getDescription() + "(Partial)");
                     PaymentDTO partialPayment = new PaymentDTO("", rentNo, payment.getDue_date(), null, newPayment.getDescription(), newPayment.getDueAmount() - newPayment.getPaidAmount(), ABORT);
                     PaymentController.addPayment(partialPayment);
-                    return;
+                    //return;
                 }
             }
+            Double balance = 0.0;
+            Boolean extraPayment = false;
+            if (Double.parseDouble(txtDueAmount.getText()) != payment.getDueAmount()) {
+                balance = payment.getDueAmount() - Double.parseDouble(txtDueAmount.getText());
+                extraPayment = true;
+            }
+            if (Double.parseDouble(txtPaidAmount.getText()) != payment.getPaidAmount()) {
+                balance += payment.getPaidAmount() - Double.parseDouble(txtPaidAmount.getText());
+                extraPayment = true;
+            }
+            if (extraPayment == true) {
+                int n = JOptionPane.showConfirmDialog(
+                        this, "Want to Balance the Changed Amounts?",
+                        "An Inane Question",
+                        JOptionPane.YES_NO_OPTION);
+                if (n == JOptionPane.YES_OPTION) {
+                    //newPayment.setDescription(newPayment.getDescription() + "(Partial)");
+                    PaymentDTO partialPayment = new PaymentDTO("", rentNo, payment.getDue_date(), null, "Payments Balancing", balance, 0.0);
+                    PaymentController.addPayment(partialPayment);
+                    //return;
+                }
+            }
+
             Boolean flag = PaymentController.updatePayment(newPayment);
             if (flag == true) {
 
