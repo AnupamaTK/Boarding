@@ -566,7 +566,9 @@ public class PanelRent extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
-
+        if (selectedID == null) {
+            JOptionPane.showMessageDialog(this, "Select a Rent First");
+        }
         int n = JOptionPane.showConfirmDialog(
                 this, "Confirm deletion?",
                 "An Inane Question",
@@ -828,6 +830,10 @@ public class PanelRent extends JPanel {
     }//GEN-LAST:event_txtadvanceFeeActionPerformed
 
     private void btnPaymentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaymentsActionPerformed
+        if (selectedID == null) {
+            JOptionPane.showMessageDialog(this, "Select a Rent House First");
+            return;
+        }
         try {
             //RentDTO rentHouse = RentController.searchRent(this.rent);
             //PropertyDTO property = new PropertyDTO(rentHouse.getProperty_id(), null, null, null);

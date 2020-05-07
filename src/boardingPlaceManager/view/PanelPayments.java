@@ -46,7 +46,7 @@ public class PanelPayments extends JPanel {
      * Creates new form panelPayment
      */
     private Color darkGreen = new Color(102, 102, 102);
-    private int selectedID;
+    private int selectedID = 0;
     private String rentNo;
     private boolean fieldsUpdated = false;
     private int type = 0;
@@ -672,6 +672,10 @@ public class PanelPayments extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+        if (selectedID == 0) {
+            JOptionPane.showMessageDialog(this, "Select a Payment First");
+        }
+
         int n = JOptionPane.showConfirmDialog(
                 this, "Confirm deletion? Can't get Payment Details Back",
                 "An Inane Question",
@@ -1126,6 +1130,7 @@ public class PanelPayments extends JPanel {
         clearAllTexts();
         btnClickToPay.setVisible(false);
         hidePaymentDetails();
+        selectedID = 0;
 
     }//GEN-LAST:event_btnClearFieldsActionPerformed
 

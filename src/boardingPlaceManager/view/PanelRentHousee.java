@@ -42,6 +42,8 @@ public class PanelRentHousee extends JPanel {
     public PanelRentHousee() throws SQLException {
         // super(parent, modal);
         initComponents();
+        btnAddRent.setVisible(false);
+        btnViewRentDetails.setVisible(false);
         //auto generate id
 
         try {
@@ -62,7 +64,8 @@ public class PanelRentHousee extends JPanel {
                 if (tblRentHouse.getSelectedRow() == -1) {
                     return;
                 }
-
+                btnAddRent.setVisible(true);
+                btnViewRentDetails.setVisible(true);
                 txtNoOfRooms.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 0).toString());
                 txtNoOfBathRooms.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 1).toString());
                 txtNoOfStory.setText(tblRentHouse.getValueAt(tblRentHouse.getSelectedRow(), 2).toString());
@@ -173,6 +176,7 @@ public class PanelRentHousee extends JPanel {
         btnAdd = new org.jdesktop.swingx.JXButton();
         btnUpdate = new org.jdesktop.swingx.JXButton();
         btnRemove = new org.jdesktop.swingx.JXButton();
+        btnClearFields = new org.jdesktop.swingx.JXButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -197,6 +201,7 @@ public class PanelRentHousee extends JPanel {
         cmbType = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(153, 153, 153));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(0, 153, 153));
 
@@ -216,11 +221,11 @@ public class PanelRentHousee extends JPanel {
         btnAdd.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnAdd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnAddMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnAddMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnAddMouseExited(evt);
             }
         });
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -237,11 +242,11 @@ public class PanelRentHousee extends JPanel {
         btnUpdate.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnUpdate.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnUpdateMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnUpdateMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnUpdateMouseExited(evt);
             }
         });
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
@@ -271,21 +276,44 @@ public class PanelRentHousee extends JPanel {
             }
         });
 
+        btnClearFields.setBackground(new java.awt.Color(102, 102, 102));
+        btnClearFields.setForeground(new java.awt.Color(255, 255, 255));
+        btnClearFields.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Erase_20px.png"))); // NOI18N
+        btnClearFields.setText("Clear Fields");
+        btnClearFields.setToolTipText("Click to Clear Fields");
+        btnClearFields.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnClearFields.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnClearFields.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnClearFieldsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnClearFieldsMouseExited(evt);
+            }
+        });
+        btnClearFields.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearFieldsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btnRemove, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(2, 2, 2))
-            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel11)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnClearFields, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(btnRemove, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(2, 2, 2))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,7 +326,9 @@ public class PanelRentHousee extends JPanel {
                 .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(321, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnClearFields, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(273, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -312,11 +342,13 @@ public class PanelRentHousee extends JPanel {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(895, 0, -1, 744));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -517,6 +549,8 @@ public class PanelRentHousee extends JPanel {
         });
         jPanel1.add(txtMonthlyRent, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 400, 170, 30));
 
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(564, 18, 325, 655));
+
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel8.setBackground(new java.awt.Color(255, 255, 255));
@@ -602,33 +636,15 @@ public class PanelRentHousee extends JPanel {
                 .addGap(34, 34, 34))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(71, Short.MAX_VALUE))
-        );
+        add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 18, -1, 655));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
 
+        if (selectedAddress == null) {
+            JOptionPane.showMessageDialog(this, "Select a Rent House First");
+            return;
+        }
         int n = JOptionPane.showConfirmDialog(
                 this, "Confirm deletion?",
                 "An Inane Question",
@@ -884,6 +900,10 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_btnViewRentDetailsMouseExited
 
     private void btnViewRentDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewRentDetailsActionPerformed
+        if (selectedAddress == null) {
+            JOptionPane.showMessageDialog(this, "Select a Rent House First");
+            return;
+        }
         try {
             RentHouseDTO rentHouse = RentHouseController.searchByAddress(selectedAddress);
             PropertyDTO property = new PropertyDTO(rentHouse.getProperty_id(), null, null, null);
@@ -904,6 +924,10 @@ public class PanelRentHousee extends JPanel {
     }//GEN-LAST:event_btnAddRentMouseEntered
 
     private void btnAddRentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddRentActionPerformed
+        if (selectedAddress == null) {
+            JOptionPane.showMessageDialog(this, "Select a Rent House First");
+            return;
+        }
         try {
             RentHouseDTO rentHouse = RentHouseController.searchByAddress(selectedAddress);
             PropertyDTO property = new PropertyDTO(rentHouse.getProperty_id(), null, null, null);
@@ -931,11 +955,27 @@ public class PanelRentHousee extends JPanel {
         fieldsUpdated = true;
     }//GEN-LAST:event_txtMonthlyRentKeyPressed
 
+    private void btnClearFieldsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClearFieldsMouseExited
+        btnRemove.setBackground(darkGreen);
+    }//GEN-LAST:event_btnClearFieldsMouseExited
+
+    private void btnClearFieldsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClearFieldsMouseEntered
+        btnRemove.setBackground(Color.lightGray);
+    }//GEN-LAST:event_btnClearFieldsMouseEntered
+
+    private void btnClearFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearFieldsActionPerformed
+        selectedAddress = null;
+        clearAllTexts();
+        btnAddRent.setVisible(false);
+        btnViewRentDetails.setVisible(false);
+    }//GEN-LAST:event_btnClearFieldsActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXButton btnAdd;
     private org.jdesktop.swingx.JXButton btnAddRent;
     private javax.swing.JButton btnCancel;
+    private org.jdesktop.swingx.JXButton btnClearFields;
     private javax.swing.JButton btnRefresh;
     private org.jdesktop.swingx.JXButton btnRemove;
     private org.jdesktop.swingx.JXButton btnUpdate;
