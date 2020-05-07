@@ -11,6 +11,7 @@ import boardingPlaceManager.dao.custom.PaymentDAO;
 import boardingPlaceManager.dao.custom.PropertyDAO;
 import boardingPlaceManager.dto.PaymentDTO;
 import boardingPlaceManager.dto.PropertyDTO;
+import java.util.Date;
 
 /**
  *
@@ -72,6 +73,10 @@ public class PaymentController {
             searchedPayment = paymentDAO.searchFuturePayments(rent_no);
         }
         return searchedPayment;
+    }
+    
+    public static PaymentDTO getNearestPayment(String rent_no, Date date, int payment_id) throws Exception {
+        return paymentDAO.getNearestPayment(rent_no, date, payment_id);
     }
 
 //    public static PaymentDTO searchByAddress(String address) throws Exception {

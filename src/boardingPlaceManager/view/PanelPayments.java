@@ -46,7 +46,7 @@ public class PanelPayments extends JPanel {
      * Creates new form panelPayment
      */
     private Color darkGreen = new Color(102, 102, 102);
-    private String selectedID;
+    private int selectedID;
     private String rentNo;
     private boolean fieldsUpdated = false;
     private int type = 0;
@@ -102,7 +102,7 @@ public class PanelPayments extends JPanel {
                         return;
                     }
 
-                    selectedID = tblPayment.getModel().getValueAt(tblPayment.getSelectedRow(), 5).toString();
+                    selectedID = Integer.parseInt(tblPayment.getModel().getValueAt(tblPayment.getSelectedRow(), 5).toString());
                     //rentNo = tblPayment.getModel().getValueAt(tblPayment.getSelectedRow(), 5).toString();
                     //System.out.println(selectedID + "IDID");
                     // cmbPaymentNames.setSelectedItem(tblPayment.getValueAt(tblPayment.getSelectedRow(), 0).toString());
@@ -690,14 +690,14 @@ public class PanelPayments extends JPanel {
                 newPayment.setPayment_date(null);
             }
 
-            if (!payment.getDescription().contains("Patial") && Double.parseDouble(txtDueAmount.getText()) > Double.parseDouble(txtPaidAmount.getText()) && Double.parseDouble(txtPaidAmount.getText()) != 0.0) {
+            if (!payment.getDescription().contains("Partial") && Double.parseDouble(txtDueAmount.getText()) > Double.parseDouble(txtPaidAmount.getText()) && Double.parseDouble(txtPaidAmount.getText()) == 0.0) {
                 int n = JOptionPane.showConfirmDialog(
                         this, "Want to add Partial Payments?",
                         "An Inane Question",
                         JOptionPane.YES_NO_OPTION);
                 if (n == JOptionPane.YES_OPTION) {
                     newPayment.setDescription(newPayment.getDescription() + "(Partial)");
-                    PaymentDTO partialPayment = new PaymentDTO("", rentNo, payment.getDue_date(), null, newPayment.getDescription(), newPayment.getDueAmount() - newPayment.getPaidAmount(), ABORT);
+                    PaymentDTO partialPayment = new PaymentDTO(0, rentNo, payment.getDue_date(), null, newPayment.getDescription(), newPayment.getDueAmount() - newPayment.getPaidAmount(), ABORT);
                     PaymentController.addPayment(partialPayment);
                     //return;
                 }
@@ -719,8 +719,73 @@ public class PanelPayments extends JPanel {
                         JOptionPane.YES_NO_OPTION);
                 if (n == JOptionPane.YES_OPTION) {
                     //newPayment.setDescription(newPayment.getDescription() + "(Partial)");
-                    PaymentDTO partialPayment = new PaymentDTO("", rentNo, payment.getDue_date(), null, "Payments Balancing", balance, 0.0);
-                    PaymentController.addPayment(partialPayment);
+
+                    int m = JOptionPane.showConfirmDialog(
+                            this, "Want to add the balance to a upcoming payment?",
+                            "An Inane Question",
+                            JOptionPane.YES_NO_OPTION);
+                    if (m == JOptionPane.NO_OPTION) {
+                        //newPayment.setDescription(newPayment.getDescription() + "(Partial)");
+                        PaymentDTO partialPayment = new PaymentDTO(0, rentNo, payment.getDue_date(), null, datePickerDueDate.getDate().toString() + "-Payments Balancing", balance, 0.0);
+                        PaymentController.addPayment(partialPayment);
+                        //return;
+                    }
+                    if (m == JOptionPane.YES_OPTION) {
+                        //newPayment.setDescription(newPayment.getDescription() + "(Partial)");
+                        Double paymentAmount = 0.0;
+                        while (balance < 0.0) {
+                            PaymentDTO partialPayment = PaymentController.getNearestPayment(rentNo, payment.getDue_date(), payment.getPayment_id());
+                            if (partialPayment != null) {
+                                if (partialPayment.getDueAmount() > (-1*balance)) {
+                                    paymentAmount = partialPayment.getDueAmount() + balance;
+                                    balance = 0.0;
+                                } else {
+                                    //paymentAmount = (-1 * balance) - partialPayment.getDueAmount();
+                                    balance = partialPayment.getDueAmount() + balance;
+                                    paymentAmount=balance;
+                                }
+                                if (!partialPayment.getDescription().equalsIgnoreCase("balance")) {
+                                    partialPayment.setDescription(partialPayment.getDescription() + "+Payment Balancing");
+                                }
+                                partialPayment.setDueAmount(paymentAmount);
+
+                                if (partialPayment.getDueAmount() == 0) {
+                                    PaymentController.deletePayment(partialPayment);
+                                    //return;
+                                } else {
+                                    PaymentController.updatePayment(partialPayment);
+                                }
+                                //partialPayment.set
+                                //System.out.println(partialPayment + "Partial Payment GOT");
+                                //PaymentDTO changedPayment = new PaymentDTO(0, rentNo, payment.getDue_date(), null, datePickerDueDate.getDate().toString() + "-Payments Balancing", balance, 0.0);
+
+                            } else { // no suitable paments to balance
+                                PaymentDTO newPaymentBalance = new PaymentDTO(0, rentNo, payment.getDue_date(), null, datePickerDueDate.getDate().toString() + "-Payments Balancing", balance, 0.0);
+                                PaymentController.addPayment(newPaymentBalance);
+                                balance = 0.0;
+                            }
+                            System.out.println("Balance in LOop" + balance);
+                        }
+                        if (balance > 0) {
+                            PaymentDTO partialPayment = PaymentController.getNearestPayment(rentNo, payment.getDue_date(), payment.getPayment_id());
+                            if (partialPayment != null) {
+                                if (!partialPayment.getDescription().equalsIgnoreCase("balance")) {
+                                    partialPayment.setDescription(partialPayment.getDescription() + "+Payment Balancing");
+                                }
+                                partialPayment.setDueAmount(partialPayment.getDueAmount() + balance);
+                                PaymentController.updatePayment(partialPayment);
+                            } else {
+                                PaymentDTO newPaymentBalance = new PaymentDTO(0, rentNo, payment.getDue_date(), null, datePickerDueDate.getDate().toString() + "-Payments Balancing", balance, 0.0);
+                                PaymentController.addPayment(newPaymentBalance);
+
+                            }
+                        }
+//                       PaymentController.addPayment(partialPayment);
+//                        //return;
+
+                    }
+                    //PaymentDTO partialPayment = new PaymentDTO("", rentNo, payment.getDue_date(), null, datePickerDueDate.getDate().toString() + "-Payments Balancing", balance, 0.0);
+                    // PaymentController.addPayment(partialPayment);
                     //return;
                 }
             }
@@ -953,7 +1018,7 @@ public class PanelPayments extends JPanel {
                 if (!descriptionTemp.contains("Partial")) {
                     descriptionTemp1 = descriptionTemp + "(Partial)";
                 }
-                PaymentDTO newPayment = new PaymentDTO(null, rentNo, datePickerDueDate.getDate(), null, descriptionTemp1, balance, 0.0);
+                PaymentDTO newPayment = new PaymentDTO(0, rentNo, datePickerDueDate.getDate(), null, descriptionTemp1, balance, 0.0);
                 try {
                     PaymentController.addPayment(newPayment);
                     PaymentDTO partialPayment = new PaymentDTO(selectedID, "", null, null, "", 0.0, 0.0);

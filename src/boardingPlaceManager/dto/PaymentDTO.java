@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class PaymentDTO extends SuperDTO{
     
-    private String payment_id;
+    private int payment_id;
     private String rent_no;
     private Date due_date;
     private Date payment_date;
@@ -38,7 +38,7 @@ public class PaymentDTO extends SuperDTO{
         this.paidAmount = paidAmount;
     }
 
-    public PaymentDTO(String payment_id, String rent_no, Date due_date, Date payment_date, String discription, double dueAmount, double paidAmount) {
+    public PaymentDTO(int payment_id, String rent_no, Date due_date, Date payment_date, String discription, double dueAmount, double paidAmount) {
         this.payment_id = payment_id;
         this.rent_no = rent_no;
         this.due_date = due_date;
@@ -50,11 +50,11 @@ public class PaymentDTO extends SuperDTO{
 
    
 
-    public String getPayment_id() {
+    public int getPayment_id() {
         return payment_id;
     }
 
-    public void setPayment_id(String payment_id) {
+    public void setPayment_id(int payment_id) {
         this.payment_id = payment_id;
     }
 

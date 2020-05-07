@@ -17,6 +17,7 @@ import boardingPlaceManager.dao.custom.PaymentDAO;
 import boardingPlaceManager.db.DBConnection;
 import boardingPlaceManager.dto.PaymentDTO;
 import boardingPlaceManager.dao.custom.impl.PropertyDAOImpl;
+import java.util.Date;
 
 //*
 // *
@@ -47,7 +48,7 @@ public class PaymentDAOImpl implements PaymentDAO {
         Connection connection = DBConnection.getInstance().getConnection();
         String sql = "UPDATE payment SET rent_no=?,due_date=?,payment_date=?,description=?,due_amount=?,paid_amount=? where payment_id=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
-        System.out.println("LL"+payment.getDescription());
+        System.out.println("LL" + payment.getDescription());
         pstm.setObject(1, payment.getRent_no());
         pstm.setObject(2, payment.getDue_date());
         pstm.setObject(3, payment.getPayment_date());
@@ -73,13 +74,13 @@ public class PaymentDAOImpl implements PaymentDAO {
     @Override
     public PaymentDTO search(PaymentDTO payment) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM payment WHERE payment_id='" + payment.getPayment_id()+ "'";
+        String sql = "SELECT * FROM payment WHERE payment_id='" + payment.getPayment_id() + "'";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 
         if (rst.next()) {
             return new PaymentDTO(
-                    rst.getString(1),
+                    rst.getInt(1),
                     rst.getString(2),
                     rst.getDate(3),
                     rst.getDate(4),
@@ -110,7 +111,7 @@ public class PaymentDAOImpl implements PaymentDAO {
             }
 
             alPayments.add(new PaymentDTO(
-                    rst.getString(1),
+                    rst.getInt(1),
                     rst.getString(2),
                     rst.getDate(3),
                     rst.getDate(4),
@@ -123,13 +124,13 @@ public class PaymentDAOImpl implements PaymentDAO {
 
         return alPayments;
     }
-    
+
     @Override
     public ArrayList<PaymentDTO> searchByRentNo(String rent_no) throws Exception {
         //System.out.println("PayDAOIMPL");
         Connection connection = DBConnection.getInstance().getConnection();
         String sql = "SELECT * FROM payment WHERE rent_no='" + rent_no + "'";
-       //String sql = "SELECT * FROM payment";
+        //String sql = "SELECT * FROM payment";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 
@@ -140,7 +141,7 @@ public class PaymentDAOImpl implements PaymentDAO {
             }
 
             alPayments.add(new PaymentDTO(
-                    rst.getString(1),
+                    rst.getInt(1),
                     rst.getString(2),
                     rst.getDate(3),
                     rst.getDate(4),
@@ -151,7 +152,7 @@ public class PaymentDAOImpl implements PaymentDAO {
         }
         return alPayments;
     }
-    
+
     @Override
     public ArrayList<PaymentDTO> searchNotCompletedPayments(String rent_no) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
@@ -166,7 +167,7 @@ public class PaymentDAOImpl implements PaymentDAO {
             }
 
             alPayments.add(new PaymentDTO(
-                    rst.getString(1),
+                    rst.getInt(1),
                     rst.getString(2),
                     rst.getDate(3),
                     rst.getDate(4),
@@ -179,7 +180,7 @@ public class PaymentDAOImpl implements PaymentDAO {
 
         return alPayments;
     }
-    
+
     @Override
     public ArrayList<PaymentDTO> searchCompletedPayments(String rent_no) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
@@ -194,7 +195,7 @@ public class PaymentDAOImpl implements PaymentDAO {
             }
 
             alPayments.add(new PaymentDTO(
-                    rst.getString(1),
+                    rst.getInt(1),
                     rst.getString(2),
                     rst.getDate(3),
                     rst.getDate(4),
@@ -207,11 +208,11 @@ public class PaymentDAOImpl implements PaymentDAO {
 
         return alPayments;
     }
-    
+
     @Override
     public ArrayList<PaymentDTO> searchFuturePayments(String rent_no) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql =  "SELECT * FROM payment where due_amount <> paid_amount and due_date > curDate() and rent_no='" + rent_no + "'";
+        String sql = "SELECT * FROM payment where due_amount <> paid_amount and due_date > curDate() and rent_no='" + rent_no + "'";
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery(sql);
 
@@ -222,7 +223,7 @@ public class PaymentDAOImpl implements PaymentDAO {
             }
 
             alPayments.add(new PaymentDTO(
-                    rst.getString(1),
+                    rst.getInt(1),
                     rst.getString(2),
                     rst.getDate(3),
                     rst.getDate(4),
@@ -236,5 +237,27 @@ public class PaymentDAOImpl implements PaymentDAO {
         return alPayments;
     }
 
+    @Override
+    public PaymentDTO getNearestPayment(String rent_no, Date date, int paymentId) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        // SELECT * FROM boardingplace.payment where rent_no="r0002" and due_date>curdate() and due_amount>1000 limit 1; and due_date >= curdate and due_amount >=" + amount +" limit 1
+        String sql = "SELECT * FROM payment WHERE rent_no ='" +rent_no+ "'and payment_id <>" +paymentId+ " and due_date >= '"+date+"' and due_amount > 0.0 and paid_amount = 0.0 limit 1";
+        Statement stm = connection.createStatement();
+        ResultSet rst = stm.executeQuery(sql);
+
+        if (rst.next()) {
+            return new PaymentDTO(
+                    rst.getInt(1),
+                    rst.getString(2),
+                    rst.getDate(3),
+                    rst.getDate(4),
+                    rst.getString(5),
+                    rst.getDouble(6),
+                    rst.getDouble(7)
+            );
+        }
+
+        return null;
+    }
 
 }

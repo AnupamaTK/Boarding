@@ -9,6 +9,7 @@ import boardingPlaceManager.dao.SuperDAO;
 import boardingPlaceManager.dto.PropertyDTO;
 import boardingPlaceManager.dto.PaymentDTO;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -16,15 +17,19 @@ import java.util.ArrayList;
  */
 public interface PaymentDAO extends SuperDAO<PaymentDTO> {
 
-   public ArrayList<PaymentDTO> searchCompletedPayments(String rent_no) throws Exception;
+    public ArrayList<PaymentDTO> searchCompletedPayments(String rent_no) throws Exception;
 //
-   public ArrayList<PaymentDTO> searchNotCompletedPayments(String rent_no) throws Exception;
+
+    public ArrayList<PaymentDTO> searchNotCompletedPayments(String rent_no) throws Exception;
 //
+
     public ArrayList<PaymentDTO> searchFuturePayments(String property_id) throws Exception;
 //
+
     public ArrayList<PaymentDTO> searchByRentNo(String rent_no) throws Exception;
+
+    public PaymentDTO getNearestPayment(String rent_no, Date date, int paymentId) throws Exception;
 //    
 //    public PaymentDTO searchPaymentWithoutId(PaymentDTO rent) throws Exception;
 
-    
 }
