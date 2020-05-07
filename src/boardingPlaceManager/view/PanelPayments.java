@@ -188,7 +188,7 @@ public class PanelPayments extends JPanel {
 
     //to check text field inputs are empty
     public boolean checkText() {
-        System.out.println("Chk");
+        //System.out.println("Chk");
         if (datePickerDueDate.getDate() == null || datePickerPaymentDate.getDate() == null || txtDueAmount.getText().isEmpty() || txtDescription.getText().isEmpty()) {
             return false;
         }
@@ -705,11 +705,11 @@ public class PanelPayments extends JPanel {
             Double balance = 0.0;
             Boolean extraPayment = false;
             if (Double.parseDouble(txtDueAmount.getText()) != payment.getDueAmount()) {
-                balance = payment.getDueAmount() - Double.parseDouble(txtDueAmount.getText());
+                balance = Double.parseDouble(txtDueAmount.getText())-payment.getDueAmount();
                 extraPayment = true;
             }
             if (Double.parseDouble(txtPaidAmount.getText()) != payment.getPaidAmount()) {
-                balance += payment.getPaidAmount() - Double.parseDouble(txtPaidAmount.getText());
+                balance += Double.parseDouble(txtPaidAmount.getText())-payment.getPaidAmount();
                 extraPayment = true;
             }
             if (extraPayment == true) {
@@ -736,13 +736,13 @@ public class PanelPayments extends JPanel {
                         while (balance < 0.0) {
                             PaymentDTO partialPayment = PaymentController.getNearestPayment(rentNo, payment.getDue_date(), payment.getPayment_id());
                             if (partialPayment != null) {
-                                if (partialPayment.getDueAmount() > (-1*balance)) {
+                                if (partialPayment.getDueAmount() > (-1 * balance)) {
                                     paymentAmount = partialPayment.getDueAmount() + balance;
                                     balance = 0.0;
                                 } else {
                                     //paymentAmount = (-1 * balance) - partialPayment.getDueAmount();
                                     balance = partialPayment.getDueAmount() + balance;
-                                    paymentAmount=balance;
+                                    paymentAmount = balance;
                                 }
                                 if (!partialPayment.getDescription().equalsIgnoreCase("balance")) {
                                     partialPayment.setDescription(partialPayment.getDescription() + "+Payment Balancing");
@@ -764,10 +764,11 @@ public class PanelPayments extends JPanel {
                                 PaymentController.addPayment(newPaymentBalance);
                                 balance = 0.0;
                             }
-                            System.out.println("Balance in LOop" + balance);
+                            //System.out.println("Balance in LOop" + balance);
                         }
-                        if (balance > 0) {
+                        if (balance > 0.0) {
                             PaymentDTO partialPayment = PaymentController.getNearestPayment(rentNo, payment.getDue_date(), payment.getPayment_id());
+                            System.out.println("+ paymenttttt" + partialPayment);
                             if (partialPayment != null) {
                                 if (!partialPayment.getDescription().equalsIgnoreCase("balance")) {
                                     partialPayment.setDescription(partialPayment.getDescription() + "+Payment Balancing");
@@ -798,54 +799,7 @@ public class PanelPayments extends JPanel {
             } else {
                 JOptionPane.showMessageDialog(this, "Error Updating Payment");
             }
-//
-//        if (datePickerFromDate.getDate().after(datePickerToDate.getDate())) {
-//            JOptionPane.showMessageDialog(this, "To Date should be a date after from date");
-//            return;
-//        }
-//        try {
-//
-//            PaymentDTO boadere = PaymentController.searchPaymentByName(new PaymentDTO(null, cmbPaymentNames.getSelectedItem().toString(), null, null));
-//
-//            try {
-//
-//                PaymentDTO newPayment = PaymentController.searchPayment(this.payment);
-//                //System.out.println(boadere.getName() + "bbbbb" + newPayment);
-//
-//                newPayment.setPayment_id(boadere.getNic());
-//                newPayment.setMonthly_payment(Double.parseDouble(txtMonthlyPayment.getText()));
-//                newPayment.setAdvance_fee(Double.parseDouble(txtadvanceFee.getText()));
-//
-////                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-////                String fromDate = simpleDateFormat.format(datePickerFromDate.getDate());
-////                System.out.println(fromDate);
-//                newPayment.setFrom_date(datePickerFromDate.getDate());
-//                //String toDate = simpleDateFormat.format(datePickerFromDate.getDate());
-//
-//                // String toDate = simpleDateFormat.format(datePickerToDate.getDate());
-//                newPayment.setTo_date(datePickerFromDate.getDate());
-//
-//                try {
-//                    System.out.println(newPayment);
-//                    boolean result = PaymentController.updatePayment(newPayment);
-//
-//                    if (result) {
-//                        JOptionPane.showMessageDialog(this, "Payment details has been successfully updated");
-//                        btnRefreshActionPerformed(evt);
-//                        clearAllTexts();
-//                    } else {
-//                        JOptionPane.showMessageDialog(this, "Payment details hasn't been updated");
-//                    }
-//
-//                } catch (Exception ex) {
-//                    Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            } catch (Exception ex) {
-//                Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        } catch (Exception ex) {
-//            Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+
         } catch (Exception ex) {
             Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -913,7 +867,7 @@ public class PanelPayments extends JPanel {
                 dtm.setRowCount(0);
 
                 for (PaymentDTO payment : allPayments) {
-                    System.out.println("In Payment Loop");
+                  //  System.out.println("In Payment Loop");
                     //PropertyDTO property = new PropertyDTO(payment.getProperty_id(), null, null, null);
                     //  property = PropertyController.searchProperty(property);
                     // PaymentDTO boadereDTO = new PaymentDTO(payment.getPayment_id(), "", "", "");
@@ -1003,13 +957,13 @@ public class PanelPayments extends JPanel {
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
         long millis = System.currentTimeMillis();
         java.sql.Date curDate = new java.sql.Date(millis);
-        System.out.println(txtDescription.getText());
+        //System.out.println(txtDescription.getText());
         Boolean flag = false;
         String descriptionTemp = "";
         String descriptionTemp1 = "";
         //if (txtDescription.getText().equalsIgnoreCase("Monthly Payment") || txtDescription.getText().equalsIgnoreCase("Monthly Payment(Partial)")) {
         try {
-            System.out.println("Rent MP" + rent);
+           // System.out.println("Rent MP" + rent);
 
             if (Double.parseDouble(txtPayingAmount.getText()) < payment.getDueAmount()) {
                 Double balance = payment.getDueAmount() - Double.parseDouble(txtPayingAmount.getText());
