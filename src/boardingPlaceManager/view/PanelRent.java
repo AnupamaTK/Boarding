@@ -171,6 +171,7 @@ public class PanelRent extends JPanel {
         jLabel11 = new javax.swing.JLabel();
         btnUpdate = new org.jdesktop.swingx.JXButton();
         btnRemove = new org.jdesktop.swingx.JXButton();
+        btnClearFields = new org.jdesktop.swingx.JXButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -245,6 +246,27 @@ public class PanelRent extends JPanel {
             }
         });
 
+        btnClearFields.setBackground(new java.awt.Color(102, 102, 102));
+        btnClearFields.setForeground(new java.awt.Color(255, 255, 255));
+        btnClearFields.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Erase_20px.png"))); // NOI18N
+        btnClearFields.setText("Clear Fields");
+        btnClearFields.setToolTipText("Click to update");
+        btnClearFields.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnClearFields.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnClearFields.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnClearFieldsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnClearFieldsMouseExited(evt);
+            }
+        });
+        btnClearFields.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearFieldsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -253,7 +275,8 @@ public class PanelRent extends JPanel {
                 .addContainerGap(28, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(btnRemove, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
-                    .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnClearFields, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(2, 2, 2))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
@@ -269,7 +292,9 @@ public class PanelRent extends JPanel {
                 .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(321, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnClearFields, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -803,7 +828,7 @@ public class PanelRent extends JPanel {
     }//GEN-LAST:event_txtadvanceFeeActionPerformed
 
     private void btnPaymentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaymentsActionPerformed
- try {
+        try {
             //RentDTO rentHouse = RentController.searchRent(this.rent);
             //PropertyDTO property = new PropertyDTO(rentHouse.getProperty_id(), null, null, null);
             //property = PropertyController.searchProperty(property);
@@ -826,9 +851,22 @@ public class PanelRent extends JPanel {
         clearAllTexts();
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    private void btnClearFieldsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClearFieldsMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnClearFieldsMouseEntered
+
+    private void btnClearFieldsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClearFieldsMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnClearFieldsMouseExited
+
+    private void btnClearFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearFieldsActionPerformed
+        clearAllTexts();
+    }//GEN-LAST:event_btnClearFieldsActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
+    private org.jdesktop.swingx.JXButton btnClearFields;
     private org.jdesktop.swingx.JXButton btnPayments;
     private javax.swing.JButton btnRefresh;
     private org.jdesktop.swingx.JXButton btnRemove;

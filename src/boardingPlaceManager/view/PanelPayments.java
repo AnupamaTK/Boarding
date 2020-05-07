@@ -82,6 +82,7 @@ public class PanelPayments extends JPanel {
         datePickerDueDate.setFormats("yyyy-MM-dd");
         datePickerPaymentDate.setFormats("yyyy-MM-dd");
         hidePaymentDetails();
+        btnClickToPay.setVisible(false);
 
         //auto generate id
         try {
@@ -95,6 +96,7 @@ public class PanelPayments extends JPanel {
         tblPayment.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
+                btnClickToPay.setVisible(true);
                 fieldsUpdated = false;
 
                 try {
@@ -209,6 +211,8 @@ public class PanelPayments extends JPanel {
         jLabel11 = new javax.swing.JLabel();
         btnUpdate = new org.jdesktop.swingx.JXButton();
         btnRemove = new org.jdesktop.swingx.JXButton();
+        btnClearFields = new org.jdesktop.swingx.JXButton();
+        btnAddPayment = new org.jdesktop.swingx.JXButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -242,7 +246,7 @@ public class PanelPayments extends JPanel {
         jLabel11.setBackground(new java.awt.Color(255, 255, 255));
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 25)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("Rent Houses");
+        jLabel11.setText("Payments");
         jLabel11.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         btnUpdate.setBackground(new java.awt.Color(102, 102, 102));
@@ -287,41 +291,84 @@ public class PanelPayments extends JPanel {
             }
         });
 
+        btnClearFields.setBackground(new java.awt.Color(102, 102, 102));
+        btnClearFields.setForeground(new java.awt.Color(255, 255, 255));
+        btnClearFields.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Erase_20px.png"))); // NOI18N
+        btnClearFields.setText("clear fields");
+        btnClearFields.setToolTipText("Click to update");
+        btnClearFields.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnClearFields.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnClearFields.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnClearFieldsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnClearFieldsMouseExited(evt);
+            }
+        });
+        btnClearFields.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearFieldsActionPerformed(evt);
+            }
+        });
+
+        btnAddPayment.setBackground(new java.awt.Color(102, 102, 102));
+        btnAddPayment.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddPayment.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Plus_20px_1.png"))); // NOI18N
+        btnAddPayment.setText("add ");
+        btnAddPayment.setToolTipText("Click to update");
+        btnAddPayment.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnAddPayment.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnAddPayment.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnAddPaymentMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnAddPaymentMouseExited(evt);
+            }
+        });
+        btnAddPayment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddPaymentActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(28, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btnRemove, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
-                    .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel11)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(btnRemove, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                        .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnClearFields, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAddPayment, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(2, 2, 2))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel11)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(56, 56, 56)
+                .addGap(60, 60, 60)
                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(228, 228, 228)
+                .addGap(191, 191, 191)
+                .addComponent(btnAddPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(321, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnClearFields, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(288, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -475,7 +522,7 @@ public class PanelPayments extends JPanel {
         btnClickToPay.setBackground(new java.awt.Color(153, 153, 153));
         btnClickToPay.setForeground(new java.awt.Color(255, 255, 255));
         btnClickToPay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Money_20px.png"))); // NOI18N
-        btnClickToPay.setText("Click to add Payment");
+        btnClickToPay.setText("Click to do Payment");
         btnClickToPay.setToolTipText("Click to add");
         btnClickToPay.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnClickToPay.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -705,11 +752,11 @@ public class PanelPayments extends JPanel {
             Double balance = 0.0;
             Boolean extraPayment = false;
             if (Double.parseDouble(txtDueAmount.getText()) != payment.getDueAmount()) {
-                balance = Double.parseDouble(txtDueAmount.getText())-payment.getDueAmount();
+                balance = Double.parseDouble(txtDueAmount.getText()) - payment.getDueAmount();
                 extraPayment = true;
             }
             if (Double.parseDouble(txtPaidAmount.getText()) != payment.getPaidAmount()) {
-                balance += Double.parseDouble(txtPaidAmount.getText())-payment.getPaidAmount();
+                balance += Double.parseDouble(txtPaidAmount.getText()) - payment.getPaidAmount();
                 extraPayment = true;
             }
             if (extraPayment == true) {
@@ -795,6 +842,7 @@ public class PanelPayments extends JPanel {
             if (flag == true) {
 
                 JOptionPane.showMessageDialog(this, "Payment Updated");
+                clearAllTexts();
 
             } else {
                 JOptionPane.showMessageDialog(this, "Error Updating Payment");
@@ -867,7 +915,7 @@ public class PanelPayments extends JPanel {
                 dtm.setRowCount(0);
 
                 for (PaymentDTO payment : allPayments) {
-                  //  System.out.println("In Payment Loop");
+                    //  System.out.println("In Payment Loop");
                     //PropertyDTO property = new PropertyDTO(payment.getProperty_id(), null, null, null);
                     //  property = PropertyController.searchProperty(property);
                     // PaymentDTO boadereDTO = new PaymentDTO(payment.getPayment_id(), "", "", "");
@@ -963,7 +1011,7 @@ public class PanelPayments extends JPanel {
         String descriptionTemp1 = "";
         //if (txtDescription.getText().equalsIgnoreCase("Monthly Payment") || txtDescription.getText().equalsIgnoreCase("Monthly Payment(Partial)")) {
         try {
-           // System.out.println("Rent MP" + rent);
+            // System.out.println("Rent MP" + rent);
 
             if (Double.parseDouble(txtPayingAmount.getText()) < payment.getDueAmount()) {
                 Double balance = payment.getDueAmount() - Double.parseDouble(txtPayingAmount.getText());
@@ -1066,9 +1114,57 @@ public class PanelPayments extends JPanel {
         fieldsUpdated = true;
     }//GEN-LAST:event_txtPaidAmountKeyPressed
 
+    private void btnClearFieldsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClearFieldsMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnClearFieldsMouseEntered
+
+    private void btnClearFieldsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClearFieldsMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnClearFieldsMouseExited
+
+    private void btnClearFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearFieldsActionPerformed
+        clearAllTexts();
+        btnClickToPay.setVisible(false);
+        hidePaymentDetails();
+
+    }//GEN-LAST:event_btnClearFieldsActionPerformed
+
+    private void btnAddPaymentMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddPaymentMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddPaymentMouseEntered
+
+    private void btnAddPaymentMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddPaymentMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddPaymentMouseExited
+
+    private void btnAddPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPaymentActionPerformed
+        Date paymentDate;
+        if (datePickerPaymentDate.getDate() == null) {
+            paymentDate = null;
+        } else {
+            paymentDate = datePickerPaymentDate.getDate();
+        }
+        PaymentDTO newPayment = new PaymentDTO(0, rentNo, datePickerDueDate.getDate(), paymentDate, txtDescription.getText(), Double.parseDouble(txtDueAmount.getText()), Double.parseDouble(txtPaidAmount.getText()));
+        try {
+            Boolean flag = PaymentController.addPayment(newPayment);
+            if (flag == true) {
+
+                JOptionPane.showMessageDialog(this, "Payment Added");
+                clearAllTexts();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Error Adding Payment");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PanelPayments.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAddPaymentActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.jdesktop.swingx.JXButton btnAddPayment;
     private javax.swing.JButton btnCancel;
+    private org.jdesktop.swingx.JXButton btnClearFields;
     private org.jdesktop.swingx.JXButton btnClickToPay;
     private org.jdesktop.swingx.JXButton btnPay;
     private javax.swing.JButton btnRefresh;
