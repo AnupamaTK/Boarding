@@ -11,29 +11,46 @@ package boardingPlaceManager.dto;
  */
 public class RentRoomDTO extends SuperDTO{
     private String property_id;
+    private String house_id;
+    private int room_no;
     private int people_per_room;
-    private String address;
+    private boolean attached_bathroom;
+    private String other_details;
 
     public RentRoomDTO() {
     }
 
-    public RentRoomDTO(String property_id, int people_per_room, String address) {
+    public RentRoomDTO(String property_id, String house_id, int room_no, int people_per_room, boolean attached_bathroom, String other_details) {
         this.property_id = property_id;
+        this.house_id = house_id;
+        this.room_no = room_no;
         this.people_per_room = people_per_room;
-        this.address = address;
+        this.attached_bathroom = attached_bathroom;
+        this.other_details = other_details;
     }
 
     public String getProperty_id() {
         return property_id;
     }
 
-    @Override
-    public String toString() {
-        return "RentRoomDTO{" + "property_id=" + property_id + ", people_per_room=" + people_per_room + ", address=" + address + '}';
-    }
-
     public void setProperty_id(String property_id) {
         this.property_id = property_id;
+    }
+
+    public String getHouse_id() {
+        return house_id;
+    }
+
+    public void setHouse_id(String house_id) {
+        this.house_id = house_id;
+    }
+
+    public int getRoom_no() {
+        return room_no;
+    }
+
+    public void setRoom_no(int room_no) {
+        this.room_no = room_no;
     }
 
     public int getPeople_per_room() {
@@ -44,15 +61,26 @@ public class RentRoomDTO extends SuperDTO{
         this.people_per_room = people_per_room;
     }
 
-    public String getAddress() {
-        return address;
+    public boolean getAttached_bathroom() {
+        return attached_bathroom;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAttached_bathroom(boolean attached_bathroom) {
+        this.attached_bathroom = attached_bathroom;
     }
 
-    
+    public String getOther_details() {
+        return other_details;
+    }
+
+    public void setOther_details(String other_details) {
+        this.other_details = other_details;
+    }
+
+    @Override
+    public String toString() {
+        return "RentRoomDTO{" + "property_id=" + property_id + ", house_id=" + house_id + ", room_no=" + room_no + ", people_per_room=" + people_per_room + ", attached_bathroom=" + attached_bathroom + ", other_details=" + other_details + '}';
+    }
 
     
 }

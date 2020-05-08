@@ -13,6 +13,7 @@ import boardingPlaceManager.dao.custom.impl.SharingRoomDAOImpl;
 import boardingPlaceManager.dao.custom.impl.BoadereDAOImpl;
 import boardingPlaceManager.dao.custom.impl.PaymentDAOImpl;
 import boardingPlaceManager.dao.custom.impl.RentDAOImpl;
+import boardingPlaceManager.dao.custom.impl.RoomRentingHouseDAOImpl;
 
 /**
  *
@@ -22,7 +23,7 @@ public class DAOFactory {
 
     public enum DAOTypes {
 
-        USER, RENT_HOUSE, PROPERTY, RENT_ROOM, SHARING_ROOM, BOADERE, RENT, PAYMENT
+        USER, RENT_HOUSE, PROPERTY, RENT_ROOM, ROOM_RENTING_HOUSE, SHARING_ROOM, BOADERE, RENT, PAYMENT
     }
 
     private static DAOFactory daoFactory;
@@ -58,7 +59,8 @@ public class DAOFactory {
                 return new RentDAOImpl();
             case PAYMENT:
                 return new PaymentDAOImpl();
-
+            case ROOM_RENTING_HOUSE:
+                return new RoomRentingHouseDAOImpl();
             default:
                 return null;
         }

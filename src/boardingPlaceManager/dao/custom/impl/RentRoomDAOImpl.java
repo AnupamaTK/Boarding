@@ -28,11 +28,14 @@ public class RentRoomDAOImpl implements RentRoomDAO {
     public boolean add(RentRoomDTO rent_room) throws Exception {
 
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "INSERT INTO rent_room VALUES (?,?,?);";
+        String sql = "INSERT INTO rent_room VALUES (?,?,?,?,?,?);";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setObject(1, rent_room.getProperty_id());
-        pstm.setObject(2, rent_room.getPeople_per_room());
-        pstm.setObject(3, rent_room.getAddress());
+        pstm.setObject(2, rent_room.getHouse_id());
+        pstm.setObject(3, rent_room.getRoom_no());
+        pstm.setObject(4, rent_room.getPeople_per_room());
+        pstm.setObject(5, rent_room.getAttached_bathroom());
+        pstm.setObject(6, rent_room.getOther_details());
 
         int affectedRows = pstm.executeUpdate();
         return (affectedRows > 0);
@@ -41,12 +44,15 @@ public class RentRoomDAOImpl implements RentRoomDAO {
     @Override
     public boolean update(RentRoomDTO rent_room) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
-        String sql = "UPDATE rent_room SET people_per_room=?,address=? where property_id=?";
+        String sql = "UPDATE rent_room SET house_id=?,room_no=?,people_per_room=?,attached_bathroom=?,other_details=? where property_id=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
 
-        pstm.setObject(1, rent_room.getPeople_per_room());
-        pstm.setObject(2, rent_room.getAddress());
-        pstm.setObject(3, rent_room.getProperty_id());
+        pstm.setObject(1, rent_room.getHouse_id());
+        pstm.setObject(2, rent_room.getRoom_no());
+        pstm.setObject(3, rent_room.getPeople_per_room());
+        pstm.setObject(4, rent_room.getAttached_bathroom());
+        pstm.setObject(5, rent_room.getOther_details());
+        pstm.setObject(6, rent_room.getProperty_id());
 
         int affectedRows = pstm.executeUpdate();
         return (affectedRows > 0);
@@ -72,8 +78,11 @@ public class RentRoomDAOImpl implements RentRoomDAO {
         if (rst.next()) {
             return new RentRoomDTO(
                     rst.getString(1),
-                    rst.getInt(2),
-                    rst.getString(3)
+                    rst.getString(2),
+                    rst.getInt(3),
+                    rst.getInt(4),
+                    rst.getBoolean(5),
+                    rst.getString(6)
             );
         }
 
@@ -99,8 +108,11 @@ public class RentRoomDAOImpl implements RentRoomDAO {
 
             alRentRooms.add(new RentRoomDTO(
                     rst.getString(1),
-                    rst.getInt(2),
-                    rst.getString(3)
+                    rst.getString(2),
+                    rst.getInt(3),
+                    rst.getInt(4),
+                    rst.getBoolean(5),
+                    rst.getString(6)
             ));
 
         }
@@ -118,8 +130,11 @@ public class RentRoomDAOImpl implements RentRoomDAO {
         if (rst.next()) {
             return new RentRoomDTO(
                     rst.getString(1),
-                    rst.getInt(2),
-                    rst.getString(3)
+                    rst.getString(2),
+                    rst.getInt(3),
+                    rst.getInt(4),
+                    rst.getBoolean(5),
+                    rst.getString(6)
             );
         }
 

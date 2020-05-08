@@ -35,10 +35,13 @@ public class PanelRentRoom extends JPanel {
     private Color darkGreen = new Color(102, 102, 102);
     private String selectedAddress;
     private boolean fieldsUpdated = false;
+    private String selectedID;
 
     public PanelRentRoom() throws SQLException {
         // super(parent, modal);
         initComponents();
+        tblRentRoom.removeColumn(tblRentRoom.getColumnModel().getColumn(5));
+        tblRentRoom.removeColumn(tblRentRoom.getColumnModel().getColumn(6));
         //auto generate id
 
         try {
@@ -62,7 +65,7 @@ public class PanelRentRoom extends JPanel {
 
                 txtPeoplePerRoom.setText(tblRentRoom.getValueAt(tblRentRoom.getSelectedRow(), 0).toString());
                 txtAddress.setText(tblRentRoom.getValueAt(tblRentRoom.getSelectedRow(), 1).toString());
-
+                selectedID = tblRentRoom.getValueAt(tblRentRoom.getSelectedRow(), 2).toString();
                 selectedAddress = txtAddress.getText();
             }
         });
@@ -392,13 +395,13 @@ public class PanelRentRoom extends JPanel {
         tblRentRoom.setForeground(new java.awt.Color(51, 51, 51));
         tblRentRoom.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "People per Room", "Address"
+                "Address", "Room No", "People per Room", "Attached Bathroom", "Other Details", "Property ID", "house_id"
             }
         ));
         tblRentRoom.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -650,9 +653,12 @@ public class PanelRentRoom extends JPanel {
                 dtm.setRowCount(0);
 
                 for (RentRoomDTO rentRoom : allRentRooms) {
+                    
 
                     Object[] rowData = {rentRoom.getPeople_per_room(),
-                        rentRoom.getAddress()};
+                        rentRoom.getAddress(),
+                        rentRoom.getProperty_id()
+                    };
 
                     dtm.addRow(rowData);
 
@@ -665,7 +671,7 @@ public class PanelRentRoom extends JPanel {
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void jPanel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseEntered
-        
+
     }//GEN-LAST:event_jPanel1MouseEntered
 
     private void txtAddressKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAddressKeyPressed
