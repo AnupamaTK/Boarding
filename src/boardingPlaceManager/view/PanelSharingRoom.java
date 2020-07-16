@@ -546,7 +546,7 @@ public class PanelSharingRoom extends JPanel {
         try {
             RentRoomDTO rentRoom = RentRoomController.searchByAddress(selectedAddress);
             rentRoom.setPeople_per_room(Integer.parseInt(txtPeoplePerRoom.getText()));
-            rentRoom.setAddress(txtAddress.getText());
+//            rentRoom.setAddress(txtAddress.getText());
 
             try {
 
@@ -578,32 +578,32 @@ public class PanelSharingRoom extends JPanel {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
-        if (!checkText()) {
-            UIManager UI = new UIManager();
-            UI.put("OptionPane.background", Color.white);
-            UI.put("Panel.background", Color.white);
-
-            JOptionPane.showMessageDialog(this, "All fields should be filled to save");
-            return;
-        }
-        RentRoomDTO rentRoom = new RentRoomDTO(
-                getID(),
-                Integer.parseInt(txtPeoplePerRoom.getText()),
-                txtAddress.getText()
-        );
-
-        try {
-            boolean result = RentRoomController.addRentRoom(rentRoom);
-            if (result) {
-                JOptionPane.showMessageDialog(this, "RentRoom has been successfully added");
-                btnRefreshActionPerformed(evt);
-                clearAllTexts();
-            } else {
-                JOptionPane.showMessageDialog(this, "RentRoom hasn't been added");
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(PanelSharingRoom.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        if (!checkText()) {
+//            UIManager UI = new UIManager();
+//            UI.put("OptionPane.background", Color.white);
+//            UI.put("Panel.background", Color.white);
+//
+//            JOptionPane.showMessageDialog(this, "All fields should be filled to save");
+//            return;
+//        }
+//        RentRoomDTO rentRoom = new RentRoomDTO(
+//                getID(),
+//                Integer.parseInt(txtPeoplePerRoom.getText()),
+//                txtAddress.getText()
+//        );
+//
+//        try {
+//            boolean result = RentRoomController.addRentRoom(rentRoom);
+//            if (result) {
+//                JOptionPane.showMessageDialog(this, "RentRoom has been successfully added");
+//                btnRefreshActionPerformed(evt);
+//                clearAllTexts();
+//            } else {
+//                JOptionPane.showMessageDialog(this, "RentRoom hasn't been added");
+//            }
+//        } catch (Exception ex) {
+//            Logger.getLogger(PanelSharingRoom.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnAddMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseExited
@@ -647,26 +647,26 @@ public class PanelSharingRoom extends JPanel {
     }//GEN-LAST:event_cmbCustNameItemStateChanged
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-        try {
-            ArrayList<RentRoomDTO> allRentRooms = RentRoomController.getAllRentRooms();
-            if (allRentRooms != null) {
-                DefaultTableModel dtm = (DefaultTableModel) tblRentRoom.getModel();
-
-                dtm.setRowCount(0);
-
-                for (RentRoomDTO rentRoom : allRentRooms) {
-
-                    Object[] rowData = {rentRoom.getPeople_per_room(),
-                        rentRoom.getAddress()};
-
-                    dtm.addRow(rowData);
-
-                }
-
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(PanelSharingRoom.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            ArrayList<RentRoomDTO> allRentRooms = RentRoomController.getAllRentRooms();
+//            if (allRentRooms != null) {
+//                DefaultTableModel dtm = (DefaultTableModel) tblRentRoom.getModel();
+//
+//                dtm.setRowCount(0);
+//
+//                for (RentRoomDTO rentRoom : allRentRooms) {
+//
+//                    Object[] rowData = {rentRoom.getPeople_per_room(),
+//                       // rentRoom.getAddress()};
+//
+//                    dtm.addRow(rowData);
+//
+//                }
+//
+//            }
+//        } catch (Exception ex) {
+//            Logger.getLogger(PanelSharingRoom.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void jPanel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseEntered

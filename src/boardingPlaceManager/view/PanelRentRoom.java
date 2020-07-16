@@ -18,7 +18,9 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import boardingPlaceManager.common.IDGenarator;
 import boardingPlaceManager.controller.RentRoomController;
+import boardingPlaceManager.controller.RoomRentingHouseController;
 import boardingPlaceManager.dto.RentRoomDTO;
+import boardingPlaceManager.dto.RoomRentingHouseDTO;
 import javax.swing.UIManager;
 //import static boardingPlaceManager.view.PanelRentRoom.dark;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -36,12 +38,14 @@ public class PanelRentRoom extends JPanel {
     private String selectedAddress;
     private boolean fieldsUpdated = false;
     private String selectedID;
+    private RoomRentingHouseDTO roomRentingHouse;
 
     public PanelRentRoom() throws SQLException {
         // super(parent, modal);
         initComponents();
-        tblRentRoom.removeColumn(tblRentRoom.getColumnModel().getColumn(5));
         tblRentRoom.removeColumn(tblRentRoom.getColumnModel().getColumn(6));
+        tblRentRoom.removeColumn(tblRentRoom.getColumnModel().getColumn(5));
+        loadAllAddresses();
         //auto generate id
 
         try {
@@ -62,11 +66,13 @@ public class PanelRentRoom extends JPanel {
                 if (tblRentRoom.getSelectedRow() == -1) {
                     return;
                 }
-
-                txtPeoplePerRoom.setText(tblRentRoom.getValueAt(tblRentRoom.getSelectedRow(), 0).toString());
-                txtAddress.setText(tblRentRoom.getValueAt(tblRentRoom.getSelectedRow(), 1).toString());
                 selectedID = tblRentRoom.getValueAt(tblRentRoom.getSelectedRow(), 2).toString();
-                selectedAddress = txtAddress.getText();
+                loadRoomNumbers();
+                cmbAddress.setSelectedItem(tblRentRoom.getValueAt(tblRentRoom.getSelectedRow(), 0));
+                
+//txtaddress.setText(tblRentRoom.getValueAt(tblRentRoom.getSelectedRow(), 0).toString());
+                //txtRoomNo.setText(tblRentRoom.getValueAt(tblRentRoom.getSelectedRow(), 1).toString());
+                //selectedAddress = txtRoomNo.getText();
             }
         });
     }
@@ -82,8 +88,8 @@ public class PanelRentRoom extends JPanel {
     }*/
     private void clearAllTexts() {
 
-        txtPeoplePerRoom.setText("");
-        txtAddress.setText("");
+        txtaddress.setText("");
+        txtRoomNo.setText("");
     }
 
     public String getID() {
@@ -103,10 +109,51 @@ public class PanelRentRoom extends JPanel {
     //to check text field inputs are empty
     public boolean checkText() {
         System.out.println("Chk");
-        if (txtAddress.getText().isEmpty() && txtPeoplePerRoom.getText().isEmpty()) {
+        if (txtRoomNo.getText().isEmpty() && txtaddress.getText().isEmpty()) {
             return false;
         }
         return true;
+    }
+
+    public void loadAllAddresses() {
+        cmbAddress.removeAllItems();
+        ArrayList<RoomRentingHouseDTO> houses = null;
+        try {
+            houses = RoomRentingHouseController.getAllRoomRentingHouses();
+        } catch (Exception ex) {
+            Logger.getLogger(PanelRentRoom.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (houses == null) {
+            return;
+        }
+        for (RoomRentingHouseDTO house : houses) {
+
+            cmbAddress.addItem(house.getAddress());
+
+        }
+        AutoCompleteDecorator.decorate(cmbAddress);
+        cmbAddress.setSelectedIndex(-1);
+    }
+
+    public void loadRoomNumbers() {
+        cmbRoomNO.removeAllItems();
+        RoomRentingHouseDTO house = null;
+        try {
+            house = RoomRentingHouseController.searchRoomRentingHouse(new RoomRentingHouseDTO(selectedID, 0, 0, 0, ""));
+        } catch (Exception ex) {
+            Logger.getLogger(PanelRentRoom.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (house == null) {
+            return;
+        }
+        int i = 1;
+        //for (RoomRentingHouseDTO house : houses) {
+        while (i <= house.getNo_of_rooms()) {
+            cmbRoomNO.addItem(Integer.toString(i));
+
+        }
+        AutoCompleteDecorator.decorate(cmbRoomNO);
+        cmbRoomNO.setSelectedIndex(-1);
     }
 
 //    private void setCustName() throws Exception {
@@ -154,9 +201,15 @@ public class PanelRentRoom extends JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        txtPeoplePerRoom = new org.jdesktop.swingx.JXTextField();
         btnCancel = new javax.swing.JButton();
-        txtAddress = new org.jdesktop.swingx.JXTextField();
+        jLabel10 = new javax.swing.JLabel();
+        txtPeoplePerRoom = new org.jdesktop.swingx.JXTextField();
+        jLabel12 = new javax.swing.JLabel();
+        txtAttachedBathroom = new org.jdesktop.swingx.JXTextField();
+        jLabel13 = new javax.swing.JLabel();
+        txtOtherDetail = new org.jdesktop.swingx.JXTextField();
+        cmbAddress = new javax.swing.JComboBox<>();
+        cmbRoomNO = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -294,40 +347,12 @@ public class PanelRentRoom extends JPanel {
         jLabel7.setBackground(new java.awt.Color(255, 255, 255));
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel7.setText("People per Room");
+        jLabel7.setText("Address");
 
         jLabel6.setBackground(new java.awt.Color(255, 255, 255));
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel6.setText("Address");
-
-        txtPeoplePerRoom.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        txtPeoplePerRoom.setPrompt("People per Room");
-        txtPeoplePerRoom.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                txtPeoplePerRoomInputMethodTextChanged(evt);
-            }
-        });
-        txtPeoplePerRoom.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPeoplePerRoomActionPerformed(evt);
-            }
-        });
-        txtPeoplePerRoom.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                txtPeoplePerRoomPropertyChange(evt);
-            }
-        });
-        txtPeoplePerRoom.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtPeoplePerRoomKeyPressed(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtPeoplePerRoomKeyTyped(evt);
-            }
-        });
+        jLabel6.setText("Room No");
 
         btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/boardingPlaceManager/icons/Cancel 2_20px.png"))); // NOI18N
         btnCancel.setToolTipText("Click to clear fields");
@@ -337,16 +362,83 @@ public class PanelRentRoom extends JPanel {
             }
         });
 
-        txtAddress.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        txtAddress.setPrompt("Address");
-        txtAddress.addActionListener(new java.awt.event.ActionListener() {
+        jLabel10.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(0, 153, 153));
+        jLabel10.setText("People Per Room");
+
+        txtPeoplePerRoom.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtPeoplePerRoom.setPrompt("People per Room");
+        txtPeoplePerRoom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtAddressActionPerformed(evt);
+                txtPeoplePerRoomActionPerformed(evt);
             }
         });
-        txtAddress.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtPeoplePerRoom.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtAddressKeyPressed(evt);
+                txtPeoplePerRoomKeyPressed(evt);
+            }
+        });
+
+        jLabel12.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(0, 153, 153));
+        jLabel12.setText("Attached Bathroom");
+
+        txtAttachedBathroom.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtAttachedBathroom.setPrompt("Attached Bathroom");
+        txtAttachedBathroom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtAttachedBathroomActionPerformed(evt);
+            }
+        });
+        txtAttachedBathroom.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtAttachedBathroomKeyPressed(evt);
+            }
+        });
+
+        jLabel13.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(0, 153, 153));
+        jLabel13.setText("Other details");
+
+        txtOtherDetail.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtOtherDetail.setPrompt("Availability");
+        txtOtherDetail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtOtherDetailActionPerformed(evt);
+            }
+        });
+        txtOtherDetail.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtOtherDetailKeyPressed(evt);
+            }
+        });
+
+        cmbAddress.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        cmbAddress.setToolTipText("Click to select Item");
+        cmbAddress.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbAddressItemStateChanged(evt);
+            }
+        });
+        cmbAddress.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbAddressActionPerformed(evt);
+            }
+        });
+
+        cmbRoomNO.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        cmbRoomNO.setToolTipText("Click to select Item");
+        cmbRoomNO.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbRoomNOItemStateChanged(evt);
+            }
+        });
+        cmbRoomNO.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbRoomNOActionPerformed(evt);
             }
         });
 
@@ -361,26 +453,51 @@ public class PanelRentRoom extends JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(txtPeoplePerRoom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                    .addComponent(txtAddress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(146, 146, 146))
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtOtherDetail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtAttachedBathroom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtPeoplePerRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(cmbAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(132, 132, 132))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cmbRoomNO, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(237, 237, 237))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(121, 121, 121)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPeoplePerRoom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 345, Short.MAX_VALUE)
+                    .addComponent(cmbRoomNO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPeoplePerRoom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAttachedBathroom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtOtherDetail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51))
         );
@@ -543,8 +660,8 @@ public class PanelRentRoom extends JPanel {
 
         try {
             RentRoomDTO rentRoom = RentRoomController.searchByAddress(selectedAddress);
-            rentRoom.setPeople_per_room(Integer.parseInt(txtPeoplePerRoom.getText()));
-            rentRoom.setAddress(txtAddress.getText());
+            rentRoom.setPeople_per_room(Integer.parseInt(txtaddress.getText()));
+            //rentRoom.setAddress(txtAddress.getText());
 
             try {
 
@@ -576,32 +693,32 @@ public class PanelRentRoom extends JPanel {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
-        if (!checkText()) {
-            UIManager UI = new UIManager();
-            UI.put("OptionPane.background", Color.white);
-            UI.put("Panel.background", Color.white);
-
-            JOptionPane.showMessageDialog(this, "All fields should be filled to save");
-            return;
-        }
-        RentRoomDTO rentRoom = new RentRoomDTO(
-                getID(),
-                Integer.parseInt(txtPeoplePerRoom.getText()),
-                txtAddress.getText()
-        );
-
-        try {
-            boolean result = RentRoomController.addRentRoom(rentRoom);
-            if (result) {
-                JOptionPane.showMessageDialog(this, "RentRoom has been successfully added");
-                btnRefreshActionPerformed(evt);
-                clearAllTexts();
-            } else {
-                JOptionPane.showMessageDialog(this, "RentRoom hasn't been added");
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(PanelRentRoom.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        if (!checkText()) {
+//            UIManager UI = new UIManager();
+//            UI.put("OptionPane.background", Color.white);
+//            UI.put("Panel.background", Color.white);
+//
+//            JOptionPane.showMessageDialog(this, "All fields should be filled to save");
+//            return;
+//        }
+//        RentRoomDTO rentRoom = new RentRoomDTO(
+//                getID(),
+//                Integer.parseInt(txtPeoplePerRoom.getText()),
+//                txtAddress.getText()
+//        );
+//
+//        try {
+//            boolean result = RentRoomController.addRentRoom(rentRoom);
+//            if (result) {
+//                JOptionPane.showMessageDialog(this, "RentRoom has been successfully added");
+//                btnRefreshActionPerformed(evt);
+//                clearAllTexts();
+//            } else {
+//                JOptionPane.showMessageDialog(this, "RentRoom hasn't been added");
+//            }
+//        } catch (Exception ex) {
+//            Logger.getLogger(PanelRentRoom.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnAddMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseExited
@@ -653,11 +770,20 @@ public class PanelRentRoom extends JPanel {
                 dtm.setRowCount(0);
 
                 for (RentRoomDTO rentRoom : allRentRooms) {
-                    
-
-                    Object[] rowData = {rentRoom.getPeople_per_room(),
-                        rentRoom.getAddress(),
-                        rentRoom.getProperty_id()
+                    String attachBathroomsAvailability;
+                    roomRentingHouse = RoomRentingHouseController.searchRoomRentingHouse(new RoomRentingHouseDTO(rentRoom.getHouse_id(), PROPERTIES, SOMEBITS, PROPERTIES, selectedAddress));
+                    if (rentRoom.getAttached_bathroom() == true) {
+                        attachBathroomsAvailability = "Available";
+                    } else {
+                        attachBathroomsAvailability = "Not Available";
+                    }
+                    // String hasAttachedBathrooms=
+                    Object[] rowData = {
+                        roomRentingHouse.getAddress(),
+                        rentRoom.getRoom_no(),
+                        rentRoom.getPeople_per_room(),
+                        attachBathroomsAvailability,
+                        rentRoom.getOther_details()
                     };
 
                     dtm.addRow(rowData);
@@ -674,37 +800,49 @@ public class PanelRentRoom extends JPanel {
 
     }//GEN-LAST:event_jPanel1MouseEntered
 
-    private void txtAddressKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAddressKeyPressed
-        fieldsUpdated = true;
-    }//GEN-LAST:event_txtAddressKeyPressed
-
-    private void txtAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAddressActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtAddressActionPerformed
-
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         clearAllTexts();
     }//GEN-LAST:event_btnCancelActionPerformed
 
-    private void txtPeoplePerRoomKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPeoplePerRoomKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPeoplePerRoomKeyTyped
-
-    private void txtPeoplePerRoomKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPeoplePerRoomKeyPressed
-        fieldsUpdated = true;
-    }//GEN-LAST:event_txtPeoplePerRoomKeyPressed
-
-    private void txtPeoplePerRoomPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtPeoplePerRoomPropertyChange
-        System.out.print("Hy");
-    }//GEN-LAST:event_txtPeoplePerRoomPropertyChange
-
     private void txtPeoplePerRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPeoplePerRoomActionPerformed
-        //  txtNoOfBathRooms.requestFocus();
+        // TODO add your handling code here:
     }//GEN-LAST:event_txtPeoplePerRoomActionPerformed
 
-    private void txtPeoplePerRoomInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtPeoplePerRoomInputMethodTextChanged
+    private void txtPeoplePerRoomKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPeoplePerRoomKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtPeoplePerRoomInputMethodTextChanged
+    }//GEN-LAST:event_txtPeoplePerRoomKeyPressed
+
+    private void txtAttachedBathroomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAttachedBathroomActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAttachedBathroomActionPerformed
+
+    private void txtAttachedBathroomKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAttachedBathroomKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAttachedBathroomKeyPressed
+
+    private void txtOtherDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOtherDetailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtOtherDetailActionPerformed
+
+    private void txtOtherDetailKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOtherDetailKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtOtherDetailKeyPressed
+
+    private void cmbAddressItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbAddressItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbAddressItemStateChanged
+
+    private void cmbAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAddressActionPerformed
+        loadAllAddresses();
+    }//GEN-LAST:event_cmbAddressActionPerformed
+
+    private void cmbRoomNOItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbRoomNOItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbRoomNOItemStateChanged
+
+    private void cmbRoomNOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbRoomNOActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbRoomNOActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -713,8 +851,13 @@ public class PanelRentRoom extends JPanel {
     private javax.swing.JButton btnRefresh;
     private org.jdesktop.swingx.JXButton btnRemove;
     private org.jdesktop.swingx.JXButton btnUpdate;
+    private javax.swing.JComboBox<String> cmbAddress;
     private javax.swing.JComboBox<String> cmbCustName;
+    private javax.swing.JComboBox<String> cmbRoomNO;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -725,7 +868,8 @@ public class PanelRentRoom extends JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane3;
     private org.jdesktop.swingx.JXTable tblRentRoom;
-    private org.jdesktop.swingx.JXTextField txtAddress;
+    private org.jdesktop.swingx.JXTextField txtAttachedBathroom;
+    private org.jdesktop.swingx.JXTextField txtOtherDetail;
     private org.jdesktop.swingx.JXTextField txtPeoplePerRoom;
     // End of variables declaration//GEN-END:variables
 }
